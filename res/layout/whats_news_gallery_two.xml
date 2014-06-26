@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/whats_new_bg_02"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/title_tv"
+        style="@style/whats_new_title"
+        android:text="@string/whats_new_title2" />
+
+    <ImageView
+        android:id="@+id/img_iv"
+        style="@style/whats_new_img"
+        android:src="@drawable/whats_new_img2" />
+
+</LinearLayout>

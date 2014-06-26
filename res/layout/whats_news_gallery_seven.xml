@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:id="@+id/whats_new_seven_bg_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="@drawable/whatsnew_left" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="@drawable/whatsnew_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/whats_new_title1_tv"
+            style="@style/whats_new_title"
+            android:gravity="center"
+            android:paddingLeft="0.0dip"
+            android:text="@string/whats_new_title7_01" />
+
+        <TextView
+            android:id="@+id/whats_new_title2_tv"
+            style="@style/whats_new_title"
+            android:layout_marginTop="0.0dip"
+            android:gravity="center"
+            android:paddingLeft="0.0dip"
+            android:text="@string/whats_new_title7_02" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="1.0"
+            android:gravity="center_horizontal"
+            android:paddingTop="60.0dip" >
+
+            <Button
+                android:id="@+id/whats_new_start_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whats_new_start_btn"
+                android:duplicateParentState="false"
+                android:paddingLeft="30.0dip"
+                android:paddingRight="30.0dip"
+                android:text="开始点检"
+                android:gravity="center_vertical"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/Small_TextSize" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

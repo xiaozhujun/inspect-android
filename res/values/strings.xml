@@ -1,0 +1,40 @@
+<resources>
+
+    <string name="app_name">智能点检</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">智能点检</string>
+    <string name="whats_new_msg1">"如你所知，
+起重机点检应当步入智能化"</string>
+    <string name="whats_new_title2">"一切从本系统开始
+你通过身份验证进入了系统"</string>
+    <string name="whats_new_title3">你就打开了一个信息化档案</string>
+    <string name="whats_new_msg3">将起重机的点检点滴记录在档案中</string>
+    <string name="whats_new_title4">你只需将点检系统中下载好相应的配置文件</string>
+    <string name="whats_new_title5">"将这些文件中的信息，
+写入到身份验证卡以及点检标签中"</string>
+    <string name="whats_new_tip">使用本系统通过验证并将信息读出</string>
+    <string name="whats_new_title6">"在\"起重机的点检区域\"，
+贴上相应的标签，然后触动指尖"</string>
+    <string name="whats_new_title7_01">就能完成点检，</string>
+    <string name="whats_new_title7_02">这是多么奇妙！</string>
+    <string name="whats_new_start">点检系统</string>
+    <string name="whats_new_today">今天</string>
+    <string name="whats_new_yesterday">昨天</string>
+    <string name="whats_new_daybeforeyesterday">20</string>
+    <string name="whats_new_guangzhou">广州</string>
+    <string name="whats_new_march">3月</string>
+    <string name="normal">正常</string>
+    <string name="abnormal">异常</string>
+    <string name="nothing">无</string>
+    <string name="scanTagTitle">标签扫描</string>
+    <string name="peoplevalidate">人员身份验证</string>
+    <string name="startscan">开始扫描</string>
+    <string name="scanTag">扫描标签</string>
+    <string name="beizhu">请输入备注</string>
+    <string name="str_title">主菜单</string>
+    <string name="beizhutitle">备注</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="writebeizhu">填写备注</string>
+</resources>

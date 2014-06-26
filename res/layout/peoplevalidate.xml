@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@color/weightGray"
+        android:orientation="horizontal" >
+        <Button
+		  android:id="@+id/backbutton"
+		  android:background="@drawable/btn_back"
+		  android:layout_width="60dp"
+		  android:layout_height="fill_parent"
+		  android:layout_margin="8dp"
+		  ></Button>
+        <TextView
+            android:id="@+id/peopletitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/peoplevalidate"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/weightGray"
+        android:orientation="vertical" >
+
+        <ProgressBar
+            android:id="@+id/pb"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:progressDrawable="@drawable/barcolor"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/showprocess"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:layout_weight="0.28"
+        android:background="@color/Grey"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/rolestablelist"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@null"
+            android:dividerHeight="1dp" >
+        </ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/Grey"
+        android:orientation="horizontal" >
+    </LinearLayout>
+    <Button
+        android:id="@+id/startScan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/startscan" />
+
+</LinearLayout>

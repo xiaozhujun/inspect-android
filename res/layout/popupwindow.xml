@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/poptitle"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:orientation="vertical">
+	<TextView
+	    android:id="@+id/username_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="40dp"
+	    android:layout_marginLeft="10dip"
+	    android:layout_marginRight="10dip"
+	    android:gravity="center_vertical"
+	    android:textColor="@android:color/white"
+	    android:textSize="15sp"
+	    android:text="@string/beizhutitle"    
+	     />
+	<EditText
+	    android:id="@+id/username_edit"
+	    android:layout_width="fill_parent"
+	    android:layout_height="123dp"
+	    android:layout_marginLeft="10dip"
+	    android:layout_marginRight="10dip"
+	    android:gravity="top"
+	    android:background="@android:color/white"
+	    android:capitalize="none"
+	     />
+	<RelativeLayout android:id="@+id/LinearLayout01"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent" 
+		android:paddingLeft="10dip" android:paddingRight="10dip">
+		<Button
+		    android:id="@+id/BtnOK"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@android:color/white"
+		    android:layout_alignParentRight="true"
+		    android:layout_marginRight="50dp"
+		    android:text="@string/confirm" />
+		<Button
+		    android:id="@+id/BtnCancel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textColor="@android:color/white"
+		    android:text="@string/cancel" 
+		    android:layout_alignParentRight="true"/>
+	</RelativeLayout>
+</LinearLayout>
