@@ -3,12 +3,13 @@ package com.csei.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.csei.exception.ArgumentException;
 
+	
 public class Employer implements Listable
 {
 	private final String cardType = "0x01";
@@ -39,6 +40,20 @@ public class Employer implements Listable
 		this.number = p.readString();
 	}
 	
+	public Employer(String... args)
+	{
+		if (args.length!=4) {
+			Log.i("employer", "employer构造参数不对！");
+		}
+		else 
+		{
+			this.role =args[0];
+			this.roleNum = args[1];
+			this.name = args[2];
+			this.number = args[3];
+		}
+
+	}
 
 	public Employer(String data) throws ArgumentException{
 		if(data!=null){

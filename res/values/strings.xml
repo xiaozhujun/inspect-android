@@ -37,4 +37,18 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="writebeizhu">填写备注</string>
+    <string name="login_uname">请输入用户名</string>
+    <string name="login_pwd">请输入密码</string>
+    <string name="login_rem_uname">记住用户名</string>
+    <string name="login_rem_pwd">记住密码</string>
+    <string name="login_login">登录</string>
+    <string name="show_password">显示密码</string>
+    <string name="logo_name">起重机械</string>
+    <string name="project_name">智  能  点  检  平  台</string>
+<!--     <string name="LOGIN_SECURITY_CHECK">http://www.cseicms.com/inspectCas/login</string> -->
+    <string name="LOGIN_SECURITY_CHECK">http://www.cseicms.com/inspectManagement/j_spring_cas_security_check</string>
+<!-- <string name="LOGIN_SECURITY_CHECK">http://http://www.cseicms.com/riskManagement/j_spring_cas_security_check</string> -->
+
+    <string name="LOGIN_FAILED">登录失败</string>
+    <string name="test_jsonstring">{&quot;message&quot;:&quot;操作成功！&quot;,&quot;data&quot;:{&quot;number&quot;:6,&quot;role&quot;:&quot;机修人员&quot;,&quot;roleNum&quot;:1,&quot;name&quot;:&quot;赵伟&quot;},&quot;code&quot;:200}</string>
 </resources>

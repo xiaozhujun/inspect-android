@@ -28,7 +28,8 @@ public class StartInspectActivity extends Activity {
 					e.printStackTrace();
 				}finally{
 				finish();
-				Intent intent=new Intent(StartInspectActivity.this,PeopleValidateActivity.class);
+//				Intent intent=new Intent(StartInspectActivity.this,PeopleValidateActivity.class);
+				Intent intent=new Intent(StartInspectActivity.this,LoginActivity.class);
 				startActivity(intent);
 				}
 				}
