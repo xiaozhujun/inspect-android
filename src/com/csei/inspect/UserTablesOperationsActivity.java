@@ -73,7 +73,7 @@ public class UserTablesOperationsActivity extends Activity {
 		// ∂¡»°RolesTable.xml
 		ParseXml p = new ParseXml();
 		String filename = fileDir + "/RolesTable.xml";
-		final List<DbModel> list = p.parseRolesTable(filename, Integer.parseInt(employer.getNumber()));
+		final List<DbModel> list = p.parseRolesTable(filename, Integer.parseInt(employer.getRoleNum()));
 		pdDialog.setMax(list.size());
 		pdDialog.show();
 		new Thread(new Runnable() {
