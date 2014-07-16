@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.csei.database.entity.User;
+import org.csei.database.service.imp.UserServiceDao;
 import org.json.JSONException;
 
 import com.cesi.analysexml.DbModel;
@@ -13,6 +15,7 @@ import com.cesi.analysexml.ParseXml;
 import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
+import com.csei.util.Tools;
 import com.example.viewpager.R;
 
 import android.annotation.SuppressLint;
@@ -47,12 +50,12 @@ public class LoginActivity extends Activity {
 	private Button btn_login;
 	private static String username;
 	private static String password;
-//	private MyHandler handler;
 	private ProgressDialog dialog;
 	protected SharedPreferences preferences;
 	protected Editor editor;
 	private Employer employer = null;
 	
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate(Bundle bundle)
 	{
@@ -71,8 +74,8 @@ public class LoginActivity extends Activity {
 		cb_show_pwd = (CheckBox) findViewById(R.id.cb_show_pwd);
 		btn_login = (Button) findViewById(R.id.btn_login);
 		dialog = new ProgressDialog(this);
-		dialog.setTitle("ÌáÊ¾");
-		dialog.setMessage("ÕıÔÚµÇÂ¼£¬ÇëÉÔºó...");
+		dialog.setTitle("æç¤º");
+		dialog.setMessage("æ­£åœ¨ç™»å½•ï¼Œè¯·ç¨å...");
 		dialog.setIndeterminate(false);
 		dialog.setCancelable(true);
 
@@ -80,7 +83,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				// TODO Auto-generated method stub
 				if(cb_show_pwd.isChecked()){
 					edt_pwd.setTransformationMethod(HideReturnsTransformationMethod
 							.getInstance());
@@ -109,13 +111,10 @@ public class LoginActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_DOWN){     
-					//¸ü¸ÄÎª°´ÏÂÊ±µÄ±³¾°Í¼Æ¬     
 					((Button)v).setBackgroundResource(R.drawable.button_my_login_down);
 				}
 				else if(event.getAction() == MotionEvent.ACTION_UP){     
-					//¸ÄÎªÌ§ÆğÊ±µÄÍ¼Æ¬     
 					((Button)v).setBackgroundResource(R.drawable.button_my_login);     
-					//´¢´æÓÃ»§Ãû´úÂë
 					editor = preferences.edit();
 					if (null==preferences.getStringSet("username", null)) {
 						HashSet<String> tempSet=new HashSet<String>();
@@ -131,26 +130,42 @@ public class LoginActivity extends Activity {
 							editor.commit();
 						}
 					}
-					//¼Ç×¡ÃÜÂë¹¦ÄÜ´úÂë
 					if (((CheckBox)findViewById(R.id.cb_rem_pwd)).isChecked()) {
 						editor.putString(edt_uname.getText().toString(), edt_pwd.getText().toString());
 						editor.commit();
 					}
-					//Ïß³ÌµÇÂ¼´úÂë
+					
 					new Thread(new Runnable() {
-						
 						@Override
 						public void run() {
 							username= edt_uname.getText().toString();
 							password = edt_pwd.getText().toString();
-							final boolean loginResult = CasClient.getInstance().login(username, password, getResources().getString(R.string.LOGIN_SECURITY_CHECK));
-							if (loginResult) {//µÇÂ¼³É¹¦´¦Àí´úÂë}
-//								String msg=CasClient.getInstance().doPostNoParams("http://www.cseicms.com/riskManagement/rs/craneinspectreport/getEquipmentVarietyList");
-								String msg=CasClient.getInstance().doGet("http://www.cseicms.com/inspectManagement/rs/inspectUser/currentUser");
+//							//æµ‹è¯•ä½¿ç”¨çš„
+//							boolean loginResult=false;
+//							if("zhaowei".equals(username)&&"123456".equals(password))
+//							{
+//								User mUser=new User(
+//										username,"fgsdfds",null,"é—¨åº§å¼èµ·é‡æœº",null,null,Tools.GetCurrentTime(),"1","å·²ä¸Šä¼ ");
+//								UserServiceDao serviceDao;
+//								try {
+//									serviceDao = new UserServiceDao(getApplicationContext());
+//									serviceDao.addUser(mUser);
+//								} catch (Exception e) {
+//									e.printStackTrace();
+//								}
+//								startActivity(new Intent(LoginActivity.this,ActionHistoryActivity.class));
+//								dialog.dismiss();
+//								finish();
+//							}
+							final boolean loginResult1 = CasClient.getInstance().login(username, password, getResources().getString(R.string.LOGIN_SECURITY_CHECK));
+							if (loginResult1) {//ï¿½ï¿½Â¼ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½}
+								String msg=CasClient.getInstance().doGet(getResources().getString(R.string.USER_GETIMF));
 								try {
-//									employer=JsonParser.GetUserData(getResources().getString(R.string.test_jsonstring));
 									employer=JsonParser.GetUserData(msg);
+									
 								} catch (JSONException e) {
+									e.printStackTrace();
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
 							}
@@ -158,18 +173,18 @@ public class LoginActivity extends Activity {
 							runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									if (loginResult) {//µÇÂ¼³É¹¦´¦Àí´úÂë
+									if (loginResult1) {//ç™»å½•æˆåŠŸ
 										dialog.dismiss();
-										Intent intent=new Intent(LoginActivity.this,UserTablesOperationsActivity.class);
+										Intent intent=new Intent(LoginActivity.this,UserOperationsActivity.class);
 										Bundle bundle=new Bundle();
 										bundle.putParcelable("employer", employer);
 										intent.putExtras(bundle);
 										startActivity(intent);
 										finish();
 									}
-									else {//µÇÂ¼Ê§°Ü´¦Àí´úÂë
-												dialog.dismiss();
-												Toast.makeText(LoginActivity.this, getResources().getString(R.string.LOGIN_FAILED), Toast.LENGTH_SHORT).show();
+									else {//ç™»å½•å¤±è´¥
+										dialog.dismiss();
+										Toast.makeText(LoginActivity.this, getResources().getString(R.string.LOGIN_FAILED), Toast.LENGTH_SHORT).show();
 									}
 								}
 							});
@@ -183,13 +198,25 @@ public class LoginActivity extends Activity {
 		});
 		
 	}
-	//²âÊÔ´úÂë
+	//
+	private void func2()
+	{
+		dialog.dismiss();
+		Intent intent=new Intent(LoginActivity.this,UserTablesOperationsActivity.class);
+		Bundle bundle=new Bundle();
+		bundle.putParcelable("employer", employer);
+		intent.putExtras(bundle);
+		startActivity(intent);
+		finish();
+		
+	}
+	//ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½
 	private void func1()
 	{
 		dialog.dismiss();
 		Intent intent=new Intent(LoginActivity.this,TagValidateActivity.class);
 		Bundle bundle=new Bundle();
-		bundle.putString("tbname", "»úĞŞÈËÔ±µã¼ì±í");
+		bundle.putString("tbname", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½");
 		bundle.putInt("count", 1);
 		bundle.putString("username", employer.getName());
 		bundle.putInt("uid", Integer.parseInt(employer.getNumber()));
@@ -197,21 +224,5 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 		finish();
 	}
-	
-	
-//	public String getFile(int rid) {          //»ñÈ¡ÈËÔ±µã¼ìĞÅÏ¢
-//		Log.e("rid",rid+"");
-//		result="";
-//		ParseXml p=new ParseXml();
-//		filename=fileDir+"/RolesTable.xml";
-//			List<DbModel> list=p.parseRolesTable(filename,rid);
-//		    Iterator it=list.iterator();
-//		    while(it.hasNext()){
-//		    	DbModel d=(DbModel) it.next();
-//		    	result+=d.getTableitem()+",";
-//		    }
-//		return result;
-//	}
-	
 	
 }

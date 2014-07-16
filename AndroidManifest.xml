@@ -43,6 +43,9 @@
        <service android:name="com.csei.service.RFIDService"></service>
        <activity android:name="com.csei.inspect.LoginActivity" android:theme="@android:style/Theme.NoTitleBar" ></activity>
        <activity android:name="com.csei.inspect.UserTablesOperationsActivity"></activity>
+       <activity android:name="com.csei.inspect.UserOperationsActivity"></activity>
+       <activity android:name="com.csei.inspect.UserTaskListActivity"></activity>
+       <activity android:name="com.csei.inspect.ActionHistoryActivity"></activity>
        </application>
        
 </manifest>

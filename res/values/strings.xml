@@ -37,6 +37,8 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="writebeizhu">填写备注</string>
+    
+    <!-- 登录界面部分 -->
     <string name="login_uname">请输入用户名</string>
     <string name="login_pwd">请输入密码</string>
     <string name="login_rem_uname">记住用户名</string>
@@ -44,11 +46,46 @@
     <string name="login_login">登录</string>
     <string name="show_password">显示密码</string>
     <string name="logo_name">起重机械</string>
-    <string name="project_name">智  能  点  检  平  台</string>
-<!--     <string name="LOGIN_SECURITY_CHECK">http://www.cseicms.com/inspectCas/login</string> -->
-    <string name="LOGIN_SECURITY_CHECK">http://www.cseicms.com/inspectManagement/j_spring_cas_security_check</string>
-<!-- <string name="LOGIN_SECURITY_CHECK">http://http://www.cseicms.com/riskManagement/j_spring_cas_security_check</string> -->
-
+    <string name="project_name">智   能   点   检   平   台</string>
     <string name="LOGIN_FAILED">登录失败</string>
+    <!-- 登录界面部分 -->
+    
+    <!-- 连接服务器操作部分 -->
+    <string name="LOGIN_SECURITY_CHECK">http://www.cseicms.com/inspectManagement/j_spring_cas_security_check</string>
     <string name="test_jsonstring">{&quot;message&quot;:&quot;操作成功！&quot;,&quot;data&quot;:{&quot;number&quot;:6,&quot;role&quot;:&quot;机修人员&quot;,&quot;roleNum&quot;:1,&quot;name&quot;:&quot;赵伟&quot;},&quot;code&quot;:200}</string>
+    <string name="USER_GETIMF">http://www.cseicms.com/inspectManagement/rs/inspectUser/currentUser</string>
+    <string name="UPLOAD_FILE">http://www.cseicms.com/inspectManagement/rs/inspectResult/upload</string>
+    <string name="usertasklist_GETTASKDATA">http://www.cseicms.com/inspectManagement/rs/inspectTask/userLastTask</string>
+    <!-- 连接服务器操作部分 -->
+    <!-- 上传文件部分 -->
+    <string name="UPLOAD_FILLE_TEST">/sdcard/机修人员点检表-赵伟-20140714071147.xml</string>
+    <string name="upload_success">上传文件成功</string>
+    <string name="upload_failed">上传文件失败</string>
+    
+    <!-- 上传文件部分 -->
+    <!-- 主界面部分 -->
+    <string name="text_project">点检项目</string>
+    <string name="text_task">待做任务</string>
+    <string name="text_history">点检历史</string>
+    
+    <!-- 公共部分 -->
+    <string name="common_devicename">设备名：</string>
+    <!-- 公共部分 -->
+    <string name="usertasklist_header">任务列表</string>
+    <string name="usertasklist_taskname">任务名：</string>
+    <string name="usertasklist_deadline">截止时间：</string>
+    <string name="fav_empty_hint_for_pos_loginned">"没有点检记录"</string>
+    
+    <!-- 对话框部分 -->
+    <string name="dialog_title">提示</string>
+    <string name="dialog_login">正在登录，请稍候...</string>
+    <string name="dialog_loadfile">正在加载文件，请稍候...</string>
+    <string name="dialog_uploadfile">正在上传文件，请稍候...</string>
+    <string name="dialog_loadtask">正在加载任务，请稍候...</string>
+    <!-- 历史记录item部分 -->
+    <string name="history_item_tablename">点检表：</string>
+    <string name="history_item_finishtime">完成时间：</string>
+    
+    
+    
 </resources>

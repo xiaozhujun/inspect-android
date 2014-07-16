@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class UserTablesOperationsActivity extends Activity {
 	private ProgressDialog pdDialog;
-	final int PROGRESS_DIALOG = 0x112;
 	private Employer employer;
 	private String fileDir = Environment.getExternalStorageDirectory()
 			.toString();
@@ -38,27 +37,21 @@ public class UserTablesOperationsActivity extends Activity {
 		setContentView(R.layout.activity_usertablesoperation);
 		rolestablelist = (ListView) findViewById(R.id.activity_usertables_lv);
 
-		// 相关初始设置
+		// 鍔犺浇鏂囦欢瀵硅瘽妗嗗垵濮嬪寲
 		ProgressInit();
 
-		// 处理获得employer数据
+		// 澶勭悊鏁版嵁
 		handledata();
-		// 设置获取点检文件情况
 
 	}
 
 	private void ProgressInit() {
 		pdDialog = new ProgressDialog(this);
 		pdDialog.setMax(100);
-		// 设置对话框的标题
-		pdDialog.setTitle("加载文件");
-		// 设置对话框 显示的内容
-		pdDialog.setMessage("加载文件的完成百分比");
-		// 设置对话框不能用“取消”按钮关闭
+		pdDialog.setTitle(getResources().getString(R.string.dialog_title));
+		pdDialog.setMessage(getResources().getString(R.string.dialog_loadfile));
 		pdDialog.setCancelable(false);
-		// 设置对话框的进度条风格
 		pdDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		// 设置对话框的进度条是否显示进度
 		pdDialog.setIndeterminate(false);
 	}
 
@@ -70,7 +63,7 @@ public class UserTablesOperationsActivity extends Activity {
 	}
 
 	private void setEmployer(final Employer employer) {
-		// 读取RolesTable.xml
+		// 锟斤拷取RolesTable.xml
 		ParseXml p = new ParseXml();
 		String filename = fileDir + "/RolesTable.xml";
 		final List<DbModel> list = p.parseRolesTable(filename, Integer.parseInt(employer.getRoleNum()));
@@ -134,6 +127,5 @@ public class UserTablesOperationsActivity extends Activity {
 				});
 			}
 		}).start();
-		
 	}
 }

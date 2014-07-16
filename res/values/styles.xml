@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar" />
     <style name="whats_new_title">
         <item name="android:textSize">@dimen/Medium_TextSize</item>
         <item name="android:textColor">#ffffffff</item>
@@ -52,4 +52,12 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <style name="Text" />
+    
+     <style name="Text.NoDataHint" parent="@style/Text">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">#ff888888</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+    
 </resources>

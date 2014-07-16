@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/emptyList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <RelativeLayout
+            android:id="@+id/no_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" >
+
+            <ImageView
+                android:id="@+id/fav_empty_hint_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/fav_empty_bg" />
+
+            <TextView
+                android:id="@+id/fav_empty_hint_text"
+                style="@style/Text.NoDataHint"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fav_empty_hint_img"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10.0dip"
+                android:layout_marginTop="33.0dip"
+                android:text="@string/fav_empty_hint_for_pos_loginned" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

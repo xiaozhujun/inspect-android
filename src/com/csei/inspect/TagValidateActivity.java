@@ -1,4 +1,5 @@
 package com.csei.inspect;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,15 +11,25 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
+
+import org.apache.http.client.ClientProtocolException;
+import org.csei.database.entity.User;
+import org.csei.database.service.imp.UserServiceDao;
+import org.json.JSONException;
+
 import com.cesi.analysexml.ParseXml;
+import com.cesi.client.CasClient;
 import com.csei.adapter.MyexpandableListAdapter;
 import com.csei.entity.Employer;
 import com.csei.entity.Listable;
 import com.csei.entity.Tag;
 import com.csei.service.RFIDService;
 import com.csei.util.FileUtil;
+import com.csei.util.JsonParser;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
+import com.example.viewpager.R.string;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -26,9 +37,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,21 +68,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 @SuppressLint("HandlerLeak")
 public class TagValidateActivity extends Activity implements ExpandableListView.OnChildClickListener,ExpandableListView.OnGroupClickListener, OnClickListener{            
-	RadioGroup inspectResult;          //ÓÒ²àµÄµã¼ì½á¹ûÁĞ±í
+	RadioGroup inspectResult;          //ï¿½Ò²ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½
     RadioButton checkRadioButton;
-	int cur_pos=0;               //Ö÷ÒªÓÃÓÚÅĞ¶Ïµ±Ç°µÄposition£¬ÒÔÊ¹µ±Ç°µÄlistviewÖĞµÄItem¸ßÁÁ
+	int cur_pos=0;               //ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ğ¶Ïµï¿½Ç°ï¿½ï¿½positionï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ç°ï¿½ï¿½listviewï¿½Ğµï¿½Itemï¿½ï¿½ï¿½ï¿½
 	int cur_pos1=0;
-	String username=null;         //»ñÈ¡µã¼ìÈËÔ±
-	int uid=0;                    //»ñÈ¡µã¼ìÈËÔ±ID
-    String filename=null;          //»ñÈ¡µã¼ì±í£¬²»Í¬µÄµã¼ì±í»á³öÏÖ²»Í¬µÄµã¼ìÏî
+	String username=null;         //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+	int uid=0;                    //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ID
+    String filename=null;          //ï¿½ï¿½È¡ï¿½ï¿½ï¿½?ï¿½ï¿½Í¬ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½Í¬ï¿½Äµï¿½ï¿½ï¿½ï¿½
 	ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-	boolean isInspect=false;            //ÊÇ·ñÄÜµã¼ì ,Ä¬ÈÏÎªfalse,µ±µã»÷É¨Ãè±êÇ©Ö®ºó,±äÎªtrue
-	String fileDir=null;                //Ö¸Ïòµã¼ìÎÄ¼ş´æ·ÅµÄÎ»ÖÃµÄ¸ùÄ¿Â¼  /data/data/com.example.viewpager/files/
-	TextView inspecttable;              //ÏÔÊ¾µã¼ì±í
-	String tag;                         //É¨Ãè±êÇ©Ê±£¬²éÑ¯³öÏàÓ¦xmlÎÄ¼şÖĞµÄ<location>µÄÖµ
-	ParseXml p=new ParseXml();           //µ÷ÓÃ½âÎöxmlÎÄ¼şµÄÀà
+	boolean isInspect=false;            //ï¿½Ç·ï¿½ï¿½Üµï¿½ï¿½ ,Ä¬ï¿½ï¿½Îªfalse,ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©Ö®ï¿½ï¿½,ï¿½ï¿½Îªtrue
+	String fileDir=null;                //Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Åµï¿½Î»ï¿½ÃµÄ¸ï¿½Ä¿Â¼  /data/data/com.example.viewpager/files/
+	TextView inspecttable;              //ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+	String tag;                         //É¨ï¿½ï¿½ï¿½Ç©Ê±ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½Ó¦xmlï¿½Ä¼ï¿½ï¿½Ğµï¿½<location>ï¿½ï¿½Öµ
+	ParseXml p=new ParseXml();           //ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½xmlï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	boolean Inspect=false;                //
-	List<String> ScanedTag=new ArrayList<String>();    //ÓÃÀ´±£´æÒÑÉ¨Ãè¹ıµÄ±êÇ©
+	List<String> ScanedTag=new ArrayList<String>();    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ä±ï¿½Ç©
 	String tagflag;
 	TextView user;
 	int isScaned;
@@ -95,9 +108,9 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	Context mContext;
 	Button beizhu;
 	Button startScan;
-	private MyBroadcast myBroadcast;				//¹ã²¥½ÓÊÕÕß
-	public static int cmd_flag = 0;				//²Ù×÷×´Ì¬  0Îª²»×öÆäËû²Ù×÷£¬1ÎªÑ°¿¨£¬2ÎªÈÏÖ¤£¬3Îª¶ÁÊı¾İ£¬4ÎªĞ´Êı¾İ
-	public static int authentication_flag = 0;		//ÈÏÖ¤×´Ì¬  0ÎªÈÏÖ¤Ê§°ÜºÍÎ´ÈÏÖ¤  1ÎªÈÏÖ¤³É¹¦
+	private MyBroadcast myBroadcast;				//ï¿½ã²¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public static int cmd_flag = 0;				//ï¿½ï¿½ï¿½ï¿½×´Ì¬  0Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ÎªÑ°ï¿½ï¿½ï¿½ï¿½2Îªï¿½ï¿½Ö¤ï¿½ï¿½3Îªï¿½ï¿½ï¿½ï¿½İ£ï¿½4ÎªĞ´ï¿½ï¿½ï¿½
+	public static int authentication_flag = 0;		//ï¿½ï¿½Ö¤×´Ì¬  0Îªï¿½ï¿½Ö¤Ê§ï¿½Üºï¿½Î´ï¿½ï¿½Ö¤  1Îªï¿½ï¿½Ö¤ï¿½É¹ï¿½
 	private String activity = "com.csei.inspect.TagValidateActivity";
 		//Debug
 	public static String TAG= "M1card";
@@ -105,15 +118,15 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	String dnum;
 	int areaid;
 	private TextView title;
-	String savefile="±£´æ";
-	String exit="ÍË³ö";
+	String savefile="ï¿½ï¿½ï¿½ï¿½";
+	String exit="ï¿½Ë³ï¿½";
 	String cardType="0x02";
-	private ProgressDialog shibieDialog; //Ê¶±ğËÑË÷¿ò
+	private ProgressDialog shibieDialog; //Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	View view_Group;
-	private Timer timerDialog;  //ËÑË÷¿ò¼ÆÊ±Æ÷
+	private Timer timerDialog;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 	private Timer timeThread;
 	private int MSG_FLAG = 1;
-	//Dialog½áÊø±êÊ¶
+	//Dialogï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	private int MSG_OVER = 2;
 	String beizhustr;
 	private Handler mHandler = new Handler(){
@@ -123,7 +136,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			if(msg.what == MSG_FLAG){
 				
 			}else if(msg.what == MSG_OVER){
-				Toast.makeText(getApplicationContext(), "Î´Ê¶±ğµ½±êÇ©¿¨£¬ÇëÖØÊÔ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Î´Ê¶ï¿½ğµ½±ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -132,17 +145,17 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		super.onCreate(savedInstanceState);
 		init();
 	}
-	//³õÊ¼»¯
+	//ï¿½ï¿½Ê¼ï¿½ï¿½
 	private void init() {
 		TextView textview = new TextView(this);
 		setContentView(textview);
 		Bundle bundle = getIntent().getExtras();
-		//Ä£ÄâÆ÷ÉÏµÄ
+		//Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
 		fileDir=Environment.getExternalStorageDirectory().toString();
-		int count = bundle.getInt("count");                   //½ÓÊÕScanCardActivity´«À´µÄcountÖµ
-		if (count != 0) {                                  //Èô²»ÊÇµÚÒ»´ÎÌø×ªµ½Õâ¸öÒ³Ãæ£¬Ôò½øĞĞÏÂÒ»Âß¼­£¬·ñÔòÌáÊ¾ÏÈ½øĞĞÉí·İÑéÖ¤
+		int count = bundle.getInt("count");                   //ï¿½ï¿½ï¿½ï¿½ScanCardActivityï¿½ï¿½ï¿½ï¿½ï¿½ï¿½countÖµ
+		if (count != 0) {                                  //ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
 		tname = bundle.getString("tbname");        
-		                    //¸ù¾İ²»Í¬µÄtnameÀ´µÃµ½filename
+		                    //ï¿½ï¿½İ²ï¿½Í¬ï¿½ï¿½tnameï¿½ï¿½ï¿½Ãµï¿½filename
 		
 		username=bundle.getString("username").trim();
 		uid=bundle.getInt("uid");
@@ -150,8 +163,8 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		filename=getFileNameByTableName(tname);  
 		p.writeToFormatXml(filename);
 		
-		setContentView(R.layout.tagvalidate);                              //Ê¹ÓÃtagvalidate.xml×ÊÔ´ÎÄ¼ş
-		//ÒÔÏÂÊÇ»ñÈ¡ÏàÓ¦µÄ×ÊÔ´
+		setContentView(R.layout.tagvalidate);                              //Ê¹ï¿½ï¿½tagvalidate.xmlï¿½ï¿½Ô´ï¿½Ä¼ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ç»ï¿½È¡ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ô´
 		inspecttable=(TextView) this.findViewById(R.id.tbname);
 		inspecttable.setText(tname);
 		inspectItem =  (ExpandableListView) this.findViewById(R.id.inspectItem);
@@ -192,7 +205,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		inspectItem.setOnGroupClickListener(this);
 }
 	}
-	// ´¦Àí°´¼üÊÂ¼ş
+	// ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½Â¼ï¿½
 		class ClickEvent implements OnClickListener {
 			public void onClick(View v) {
 				if (v == beizhu) {
@@ -201,30 +214,30 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 				}
 			}
 		} 
-		// ÏÔÊ¾Ô²½Ç¶Ô»°¿ò
+		// ï¿½ï¿½Ê¾Ô²ï¿½Ç¶Ô»ï¿½ï¿½ï¿½
 		@SuppressWarnings("deprecation")
 		public void showRoundCornerDialog(Context context, View parent) {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			// »ñÈ¡Ô²½Ç¶Ô»°¿ò²¼¾ÖView£¬±³¾°ÉèÎªÔ²½Ç
+			// ï¿½ï¿½È¡Ô²ï¿½Ç¶Ô»ï¿½ï¿½ò²¼¾ï¿½Viewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÔ²ï¿½ï¿½
 			final View dialogView = inflater.inflate(R.layout.popupwindow, null,
 					false);
 			dialogView.setBackgroundResource(R.drawable.rounded_corners_view);
-			// ´´½¨µ¯³ö¶Ô»°¿ò£¬ÉèÖÃµ¯³ö¶Ô»°¿òµÄ±³¾°ÎªÔ²½Ç
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ô»ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ÎªÔ²ï¿½ï¿½
 			final PopupWindow pw = new PopupWindow(dialogView,LayoutParams.FILL_PARENT,
 					LayoutParams.WRAP_CONTENT, true);
 			pw.setOutsideTouchable(true);
 			pw.setAnimationStyle(R.style.PopupAnimation);
-			// ×¢£ºÉÏÃæµÄÉè±³¾°²Ù×÷ÎªÖØµã²¿·Ö£¬¿ÉÒÔ×ÔĞĞ×¢ÊÍµôÆäÖĞÒ»¸ö»òÁ½¸öÉè±³¾°²Ù×÷£¬²é¿´¶Ô»°¿òĞ§¹û
+			// ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Øµã²¿ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½Ô»ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½
 			final EditText edtUsername = (EditText) dialogView
 					.findViewById(R.id.username_edit);
-			//ÔÚÕâÀïÍ¨¹ıµã»÷µ±Ç°Ïî£¬¸ù¾İÇøÓòºÍµã¼ìÏîÀ´²éÕÒÏàÓ¦µÄ±¸×¢
-			edtUsername.setHint(beizhustr); // ÉèÖÃÌáÊ¾Óï
-			// OK°´Å¥¼°Æä´¦ÀíÊÂ¼ş
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä±ï¿½×¢
+			edtUsername.setHint(beizhustr); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
+			// OKï¿½ï¿½Å¥ï¿½ï¿½ï¿½ä´¦ï¿½ï¿½ï¿½Â¼ï¿½
 			TextView beizhutitle=(TextView) dialogView.findViewById(R.id.username_view);
 			beizhutitle.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					//Òş²ØÈí¼üÅÌ
+					//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
 			         imm.hideSoftInputFromWindow(edtUsername.getWindowToken(),0);
 				}
@@ -232,24 +245,24 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			Button btnOK = (Button) dialogView.findViewById(R.id.BtnOK);
 			btnOK.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					// ÉèÖÃÎÄ±¾¿òÄÚÈİ
+					// ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					String comment=edtUsername.getText().toString();
 					p.writeCommentToXml(filename, itemItem, comment,tag);
 					pw.dismiss();
 				}
 			});
-			// Cancel°´Å¥¼°Æä´¦ÀíÊÂ¼ş
+			// Cancelï¿½ï¿½Å¥ï¿½ï¿½ï¿½ä´¦ï¿½ï¿½ï¿½Â¼ï¿½
 			Button btnCancel = (Button) dialogView.findViewById(R.id.BtnCancel);
 			btnCancel.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					pw.dismiss();// ¹Ø±Õ
+					pw.dismiss();// ï¿½Ø±ï¿½
 				}
 			});
-			// ÏÔÊ¾RoundCorner¶Ô»°¿ò
+			// ï¿½ï¿½Ê¾RoundCornerï¿½Ô»ï¿½ï¿½ï¿½
 			pw.showAtLocation(parent, Gravity.CENTER | Gravity.CENTER, 0, 0);
 		}
 	/**
-	 * ¸ü¸ÄPop×´Ì¬
+	 * ï¿½ï¿½ï¿½Pop×´Ì¬
 	 * */
 	public void changPopState(View v) {
 		isOpenPop = !isOpenPop;
@@ -301,10 +314,54 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			@SuppressWarnings("unchecked")
 			Map<String, Object> map=(Map<String, Object>) parent.getItemAtPosition(position);
 			if(map.get(KEY).equals(savefile)){
-				Toast.makeText(mContext,"ÎÄ¼şÒÑ"+map.get(KEY)+"", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext,"ï¿½Ä¼ï¿½ï¿½ï¿½"+map.get(KEY)+"", Toast.LENGTH_SHORT).show();
 				writeToXmlUserDateDvnum(filename);
+				//2014-7-14-éƒ­çŸ¥ç¥¥ æ·»åŠ ä¸Šä¼ ä»£ç  æ’å…¥æ•°æ®åº“æ“ä½œ
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								//ä¸Šä¼ åŠŸèƒ½ä½¿ç”¨æµ‹è¯•æ–‡ä»¶
+								String msg = CasClient.getInstance().doSendFile2(getResources().getString(R.string.UPLOAD_FILE), getResources().getString(R.string.UPLOAD_FILLE_TEST));
+								Log.i("msg", msg);
+								if (JsonParser.UploadIsSuccess(msg)) {//ä¸Šä¼ æˆåŠŸ
+									//æ’å…¥æ•°æ®åº“æ“ä½œ
+									User mUser=new User(
+											username,tname,null,"é—¨åº§å¼èµ·é‡æœº",null,null,Tools.GetCurrentTime(),"1","å·²ä¸Šä¼ ");
+									UserServiceDao serviceDao=new UserServiceDao(getApplicationContext());
+									serviceDao.addUser(mUser);
+									Log.i("msg", "å·²ä¸Šä¼ ");
+								}
+								else{//ä¸Šä¼ å¤±è´¥
+									User mUser=new User(
+											username,tname,null,"é—¨åº§å¼èµ·é‡æœº",null,null,Tools.GetCurrentTime(),"1","æœªä¸Šä¼ ");
+									UserServiceDao serviceDao=new UserServiceDao(getApplicationContext());
+									serviceDao.addUser(mUser);
+									Log.i("msg", "æœªä¸Šä¼ ");
+								}
+								
+//								Looper.prepare();  
+//								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+//								Looper.loop();
+							} catch (ClientProtocolException e) {
+								e.printStackTrace();
+							} catch (NotFoundException e) {
+								e.printStackTrace();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							finish();
+						}
+					}).start();
+					//ï¿½ï¿½ï¿½ï¿½
 			}else if(map.get(KEY).equals(exit)){
-				Toast.makeText(mContext,"ÄúºÃ!ÕıÔÚ"+map.get(KEY)+".......", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext,"ï¿½ï¿½ï¿½!ï¿½ï¿½ï¿½ï¿½"+map.get(KEY)+".......", Toast.LENGTH_SHORT).show();
 				System.exit(0);
 			}
 			if (window != null) {
@@ -325,7 +382,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
     @SuppressWarnings("rawtypes")
 	private void InitData() {
 		// TODO Auto-generated method stub
-    	//ÔÚÕâÖ®ÖĞ
+    	//ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½
     	List<String> taglist=p.queryLocationFromXml(filename);
     	Iterator t=taglist.iterator();
     	groupList = new ArrayList<String>();
@@ -348,7 +405,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 				childList.add(childTemp);			
 	}
 		}
-	//Ä£ÄâÆ÷ÉÏµÄ
+	//Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½
 	private String getFileNameByTableName(String tname) {
 		String fileFullName = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -362,22 +419,22 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		
 		return fileFullName;
 	}
-	//Õæ»úÉÏµÄfilename¾ÍµÈÓÚ±íÃû
+	//ï¿½ï¿½ï¿½ï¿½Ïµï¿½filenameï¿½Íµï¿½ï¿½Ú±ï¿½ï¿½ï¿½
 	/*private String getFileNameByTableName(String tname) {
 		filename=tname;
 		return filename;
 	}
 */	
-	public List<String> getLocation() {             //»ñÈ¡xmlÎÄ¼şÖĞµÄ<location>ºÍ<field>µÄÖµ
+	public List<String> getLocation() {             //ï¿½ï¿½È¡xmlï¿½Ä¼ï¿½ï¿½Ğµï¿½<location>ï¿½ï¿½<field>ï¿½ï¿½Öµ
 		List<String> list = new ArrayList<String>();
 	    list = p.parseInspect(filename);		
 		return list;
 	}
-	private void writeToXmlUserDateDvnum(String filename) {        //½«username,uid,devnum,insepcttimeĞ´ÈëxmlÎÄ¼ş
+	private void writeToXmlUserDateDvnum(String filename) {        //ï¿½ï¿½username,uid,devnum,insepcttimeĞ´ï¿½ï¿½xmlï¿½Ä¼ï¿½
 		Date d=new Date(System.currentTimeMillis());
 		p.writeToXmlUserDateDvnum(filename,tname,username,uid,dnum,d);	
 	}   
-	public void writeFormatXml(String pathname){         //½«Ö¸¶¨¸ñÊ½µÄÎÄ¼şĞ´Èë
+	public void writeFormatXml(String pathname){         //ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Ä¼ï¿½Ğ´ï¿½ï¿½
 		p.writeToFormatXml(pathname);
 	}
 	public List<String> queryLocationFromXml(){
@@ -387,11 +444,11 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	public boolean onGroupClick(final ExpandableListView parent, final View v,
 			int groupPosition, final long id) {
 		if(isInspect==false){
-			Toast.makeText(TagValidateActivity.this, "ÇëÉ¨Ãè±êÇ©!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©!", Toast.LENGTH_SHORT).show();
 		}
 		if(isScaned==2){
 			inspectItem.collapseGroup(groupPosition);
-			Toast.makeText(TagValidateActivity.this, "ÓëËùÉ¨Ãè±êÇ©²»·û!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 			inspectResultPane.setVisibility(View.GONE);
 		}
 		return false;
@@ -399,21 +456,21 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
 		if(isInspect==false){
-			Toast.makeText(TagValidateActivity.this, "ÇëÉ¨Ãè±êÇ©!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©!", Toast.LENGTH_SHORT).show();
 		}
 		if(isScaned==2){
-			Toast.makeText(TagValidateActivity.this, "ÓëËùÉ¨Ãè±êÇ©²»·û!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 		}
 		return true;
 }
 	public void onClick(View v) {
 		shibieDialog = new ProgressDialog(TagValidateActivity.this, R.style.mProgressDialog);
 		shibieDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		shibieDialog.setMessage("Ê¶±ğ±êÇ©ÖĞ...");
+		shibieDialog.setMessage("Ê¶ï¿½ï¿½ï¿½Ç©ï¿½ï¿½...");
 		shibieDialog.setCancelable(false);
 		shibieDialog.show();
 		timerDialog = new Timer();
-		//7ÃëºóÈ¡ÏûËÑË÷
+		//7ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		timerDialog.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -444,15 +501,15 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		myBroadcast = new MyBroadcast();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.csei.inspect.TagValidateActivity");
-		registerReceiver(myBroadcast, filter); 		//×¢²á¹ã²¥½ÓÊÕÕß
+		registerReceiver(myBroadcast, filter); 		//×¢ï¿½ï¿½ã²¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.onResume();
 	}
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		cmd_flag = 0;  				  //Ğ´×´Ì¬»Ö¸´³õÊ¼×´Ì¬
+		cmd_flag = 0;  				  //Ğ´×´Ì¬ï¿½Ö¸ï¿½ï¿½ï¿½Ê¼×´Ì¬
 		authentication_flag = 0;
-		unregisterReceiver(myBroadcast);  //Ğ¶ÔØ¹ã²¥½ÓÊÕÕß
+		unregisterReceiver(myBroadcast);  //Ğ¶ï¿½Ø¹ã²¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.onPause();
 		timeThread.cancel();
 		Log.e("M1CARDPAUSE", "PAUSE");  	
@@ -463,12 +520,12 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		Intent stopService = new Intent();
 		stopService.setAction("com.example.service.DeviceService");
 		stopService.putExtra("stopflag", true);
-		sendBroadcast(stopService);  //¸ø·şÎñ·¢ËÍ¹ã²¥,Áî·şÎñÍ£Ö¹
+		sendBroadcast(stopService);  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ã²¥,ï¿½ï¿½ï¿½ï¿½ï¿½Í£Ö¹
 		Log.e(TAG, "send stop");
 		super.onDestroy();
 	}
 	/**
-	 *  ¹ã²¥½ÓÊÕÕß,½ÓÊÕ·şÎñ·¢ËÍ¹ıÀ´µÄÊı¾İ£¬²¢¸üĞÂUI
+	 *  ï¿½ã²¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UI
 	 * @author Administrator
 	 *
 	 */
@@ -477,10 +534,10 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		public void onReceive(Context context, Intent intent) {
 			Listable listable = intent.getParcelableExtra("listable");
 			if(listable == null){
-				Toast.makeText(TagValidateActivity.this, "¶Á¿¨Ê§°Ü!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 				return;
 			}else if(!(listable instanceof Tag)){
-				Toast.makeText(TagValidateActivity.this, "¿¨ÀàĞÍ´íÎó£¬Çë¶ÁÉè±¸¿¨!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			Tag tagRFID = (Tag)listable;
@@ -491,15 +548,15 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			dnum=tagRFID.getDeviceNum();
 			areaid = Integer.parseInt(tagRFID.getTagAreaNum());
 			devnum.setText(dnum);
-		    //¸ù¾İÕâ¸öDNUMºÍAreAidÔÚtags.xmlÖĞ²é³öµã¼ìÇøÓò
+		    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½DNUMï¿½ï¿½AreAidï¿½ï¿½tags.xmlï¿½Ğ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			String t=tagRFID.getTagArea();
-			if(t.equals("Ë¾»úÊÒÇø")){
-				t="Ë¾»úÊÒÇøÓò";
+			if(t.equals("Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")){
+				t="Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 			}
-			Toast.makeText(TagValidateActivity.this, "±êÇ©É¨ÃèÍê±Ï!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½Ç©É¨ï¿½ï¿½ï¿½ï¿½ï¿½!", Toast.LENGTH_SHORT).show();
 			   isInspect=true;   
           if(isInspect){
-    	     //Ò»Ë¢±êÇ©Ê±£¬¼´»áÉ¨ÃèListViewÖĞµÄitem
+    	     //Ò»Ë¢ï¿½ï¿½Ç©Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ListViewï¿½Ğµï¿½item
     		tag=t;				  
     		
     		for(int i=0;i<groupList.size();i++){
@@ -534,12 +591,12 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 						}
 						beizhustr=p.getBeiZhuFromInspectXml(filename,itemItem,tag,groupItem);
 					     }else{
-								Toast.makeText(TagValidateActivity.this, "µã¼ìÏî²»ÊôÓÚËùÉ¨Ãè±êÇ©!", Toast.LENGTH_SHORT).show();
+								Toast.makeText(TagValidateActivity.this, "ï¿½ï¿½ï¿½ï¿½î²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¨ï¿½ï¿½ï¿½Ç©!", Toast.LENGTH_SHORT).show();
 							 inspectResultPane.setVisibility(View.GONE);
 					     }
 					     return false;
 					}
-                    //ÅĞ¶ÏÒ»¸öµã¼ìÏîÊÇ·ñÊôÓÚÄ³¸öÇøÓò
+                    //ï¿½Ğ¶ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					private boolean judgeIsBelongToScanTag(
 							String filename, String itemItem,
 							String tag,String groupItem) {
@@ -566,14 +623,14 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			}
 		}
 	/**
-	 * Ğ´Êı¾İÑéÖ¤,ÓÃÓÚÑéÖ¤Ğ´ÈëÊı¾İ
+	 * Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param src
 	 * @return boolean
 	 */
 	public static boolean checkData(String src){
 		boolean flag = false;
 		String regString = "[a-f0-9A-F]{32}";
-		flag = Pattern.matches(regString, src); //Æ¥ÅäÊı¾İ£¬ÊÇ·ñÎª32Î»µÄÊ®Áù½øÖÆ
+		flag = Pattern.matches(regString, src); //Æ¥ï¿½ï¿½ï¿½ï¿½İ£ï¿½ï¿½Ç·ï¿½Îª32Î»ï¿½ï¿½Ê®ï¿½ï¿½ï¿½ï¿½ï¿½
 		return flag;
 	}
 }

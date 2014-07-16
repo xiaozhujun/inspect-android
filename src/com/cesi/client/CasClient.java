@@ -1,23 +1,7 @@
 package com.cesi.client;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
-import android.util.Log;
-
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +10,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+
+import android.util.Log;
 
 public class CasClient
 {
@@ -212,6 +221,36 @@ public class CasClient
         return sessionId;
     }
 
+    //版本一
+    public String doSendFile1(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
+    	HttpPost httppost = new HttpPost(ServicePath);
+    	   ContentBody cbFile = new FileBody(new File(FilePath));
+    	   HttpEntity reqEntity = MultipartEntityBuilder.create()
+                   .addPart("file", cbFile)
+                   .build();
+    	   httppost.setEntity(reqEntity);
+    	   HttpResponse response = httpClient.execute(httppost);
+    	   return ""+response.getStatusLine();
+	}
+    
+  //版本二
+    @SuppressWarnings("deprecation")
+	public String doSendFile2(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
+    	httpClient.getParams().setParameter(  
+                CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);  
+        HttpPost httppost = new HttpPost(ServicePath);  
+        File file = new File(FilePath);
+        MultipartEntity entity = new MultipartEntity();  
+        FileBody fileBody = new FileBody(file);  
+        entity.addPart("filename", fileBody);  
+        httppost.setEntity(entity);  
+        HttpResponse response = httpClient.execute(httppost);
+        HttpEntity resEntity = response.getEntity();  
+//        if (resEntity != null) {  
+//            Log.i("sendfile", EntityUtils.toString(resEntity));  
+//        }  
+    	return EntityUtils.toString(resEntity);
+	}
     //发送GET请求
     public String doGet(String service){
         Log.i("cas client doGet url:", service);

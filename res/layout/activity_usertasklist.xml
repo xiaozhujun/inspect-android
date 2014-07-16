@@ -5,18 +5,18 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/usertasklist_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@color/myred"
         android:gravity="center"
-        android:text="点检项目"
+        android:text="@string/usertasklist_header"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
     <ListView
-        android:id="@+id/activity_usertables_lv"
+        android:id="@+id/usertasklist_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>

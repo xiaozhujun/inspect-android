@@ -5,7 +5,12 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.example.viewpager.R;
+
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.media.MediaPlayer;
 
 /*import com.zhouzhi.es.content.OperatorInfo;
@@ -15,7 +20,7 @@ import com.zhouzhi.es.content.XunjianInfoCache;*/
 public class Tools {
 
 	/**
-	 * byte ×ªÊ®Áù½øÖÆ
+	 * byte ×ªÊ®ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param b
 	 * @param size
 	 * @return
@@ -42,7 +47,7 @@ public class Tools {
 		  }
 		
 		/**
-		 * Ê®Áù½øÖÆ×ªbyte
+		 * Ê®ï¿½ï¿½ï¿½ï¿½ï¿½×ªbyte
 		 * @param src
 		 * @return
 		 */
@@ -58,7 +63,7 @@ public class Tools {
 		}
 		
 		/**
-		 * »ñÈ¡ÏµÍ³Ê±¼ä£¬Ê±¼ä¸ñÊ½Îª£º Äê-ÔÂ-ÈÕ   Ê±£º·Ö Ãë
+		 * ï¿½ï¿½È¡ÏµÍ³Ê±ï¿½ä£¬Ê±ï¿½ï¿½ï¿½Ê½Îªï¿½ï¿½ ï¿½ï¿½-ï¿½ï¿½-ï¿½ï¿½   Ê±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		 * @return
 		 */
 		public static String getTime(){
@@ -70,9 +75,9 @@ public class Tools {
 		}
 		
 		/**
-		 * ¼ìÑé½ÓÊÕµÄÊı¾İ³¤¶È
-		 * @param dataLen ½ÓÊÕÊı¾İµÄ³¤¶È
-		 * @param data Êı¾İ
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½İ³ï¿½ï¿½ï¿½
+		 * @param dataLen ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İµÄ³ï¿½ï¿½ï¿½
+		 * @param data ï¿½ï¿½ï¿½
 		 * @return
 		 */
 		public static boolean checkData(String dataLen, String data){
@@ -84,7 +89,7 @@ public class Tools {
 		}
 		
 		/**
-		 * ½âÎöÑ²¼ìµã¿¨ÖĞÊı¾İ
+		 * ï¿½ï¿½ï¿½ï¿½Ñ²ï¿½ï¿½ã¿¨ï¿½ï¿½ï¿½ï¿½ï¿½
 		 * @param AreaCarddata
 		 */
 		public static void resolveAreaCard(String AreaCarddata){
@@ -97,7 +102,7 @@ public class Tools {
 		}
 		
 		/**
-		 * ½â¶Á³ö²Ù×÷Ô±¿¨Æ¬ÖĞµÄĞÅÏ¢
+		 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½Æ¬ï¿½Ğµï¿½ï¿½ï¿½Ï¢
 		 * @param cardData
 		 */
 		public static void getOperatorInfo(String cardData){
@@ -113,7 +118,7 @@ public class Tools {
 		}
 		
 		/**
-		 * Ê®Áù½øÖÆ×ª»¯Îªºº×Ö
+		 * Ê®ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
 		 * @param hex
 		 * @return
 		 */
@@ -132,7 +137,7 @@ public class Tools {
 		public static void playMedia(){
 			MediaPlayer mPlayer = new MediaPlayer();
 			try {
-				mPlayer.setDataSource("/system/media/audio/ui/VideoRecord.ogg");  //Ñ¡ÓÃÏµÍ³ÉùÒôÎÄ¼ş
+				mPlayer.setDataSource("/system/media/audio/ui/VideoRecord.ogg");  //Ñ¡ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 				mPlayer.prepare();
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
@@ -149,4 +154,34 @@ public class Tools {
 			}
 			mPlayer.start();
 		}
+		
+		//2014-07-16 éƒ­çŸ¥ç¥¥æ·»åŠ ä»£ç 
+		public static String GetCurrentTime() {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			return format.format(new Date());
+		}
+		//å…¨å±€dialog
+		private static ProgressDialog pdDialog;
+		public static void SetDialogMsg(Context mContext,String msg)
+		{
+			if (pdDialog==null) {
+				pdDialog = new ProgressDialog(mContext);
+			}
+			pdDialog.setMax(100);
+			pdDialog.setTitle(mContext.getResources().getString(R.string.dialog_title));
+			pdDialog.setMessage(msg);
+			pdDialog.setCancelable(false);
+			pdDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			pdDialog.setIndeterminate(false);
+		}
+		public static void DialogShow()
+		{
+			pdDialog.show();
+		}
+		public static void DialogDismiss()
+		{
+			pdDialog.dismiss();;
+		}
+		
+		
 }
