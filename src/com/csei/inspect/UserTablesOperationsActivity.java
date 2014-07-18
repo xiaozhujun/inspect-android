@@ -53,7 +53,6 @@ public class UserTablesOperationsActivity extends Activity {
 		rolestablelist = (ListView) findViewById(R.id.activity_usertables_lv);
 		imageView=(ImageView) findViewById(R.id.usertableoperation_igv_upload);
 		badge1 = new BadgeView(this, imageView);
-        
         badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
 		
 		// 加载文件对话框初始化
@@ -64,6 +63,19 @@ public class UserTablesOperationsActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		imageView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(UserTablesOperationsActivity.this,
+						ActionHistoryActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("employer", employer);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
 
 	}
 

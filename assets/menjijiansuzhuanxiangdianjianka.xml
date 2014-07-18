@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<check inspecttype="门机减速机专项点检卡" inspecttime="" worker="" workernumber="" devicenumber="">
+  <devicetype name="门座式起重机">
+    <location name="行走区域" areaId="5">
+      <field name="1#走行减速箱" itemId="427" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="2#减速机" itemId="430" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="3#走行减速机" itemId="433" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="4#走行减速机" itemId="436" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="5#走行减速机" itemId="439" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="6#走行减速机" itemId="442" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="7#走行减速机" itemId="445" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="8#走行减速机" itemId="448" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="左回转减速机" itemId="451" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="右回转减速机" itemId="454" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持绳减速机" itemId="457" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭绳减速机" itemId="460" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅用减速机" itemId="463" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+  </devicetype>
+</check>

@@ -17,6 +17,7 @@ import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.integer;
 import android.app.Activity;
@@ -34,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -49,6 +51,8 @@ public class UserTaskListActivity extends Activity {
 	private SharedPreferences preference;  
 	private TaskCellServiceDao userServiceDao;
 	private SimpleCursorAdapter cursorAdapter;
+	private ImageView imageView;
+	private BadgeView badge1;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -57,6 +61,22 @@ public class UserTaskListActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_usertasklist);
 		listView=(ListView)findViewById(R.id.usertasklist_lv);
+		imageView=(ImageView) findViewById(R.id.usertasklist_igv_upload);
+		badge1 = new BadgeView(this, imageView);
+        badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+        imageView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(UserTaskListActivity.this,
+						ActionHistoryActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable("employer", employer);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+		
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
 		preference=getSharedPreferences("count", Context.MODE_PRIVATE);
 		String string=preference.getString("taskflag", "00-00-00");
@@ -65,6 +85,9 @@ public class UserTaskListActivity extends Activity {
 		dialog_init();
 		if (Tools.GetCurrentDate().equals(string)) {//直接从数据库中获得
 			//查询未完成的任务，进行UI显示
+			//查询已完成但未上传的
+			int unuploadnum=userServiceDao.GetCurrentProjectUnuploadNum("已完成", "未上传");
+			badge1.setText(""+unuploadnum);badge1.show();
 			cursor=userServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(),null);
 			cursorAdapter = new SimpleCursorAdapter(
 					UserTaskListActivity.this , R.layout.usertasklist_lv_item, cursor 

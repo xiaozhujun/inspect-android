@@ -124,7 +124,7 @@ public class TaskCellServiceDao implements TaskCellService{
 	public void UpdateUserTask(String username, String tablename, String date,
 			String devicename, String timeslot,String tableflag) {
 		db.beginTransaction();
-		db.execSQL("update person set devicename=?,timeslot=? where username=? and date=? and tablename=? and tableflag=?",new Object[]{
+		db.execSQL("update user set devicename=?,timeslot=? where username=? and date=? and tablename=? and tableflag=?",new Object[]{
 				devicename,timeslot,username,date,tablename,tableflag
 		});
 		Log.i("msg", "已完成更新操作.");
@@ -137,7 +137,7 @@ public class TaskCellServiceDao implements TaskCellService{
 	public void UpdateUserFinishflag(String username, String tablename,
 			String date, String finishflag) {
 		db.beginTransaction();
-		db.execSQL("update person set finishflag=? where username=? and date=? and tablename=?",new Object[]{
+		db.execSQL("update user set finishflag=? where username=? and date=? and tablename=?",new Object[]{
 				finishflag,username,date,tablename
 		});
 		Log.i("msg", "已完成更新操作.");
@@ -148,10 +148,10 @@ public class TaskCellServiceDao implements TaskCellService{
 
 	@Override
 	public void UpdateUserUploadflag(String username, String tablename,
-			String date, String uploadflag) {
+			String date, String finishtime,String finishflag,String uploadflag) {
 		db.beginTransaction();
-		db.execSQL("update person set uploadflag=? where username=? and date=? and tablename=?",new Object[]{
-				uploadflag,username,date,tablename
+		db.execSQL("update user set finishtime=?,finishflag=?,uploadflag=? where username=? and date=? and tablename=?",new Object[]{
+				finishtime,finishflag,uploadflag,username,date,tablename
 		});
 		Log.i("msg", "已完成更新操作.");
 		db.setTransactionSuccessful();

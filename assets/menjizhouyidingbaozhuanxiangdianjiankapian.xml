@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<check inspecttype="门机周一定保专项点检卡片" inspecttime="" worker="" workernumber="" devicenumber="">
+  <devicetype name="门座式起重机">
+    <location name="行走区域" areaId="5">
+      <field name="1#走行减速机" itemId="466" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="2#走行减速机" itemId="469" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="绳头 左开闭" itemId="472" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="卸扣 左开闭" itemId="475" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走驱动齿轮" itemId="478" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各电动铁鞋绞点" itemId="481" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构制动器底座螺栓" itemId="484" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构电机底座螺栓" itemId="487" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="转盘区域" areaId="6">
+      <field name="各机构制动器底座螺栓" itemId="490" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构电机底座螺栓" itemId="493" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="司机室区域" areaId="7">
+      <field name="开闭绳减速机" itemId="496" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="压板左开闭" itemId="499" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="压板 右开闭" itemId="502" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="压板 右支持" itemId="505" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="压板 左支持" itemId="508" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 磨损 右开闭" itemId="511" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 磨损 左支持" itemId="514" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 磨损 右支持" itemId="517" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 断丝 右开闭" itemId="520" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 断丝 左支持" itemId="523" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 断丝 右支持" itemId="526" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 磨损 右开闭" itemId="529" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 磨损 左支持" itemId="532" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 磨损 右支持" itemId="535" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 断丝 右开闭" itemId="538" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 断丝 右支持" itemId="541" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁段 断丝 右支持" itemId="544" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="绳头 右开闭" itemId="547" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="绳头 左支持" itemId="550" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="绳头 右支持" itemId="553" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="卸扣 右开闭" itemId="556" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="卸扣 左支持" itemId="559" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="集中润滑油箱" itemId="562" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="集中润滑管路泄露检查" itemId="565" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大齿圈" itemId="568" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭减速箱输入输出轴" itemId="571" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持减速箱输入输出轴" itemId="574" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭减速箱高速联轴箱" itemId="577" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭卷筒联轴箱" itemId="580" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持减速箱高速联轴箱" itemId="583" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持卷筒联轴器" itemId="586" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭卷筒压绳器" itemId="589" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持卷筒压绳器" itemId="592" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="起升制动器绞点" itemId="595" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="开闭制动器绞点" itemId="598" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="回转制动器绞点" itemId="601" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="脚踏制动器绞点" itemId="604" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大臂支座下左绞点开裂" itemId="607" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大臂支座下右绞点开裂" itemId="610" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大臂上右绞点开裂" itemId="613" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大臂上左绞点开裂" itemId="616" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="机房底根部开裂" itemId="619" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="大齿圈根部开裂" itemId="622" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构制动器底座螺栓" itemId="625" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构电机底座螺栓" itemId="628" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持开闭卷筒支座及轴承盖螺栓" itemId="631" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="臂架区域" areaId="8">
+      <field name="变幅用减速机" itemId="634" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 磨损 左开闭" itemId="637" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮段 断丝 左开闭" itemId="640" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁端 左开闭 磨损" itemId="643" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁端 左开闭 断丝" itemId="646" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅齿圈" itemId="649" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅减速箱输入输出轴" itemId="652" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁钢丝绳托辊" itemId="655" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="负荷取力装置绞点" itemId="658" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅制动器绞点" itemId="661" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁尾部各U型槽根部开裂" itemId="664" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="象鼻梁头部各U型槽根部开裂" itemId="667" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构制动器底座螺栓" itemId="670" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各机构电机底座螺栓" itemId="673" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅摇架支座及轴承盖螺栓" itemId="676" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+  </devicetype>
+</check>

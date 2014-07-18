@@ -129,6 +129,10 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	//Dialog�����ʶ
 	private int MSG_OVER = 2;
 	String beizhustr;
+	//2014-7-18 郭知祥添加
+	private TaskCellServiceDao serviceDao;
+	
+	
 	private Handler mHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -149,6 +153,9 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	private void init() {
 		TextView textview = new TextView(this);
 		setContentView(textview);
+		//2014-7-18 郭知祥添加
+		serviceDao=new TaskCellServiceDao(getApplicationContext());
+		
 		Bundle bundle = getIntent().getExtras();
 		//ģ�����ϵ�
 		fileDir=Environment.getExternalStorageDirectory().toString();
@@ -325,24 +332,14 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 								String msg = CasClient.getInstance().doSendFile2(getResources().getString(R.string.UPLOAD_FILE), getResources().getString(R.string.UPLOAD_FILLE_TEST));
 								Log.i("msg", msg);
 								if (JsonParser.UploadIsSuccess(msg)) {//上传成功
-									//插入数据库操作
-									TaskCell mUser=new TaskCell(
-											username,tname,null,"门座式起重机",null,null,Tools.GetCurrentTime(),"1","已上传");
-									TaskCellServiceDao serviceDao=new TaskCellServiceDao(getApplicationContext());
-									serviceDao.addUser(mUser);
+									//更新行数据操作 更新完成时间、完成标志、上传标志
+									serviceDao.UpdateUserUploadflag(username, tname, Tools.GetCurrentDate(),Tools.GetCurrentTime(),"已完成","已上传");
 									Log.i("msg", "已上传");
 								}
 								else{//上传失败
-									TaskCell mUser=new TaskCell(
-											username,tname,null,"门座式起重机",null,null,Tools.GetCurrentTime(),"1","未上传");
-									TaskCellServiceDao serviceDao=new TaskCellServiceDao(getApplicationContext());
-									serviceDao.addUser(mUser);
+									serviceDao.UpdateUserUploadflag(username, tname, Tools.GetCurrentDate(),Tools.GetCurrentTime(),"已完成","未上传");
 									Log.i("msg", "未上传");
 								}
-								
-//								Looper.prepare();  
-//								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-//								Looper.loop();
 							} catch (ClientProtocolException e) {
 								e.printStackTrace();
 							} catch (NotFoundException e) {
@@ -350,10 +347,8 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 							} catch (IOException e) {
 								e.printStackTrace();
 							}catch (JSONException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							finish();

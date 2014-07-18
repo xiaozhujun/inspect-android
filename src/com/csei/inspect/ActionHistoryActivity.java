@@ -7,6 +7,7 @@ import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
 import com.cesi.client.CasClient;
+import com.csei.adapter.MultipleChoiceCursorAdapter;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
@@ -14,6 +15,8 @@ import com.example.viewpager.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,9 +28,14 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -38,6 +46,11 @@ public class ActionHistoryActivity extends Activity {
 	private Cursor cursor;
 	private ProgressDialog pdDialog;
 	private Employer employer;
+	private TextView textView;
+	private FrameLayout fav_bottom_bar1;
+	private SimpleCursorAdapter mCursorAdapter;
+	private int cb_visible;
+	
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -47,6 +60,7 @@ public class ActionHistoryActivity extends Activity {
 		setContentView(R.layout.activity_history);
 		listView=(ListView) findViewById(R.id.actionhistory_lv);
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
+		cb_visible=View.GONE;
 		ProgressInit();
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -54,6 +68,29 @@ public class ActionHistoryActivity extends Activity {
 		emptyView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		((ViewGroup)listView.getParent()).addView(emptyView); 
 		listView.setEmptyView(emptyView);
+		fav_bottom_bar1 = (FrameLayout) findViewById(R.id.fav_bottom_bar1);
+		textView=(TextView) findViewById(R.id.history_tv_edit);
+		textView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(textView.getText().toString().equals("编辑")){
+					fav_bottom_bar1.setVisibility(View.VISIBLE);
+					textView.setText("完成");
+					cb_visible=View.VISIBLE;
+//					mCursorAdapter.setVisibility(View.VISIBLE);
+//					ButtonsOn = true;
+					dataChanged();
+				}else{
+					fav_bottom_bar1.setVisibility(View.GONE);
+					textView.setText("编辑");
+					cb_visible=View.GONE;
+//					mCursorAdapter.setVisibility(View.INVISIBLE);
+//					ButtonsOn = false;
+					dataChanged();
+			}
+			}
+			});
 		
 		try {
 			TaskCellServiceDao userServiceDao=new TaskCellServiceDao(getApplicationContext());
@@ -61,7 +98,7 @@ public class ActionHistoryActivity extends Activity {
 			} catch (Exception e) {
 			e.printStackTrace();
 		}
-		cursorAdapter = new SimpleCursorAdapter(
+		mCursorAdapter = new SimpleCursorAdapter(
 				ActionHistoryActivity.this , R.layout.history_item, cursor 
 				, new String[]{"tablename" , "devicename","finishtime","uploadflag"}
 				, new int[]{R.id.history_item_tv_tablename , R.id.history_item_tv_devicename,R.id.history_item_tv_finishtime,R.id.history_item_btn_finishflag}){
@@ -70,27 +107,40 @@ public class ActionHistoryActivity extends Activity {
 			public View getView(final int position, View convertView,
 					final ViewGroup parent) {
 				convertView =  super.getView(position, convertView, parent);
+				
 				final Button btn_finishflag = (Button) convertView.findViewById(R.id.history_item_btn_finishflag);
+				CheckBox checkBox=(CheckBox) convertView.findViewById(R.id.history_item_cb);
+				if (cb_visible==View.GONE) {
+					checkBox.setVisibility(cb_visible);
+					btn_finishflag.setVisibility(View.VISIBLE);
+				}
+				else {
+					checkBox.setVisibility(cb_visible);
+					btn_finishflag.setVisibility(View.GONE);
+				}
+				if (btn_finishflag.getText().equals("未完成")) {
+					btn_finishflag.setBackgroundResource(R.color.myred);
+				}
+				else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
 				btn_finishflag.setOnTouchListener(new View.OnTouchListener() {
-					
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
 						if (event.getAction()==MotionEvent.ACTION_DOWN) {
-							btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile_down);
+							v.setBackgroundResource(R.drawable.btn_uploadfile_down);
 							pdDialog.show();
 							new Thread(new UploadFileThread()).start();
 						}
 						if (event.getAction()==MotionEvent.ACTION_UP) {
-							btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+							v.setBackgroundResource(R.drawable.btn_uploadfile);
 						}
 						return false;
 					}
-				});
-				return convertView;
-			}
+		});
+		return convertView;
 		};
+	};
 			//显示数据
-		listView.setAdapter(cursorAdapter);
+		listView.setAdapter(mCursorAdapter);
 	}
 	
 	class UploadFileThread implements Runnable
@@ -132,5 +182,11 @@ public class ActionHistoryActivity extends Activity {
 		pdDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		pdDialog.setIndeterminate(false);
 	}
+	
+	
+	private void dataChanged() {  
+		mCursorAdapter.notifyDataSetChanged();  
+	}
+	
 	
 }

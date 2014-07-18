@@ -15,7 +15,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="功 能 选 项"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView2"

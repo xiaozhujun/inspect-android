@@ -4,21 +4,106 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/actionhistory_tv"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@color/myred"
-        android:gravity="center"
-        android:text="点检记录"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="点检记录"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/history_tv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="编辑"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </FrameLayout>
 
     <ListView
         android:id="@+id/actionhistory_lv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
     </ListView>
+
+    <FrameLayout
+        android:id="@+id/fav_bottom_bar1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_btn_normal"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:id="@+id/syncinfo"
+            android:layout_width="fill_parent"
+            android:layout_height="43.0dip"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/fav_bat_del"
+                android:layout_width="fill_parent"
+                android:layout_height="43.0dip"
+                android:layout_margin="3dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btnCancelAll"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_default"
+                    android:text="取消全部"
+                    android:textColor="#ff000000" />
+
+                <Button
+                    android:id="@+id/btnSelAll"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_marginRight="10.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_default"
+                    android:text="全选"
+                    android:textColor="#ff000000" />
+
+                <Button
+                    android:id="@+id/btnDelAll"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_default"
+                    android:text="删除"
+                    android:textColor="#ff000000" />
+                <Button
+                    android:id="@+id/btnuploadall"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15.0dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/btn_default"
+                    android:text="上传"
+                    android:textColor="#ff000000" />
+            </LinearLayout>
+        </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>

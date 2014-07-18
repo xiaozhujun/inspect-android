@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<employers>
+  <employer>
+    <cardType>1</cardType>
+    <role>机修人员</role>
+    <roleNum>1</roleNum>
+    <name>赵伟</name>
+    <number>4</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>门机司机</role>
+    <roleNum>2</roleNum>
+    <name>王福明</name>
+    <number>5</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>机械技术员</role>
+    <roleNum>3</roleNum>
+    <name>常建</name>
+    <number>6</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>电气技术员</role>
+    <roleNum>4</roleNum>
+    <name>庞伟</name>
+    <number>7</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>电气技术员</role>
+    <roleNum>4</roleNum>
+    <name>秦小娟</name>
+    <number>8</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>定保员</role>
+    <roleNum>5</roleNum>
+    <name>孙伟</name>
+    <number>9</number>
+  </employer>
+  <employer>
+    <cardType>1</cardType>
+    <role>减速机点检员</role>
+    <roleNum>6</roleNum>
+    <name>晋中</name>
+    <number>10</number>
+  </employer>
+</employers>

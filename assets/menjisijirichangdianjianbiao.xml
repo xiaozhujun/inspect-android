@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<check inspecttype="门机司机日常点检表" inspecttime="" worker="" workernumber="" devicenumber="">
+  <devicetype name="门座式起重机">
+    <location name="行走区域" areaId="5">
+      <field name="手动铁鞋、锚定" itemId="67" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走台车" itemId="70" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="电动铁鞋" itemId="73" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走防撞缓冲器" itemId="76" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走电机护栏" itemId="79" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走减速箱" itemId="82" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走开式齿轮" itemId="85" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="抓斗" itemId="88" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="钢丝绳及卸扣" itemId="91" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各主要绞点" itemId="94" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="梯子及栏杆" itemId="97" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="高压电缆及电缆坑" itemId="100" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="行走声光报警" itemId="103" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="转盘区域" areaId="6">
+      <field name="旋转齿轮、齿圈" itemId="106" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="主要绞点" itemId="109" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="梯子及栏杆" itemId="112" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="机上照光灯" itemId="115" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="司机室区域" areaId="7">
+      <field name="旋转制动器" itemId="118" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="旋转减速器" itemId="121" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="旋转电机、风机" itemId="124" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="起升制动器" itemId="127" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="卷筒及钢丝绳" itemId="130" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="起升减速箱" itemId="133" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="起升电机、风机" itemId="136" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="起升钢丝绳" itemId="139" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="集中滑油" itemId="142" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="附属工具" itemId="145" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="梯子及栏杆" itemId="148" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="机房司机室卫生" itemId="151" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="支持、开闭上升限位" itemId="154" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="联动台指示灯" itemId="157" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="电气室空调" itemId="160" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="机上照光灯" itemId="163" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="卸扣 右支持" itemId="166" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="各主要绞点" itemId="169" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+    <location name="臂架区域" areaId="8">
+      <field name="机房顶出绳口" itemId="172" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅电机、风机" itemId="175" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅制动器" itemId="178" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅减速器" itemId="181" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅齿轮、齿条、压轮" itemId="184" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅联轴节" itemId="187" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="S轮处" itemId="190" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="变幅增幅、减幅限位" itemId="193" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+      <field name="机上照光灯" itemId="196" isInput="false" util="">
+        <value name="正常"/>
+        <value name="异常"/>
+        <value name="无"/>
+      </field>
+    </location>
+  </devicetype>
+</check>
