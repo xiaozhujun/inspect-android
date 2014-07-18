@@ -160,28 +160,9 @@ public class Tools {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			return format.format(new Date());
 		}
-		//全局dialog
-		private static ProgressDialog pdDialog;
-		public static void SetDialogMsg(Context mContext,String msg)
-		{
-			if (pdDialog==null) {
-				pdDialog = new ProgressDialog(mContext);
-			}
-			pdDialog.setMax(100);
-			pdDialog.setTitle(mContext.getResources().getString(R.string.dialog_title));
-			pdDialog.setMessage(msg);
-			pdDialog.setCancelable(false);
-			pdDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			pdDialog.setIndeterminate(false);
+		public static String GetCurrentDate() {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			return format.format(new Date());
 		}
-		public static void DialogShow()
-		{
-			pdDialog.show();
-		}
-		public static void DialogDismiss()
-		{
-			pdDialog.dismiss();;
-		}
-		
 		
 }

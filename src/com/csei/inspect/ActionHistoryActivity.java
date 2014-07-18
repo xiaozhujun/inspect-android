@@ -2,11 +2,12 @@ package com.csei.inspect;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
-import org.csei.database.entity.User;
-import org.csei.database.service.imp.UserServiceDao;
+import org.csei.database.entity.TaskCell;
+import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
 import com.cesi.client.CasClient;
+import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
@@ -36,6 +37,7 @@ public class ActionHistoryActivity extends Activity {
 	private SimpleCursorAdapter cursorAdapter;
 	private Cursor cursor;
 	private ProgressDialog pdDialog;
+	private Employer employer;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -44,7 +46,7 @@ public class ActionHistoryActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_history);
 		listView=(ListView) findViewById(R.id.actionhistory_lv);
-		
+		employer = (Employer) getIntent().getExtras().getParcelable("employer");
 		ProgressInit();
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -54,8 +56,8 @@ public class ActionHistoryActivity extends Activity {
 		listView.setEmptyView(emptyView);
 		
 		try {
-			UserServiceDao userServiceDao=new UserServiceDao(getApplicationContext());
-			cursor=userServiceDao.QueryHistory1("赵伟");
+			TaskCellServiceDao userServiceDao=new TaskCellServiceDao(getApplicationContext());
+			cursor=userServiceDao.QueryHistory1(employer.getName(),Tools.GetCurrentDate());
 			} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,8 +77,6 @@ public class ActionHistoryActivity extends Activity {
 					public boolean onTouch(View v, MotionEvent event) {
 						if (event.getAction()==MotionEvent.ACTION_DOWN) {
 							btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile_down);
-//							Tools.SetDialogMsg(ActionHistoryActivity.this, getResources().getString(R.string.dialog_uploadfile));
-//							Tools.DialogShow();
 							pdDialog.show();
 							new Thread(new UploadFileThread()).start();
 						}
@@ -105,12 +105,10 @@ public class ActionHistoryActivity extends Activity {
 						try {
 							if (JsonParser.UploadIsSuccess(msg)) {//上传成功
 								//插入数据库操作
-//								Tools.DialogDismiss();
 								pdDialog.dismiss();
 								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 							}
 							else{//上传失败
-//								Tools.DialogDismiss();
 								pdDialog.dismiss();
 								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 							}

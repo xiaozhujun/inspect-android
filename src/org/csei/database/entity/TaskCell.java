@@ -1,6 +1,6 @@
 package org.csei.database.entity;
 
-public class User {
+public class TaskCell {
 	
 	private int user_id;
 	
@@ -14,15 +14,17 @@ public class User {
 	private String finishtime;//完成时间
 	private String finishflag;//完成标志
 	private String uploadflag;//上传否
+	private String tableflag;//"点检项目""待做项目""两者"
 	
 	
-	public User(int user_id, String username, String password) {
+
+	public TaskCell(int user_id, String username, String password) {
 		super();
 		this.user_id = user_id;
 		this.username = username;
 	}
 	
-	public User(String... args) {
+	public TaskCell(String... args) {
 		super();
 		this.username = args[0];
 		this.tablename = args[1];
@@ -33,6 +35,7 @@ public class User {
 		this.finishtime = args[6];
 		this.finishflag = args[7];
 		this.uploadflag = args[8];
+		this.tableflag=args[9];
 	}
 
 	public int getUser_id() {
@@ -114,6 +117,12 @@ public class User {
 	public void setUploadflag(String uploadflag) {
 		this.uploadflag = uploadflag;
 	}
-	
+	public String getTableflag() {
+		return tableflag;
+	}
+
+	public void setTableflag(String tableflag) {
+		this.tableflag = tableflag;
+	}
 	
 }

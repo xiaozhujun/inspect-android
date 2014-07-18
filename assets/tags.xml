@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tags>
+  <tag>
+    <cardType>2</cardType>
+    <deviceType>门座式起重机</deviceType>
+    <deviceTypeNum>menzuo001</deviceTypeNum>
+    <deviceNum>menzuo001</deviceNum>
+    <tagArea>行走区域</tagArea>
+    <tagAreaNum>5</tagAreaNum>
+    <number>xingzou</number>
+  </tag>
+  <tag>
+    <cardType>2</cardType>
+    <deviceType>门座式起重机</deviceType>
+    <deviceTypeNum>menzuo001</deviceTypeNum>
+    <deviceNum>menzuo001</deviceNum>
+    <tagArea>转盘区域</tagArea>
+    <tagAreaNum>6</tagAreaNum>
+    <number>zhuangpan</number>
+  </tag>
+  <tag>
+    <cardType>2</cardType>
+    <deviceType>门座式起重机</deviceType>
+    <deviceTypeNum>menzuo001</deviceTypeNum>
+    <deviceNum>menzuo001</deviceNum>
+    <tagArea>司机室区域</tagArea>
+    <tagAreaNum>7</tagAreaNum>
+    <number>siji</number>
+  </tag>
+  <tag>
+    <cardType>2</cardType>
+    <deviceType>门座式起重机</deviceType>
+    <deviceTypeNum>menzuo001</deviceTypeNum>
+    <deviceNum>menzuo001</deviceNum>
+    <tagArea>臂架区域</tagArea>
+    <tagAreaNum>8</tagAreaNum>
+    <number>bijia</number>
+  </tag>
+</tags>

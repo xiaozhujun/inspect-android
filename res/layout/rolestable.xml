@@ -3,24 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" 
-    android:background="@drawable/list_bg">
-    <ImageView   
-    android:paddingTop="10dip"  
-    android:layout_alignParentRight="true"  
-    android:layout_width="wrap_content"   
-    android:layout_height="wrap_content"   
-    android:id="@+id/ItemImage"  
-    />
-    <TextView  
-        android:id="@+id/ItemText"  
-        android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:paddingLeft="2dip"   
-        android:paddingTop="2dip"  
-        android:textSize="20sp"/> 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_bg"
+        android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/ItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:paddingTop="10dip"
+        android:src="@drawable/item" />
+
+    <TextView
+        android:id="@+id/ItemText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="left|center"
+        android:paddingLeft="2dip"
+        android:paddingTop="2dip"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/usertableoperation_item_btn_finishflag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:text="Button"
+        android:textColor="@color/white" />
+ 
         </LinearLayout> 
 </LinearLayout>

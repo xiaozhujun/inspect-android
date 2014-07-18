@@ -64,11 +64,21 @@ public class UserOperationsActivity extends Activity {
 	}
 
 	private void history_click() {
-		startActivity(new Intent(this,ActionHistoryActivity.class));
+		Intent intent = new Intent(UserOperationsActivity.this,
+				ActionHistoryActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("employer", employer);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void task_click() {
-		startActivity(new Intent(this,UserTaskListActivity.class));
+		Intent intent = new Intent(UserOperationsActivity.this,
+				UserTaskListActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putParcelable("employer", employer);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void project_click() {

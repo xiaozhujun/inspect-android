@@ -4,16 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@color/myred"
-        android:gravity="center"
-        android:text="点检项目"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:layout_marginBottom="10dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/myred"
+            android:gravity="center"
+            android:text="@string/text_project"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/usertableoperation_igv_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@drawable/uploadfile1" />
+
+    </FrameLayout>
 
     <ListView
         android:id="@+id/activity_usertables_lv"

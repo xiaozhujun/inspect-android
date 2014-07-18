@@ -13,8 +13,8 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
-import org.csei.database.entity.User;
-import org.csei.database.service.imp.UserServiceDao;
+import org.csei.database.entity.TaskCell;
+import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
 import com.cesi.analysexml.ParseXml;
@@ -326,16 +326,16 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 								Log.i("msg", msg);
 								if (JsonParser.UploadIsSuccess(msg)) {//上传成功
 									//插入数据库操作
-									User mUser=new User(
+									TaskCell mUser=new TaskCell(
 											username,tname,null,"门座式起重机",null,null,Tools.GetCurrentTime(),"1","已上传");
-									UserServiceDao serviceDao=new UserServiceDao(getApplicationContext());
+									TaskCellServiceDao serviceDao=new TaskCellServiceDao(getApplicationContext());
 									serviceDao.addUser(mUser);
 									Log.i("msg", "已上传");
 								}
 								else{//上传失败
-									User mUser=new User(
+									TaskCell mUser=new TaskCell(
 											username,tname,null,"门座式起重机",null,null,Tools.GetCurrentTime(),"1","未上传");
-									UserServiceDao serviceDao=new UserServiceDao(getApplicationContext());
+									TaskCellServiceDao serviceDao=new TaskCellServiceDao(getApplicationContext());
 									serviceDao.addUser(mUser);
 									Log.i("msg", "未上传");
 								}

@@ -2,12 +2,16 @@ package com.csei.inspect;
 
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.csei.database.entity.User;
-import org.csei.database.service.imp.UserServiceDao;
+import org.csei.database.entity.TaskCell;
+import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
 import com.cesi.analysexml.DbModel;
@@ -26,6 +30,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -79,6 +84,9 @@ public class LoginActivity extends Activity {
 		dialog.setIndeterminate(false);
 		dialog.setCancelable(true);
 
+		//创建/inspect/config目录和/inspect/data目录 放置配置文件
+		new Thread(new CreateDirThread()).start();
+		
 		cb_show_pwd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
@@ -140,23 +148,6 @@ public class LoginActivity extends Activity {
 						public void run() {
 							username= edt_uname.getText().toString();
 							password = edt_pwd.getText().toString();
-//							//测试使用的
-//							boolean loginResult=false;
-//							if("zhaowei".equals(username)&&"123456".equals(password))
-//							{
-//								User mUser=new User(
-//										username,"fgsdfds",null,"门座式起重机",null,null,Tools.GetCurrentTime(),"1","已上传");
-//								UserServiceDao serviceDao;
-//								try {
-//									serviceDao = new UserServiceDao(getApplicationContext());
-//									serviceDao.addUser(mUser);
-//								} catch (Exception e) {
-//									e.printStackTrace();
-//								}
-//								startActivity(new Intent(LoginActivity.this,ActionHistoryActivity.class));
-//								dialog.dismiss();
-//								finish();
-//							}
 							final boolean loginResult1 = CasClient.getInstance().login(username, password, getResources().getString(R.string.LOGIN_SECURITY_CHECK));
 							if (loginResult1) {//��¼�ɹ��������}
 								String msg=CasClient.getInstance().doGet(getResources().getString(R.string.USER_GETIMF));
@@ -224,5 +215,33 @@ public class LoginActivity extends Activity {
 		startActivity(intent);
 		finish();
 	}
+	
+	class CreateDirThread implements Runnable{
+		@Override
+		public void run() {
+			String configdir=Environment.getExternalStorageDirectory().toString()+"/inspect/config";
+			String datadir=Environment.getExternalStorageDirectory().toString()+"/inspect/data";
+			File file=new File(configdir);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			File mFile=new File(configdir+"/jixiurenyuandianjianbiao.xml");
+			if (!(mFile.exists())) {
+				try {
+					InputStream inputStream=LoginActivity.this.getAssets().open("jixiurenyuandianjianbiao.xml");
+					FileOutputStream fileOutputStream=new FileOutputStream(configdir+"/jixiurenyuandianjianbiao.xml");
+					byte[] buffer=new byte[65535];int count=0;
+					while ((count=inputStream.read(buffer))>0) {
+						fileOutputStream.write(buffer,0,count);
+					}
+					fileOutputStream.close();inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			mFile.renameTo(new File(configdir+"/机修人员点检表.xml"));
+		}
+	}
+	
 	
 }

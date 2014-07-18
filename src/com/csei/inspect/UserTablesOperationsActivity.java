@@ -5,21 +5,35 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.csei.database.entity.TaskCell;
+import org.csei.database.service.imp.TaskCellServiceDao;
+
 import com.cesi.analysexml.DbModel;
 import com.cesi.analysexml.ParseXml;
 import com.csei.entity.Employer;
+import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
+import com.csei.util.Tools;
 import com.example.viewpager.R;
+import com.readystatesoftware.viewbadger.BadgeView;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class UserTablesOperationsActivity extends Activity {
 	private ProgressDialog pdDialog;
@@ -29,19 +43,27 @@ public class UserTablesOperationsActivity extends Activity {
 	private String[] result;
 	private ListView rolestablelist;
 	private int count;
-	
+	private ImageView imageView;
+	private BadgeView badge1;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_usertablesoperation);
 		rolestablelist = (ListView) findViewById(R.id.activity_usertables_lv);
-
+		imageView=(ImageView) findViewById(R.id.usertableoperation_igv_upload);
+		badge1 = new BadgeView(this, imageView);
+        
+        badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+		
 		// 加载文件对话框初始化
 		ProgressInit();
-
 		// 处理数据
-		handledata();
+		try {
+			handledata();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -53,55 +75,102 @@ public class UserTablesOperationsActivity extends Activity {
 		pdDialog.setCancelable(false);
 		pdDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		pdDialog.setIndeterminate(false);
-	}
-
-
-	private void handledata() {
-		employer = (Employer) getIntent().getExtras().getParcelable("employer");
-		setEmployer(employer);
-
-	}
-
-	private void setEmployer(final Employer employer) {
-		// ��ȡRolesTable.xml
-		ParseXml p = new ParseXml();
-		String filename = fileDir + "/RolesTable.xml";
-		final List<DbModel> list = p.parseRolesTable(filename, Integer.parseInt(employer.getRoleNum()));
-		pdDialog.setMax(list.size());
 		pdDialog.show();
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				result = new String[list.size()];
-				count = 0;
-				Iterator it = list.iterator();
-				while (it.hasNext()) {
-					DbModel d = (DbModel) it.next();
-					result[count++] = d.getTableitem();
+	}
+
+
+	private void handledata() throws Exception {
+		employer = (Employer) getIntent().getExtras().getParcelable("employer");
+		new Thread(new HandleDataThread()).start();
+	}
+
+	class HandleDataThread implements Runnable 
+	{
+		@Override
+		public void run() {
+		//根据当天时间和用户名字段 查询数据 如何是零则说明还没有创建行数据
+				//有创建行数据，但未完成
+				ParseXml p = new ParseXml();
+				String filename = fileDir + "/RolesTable.xml";
+				final List<DbModel> list = p.parseRolesTable(filename, Integer.parseInt(employer.getRoleNum()));
+				result = new String[list.size()];count = 0;
+				for (DbModel dbModel : list) {
+					result[count++] = dbModel.getTableitem();
 				}
 				
 				final ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-				for (count = 0; count < result.length; count++) {
-					HashMap<String, Object> map = new HashMap<String, Object>();
-					map.put("ItemImage", R.drawable.item);
-					map.put("ItemText", result[count]);
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							pdDialog.setProgress(count);
-						}
-					});
-					listItem.add(map);
+				final TaskCellServiceDao serviceDao=new TaskCellServiceDao(UserTablesOperationsActivity.this);
+				ArrayList<String> projectnum=serviceDao.GetCurrentProjectNum(Tools.GetCurrentDate(), employer.getName());
+				int num;
+				if (null==projectnum) {
+					num=0;
 				}
-				
+				else num=projectnum.size();
+				if (num==0) {//进行插入数据操作
+					for (String tablename : result) {
+						serviceDao.addUser(new TaskCell(employer.getName(),
+								tablename,null,null,Tools.GetCurrentDate(),null,null,"未完成","未上传","点检项目"));
+					}
+				}
+				else {//在判断是否有未完成的点检表
+//					if (num!=result.length) {//说明表格未完全创建 
+						for (String tablename : result) {
+							if (!projectnum.contains(tablename)) {//插入操作
+								serviceDao.addUser(new TaskCell(employer.getName(),
+										tablename,null,null,Tools.GetCurrentDate(),null,null,"未完成","未上传","点检项目"));
+							}
+							else {//更新操作
+								
+							}
+//						}
+					}
+				}
+				//查询未完成的表格
+				final Cursor cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
+				//查询已完成但未上传的
+				final int unuploadnum=serviceDao.GetCurrentProjectUnuploadNum("已完成", "未上传");
 				runOnUiThread(new Runnable() {
+					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
 						pdDialog.dismiss();
-						SimpleAdapter listItemAdapter = new SimpleAdapter(
-								UserTablesOperationsActivity.this, listItem,
-								R.layout.rolestable, new String[] { "ItemImage", "ItemText" },
-								new int[] { R.id.ItemImage, R.id.ItemText });
+						badge1.setText(""+unuploadnum);badge1.show();
+						SimpleCursorAdapter listItemAdapter = new SimpleCursorAdapter(
+								UserTablesOperationsActivity.this, R.layout.rolestable,
+								cursor, new String[] {"tablename","finishflag" },
+								new int[] { R.id.ItemText,R.id.usertableoperation_item_btn_finishflag }){
+							//itemlayout点击事件
+							@Override
+							public View getView(final int position, View convertView,
+									final ViewGroup parent) {
+								convertView =  super.getView(position, convertView, parent);
+								final TextView textView=(TextView)convertView.findViewById(R.id.ItemText);
+								convertView.setOnClickListener(new View.OnClickListener() {
+									//item点检事件
+									@Override
+									public void onClick(View v) {
+										Intent intent = new Intent(UserTablesOperationsActivity.this,
+												TagValidateActivity.class);
+										Bundle bundle = new Bundle();
+										bundle.putString("tbname", (String)textView.getText());
+										bundle.putInt("count", 1);
+										bundle.putString("username", employer.getName());
+										bundle.putInt("uid", Integer.parseInt(employer.getNumber()));
+										intent.putExtras(bundle);
+										startActivity(intent);
+									}
+								});
+								final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertableoperation_item_btn_finishflag);
+								if (btn_finishflag.getText().equals("未完成")) {
+									btn_finishflag.setBackgroundResource(R.color.myred);
+								}
+								else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+								return convertView;
+							}
+							
+							
+							
+						};
 						rolestablelist.setAdapter(listItemAdapter);
 						rolestablelist.setOnItemClickListener(new OnItemClickListener() {
 							@SuppressWarnings({ "unchecked" })
@@ -125,7 +194,6 @@ public class UserTablesOperationsActivity extends Activity {
 						});
 					}
 				});
-			}
-		}).start();
-	}
+		}
+}
 }

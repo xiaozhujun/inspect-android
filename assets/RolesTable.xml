@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RolesTable>
+  <Role name="机修人员" roleNum="1">
+    <TableItem name="机修人员点检表"/>
+  </Role>
+  <Role name="门机司机" roleNum="2">
+    <TableItem name="门机司机点检表"/>
+  </Role>
+  <Role name="机械技术员" roleNum="3">
+    <TableItem name="门机队机械技术员点检表"/>
+  </Role>
+  <Role name="电气技术员" roleNum="4">
+    <TableItem name="门机技术员电气日常点检表"/>
+  </Role>
+  <Role name="定保员" roleNum="5">
+    <TableItem name="门机周一定保专项点检卡片"/>
+  </Role>
+  <Role name="减速机点检员" roleNum="6">
+    <TableItem name="门机减速机专项点检卡"/>
+  </Role>
+</RolesTable>
