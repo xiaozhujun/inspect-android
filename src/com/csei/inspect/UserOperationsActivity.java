@@ -140,14 +140,11 @@ public class UserOperationsActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			Map<String, Object> map=(Map<String, Object>) parent.getItemAtPosition(position);
-			switch ((String)map.get(KEY)) {
-			case "切换账号":
+			String cas = (String)map.get(KEY);
+			if(cas.equals("切换账号")){
 				CasClient.getInstance().logout();
 				finish();
 				startActivity(new Intent(UserOperationsActivity.this,LoginActivity.class));
-				break;
-			default:
-				break;
 			}
 		}
 	};
@@ -244,28 +241,25 @@ public class UserOperationsActivity extends Activity {
 					ViewGroup parent) {
 				View view=super.getView(position, convertView, parent);
 				TextView textView=(TextView) view.findViewById(R.id.useroperations_gv_item_tv);
-				switch ((String)textView.getText()) {
-				case "点检历史":
+				String cas = (String)textView.getText();
+				if(cas.equals("点检历史")){
 					bv_unupload = new BadgeView(UserOperationsActivity.this, (ImageView) view.findViewById(R.id.useroperations_gv_item_igv));
 			        bv_unupload.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
 			        unuploadNum=((Cursor)cellServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
 					bv_unupload.setText(""+unuploadNum);
 					bv_unupload.show();
-					break;
-				case "点检项目":
+				}
+				else if(cas.equals("点检项目")){
 					bv_project = new BadgeView(UserOperationsActivity.this, (ImageView) view.findViewById(R.id.useroperations_gv_item_igv));
 					bv_project.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
 					bv_project.setText(""+projectNum);
 					bv_project.show();
-					break;
-				case "待做任务":
+				}
+				else if(cas.equals("待做任务")){
 					bv_task = new BadgeView(UserOperationsActivity.this, (ImageView) view.findViewById(R.id.useroperations_gv_item_igv));
 					bv_task.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
 					bv_task.setText(""+taskNum);
 					bv_task.show();
-					break;
-				default:
-					break;
 				}
 				
 				view.setOnClickListener(new View.OnClickListener() {
