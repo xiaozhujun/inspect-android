@@ -33,7 +33,10 @@ public interface TaskCellService {
 	public void UpdateUserFinishflag(String username,String tablename,String date,String finishflag);
 	//更新上传标志行数据操作
 	public void UpdateUserUploadflag(String username, String tablename,
-			String date, String finishtime,String finishflag,String uploadflag);
+			String date, String finishtime,String finishflag,String uploadflag,String filesavepath);
 	//得到当天未完成的任务
 	public Cursor GetCurrentTask(String username,String date,String finishflag);
+	//删除操作 id=行号
+	public void DeleteRecord(String id);
+	
 }

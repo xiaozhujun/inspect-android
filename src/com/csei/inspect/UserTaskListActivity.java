@@ -77,6 +77,7 @@ public class UserTaskListActivity extends Activity {
 				bundle.putParcelable("employer", employer);
 				intent.putExtras(bundle);
 				startActivity(intent);
+				finish();
 			}
 		});
 		

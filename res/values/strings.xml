@@ -85,6 +85,9 @@
     <!-- 历史记录item部分 -->
     <string name="history_item_tablename">点检表：</string>
     <string name="history_item_finishtime">完成时间：</string>
+    
+    
+    <!-- 表格中文名 -->
     <string name="assets_jixiurenyuandianjianbiao">/机修人员点检表.xml</string>
     <string name="assets_menjiduijixiejishuyuandianjianbiao">/门机队机械技术员点检表.xml</string>
     <string name="assets_menjijishuyuandianqirichangdianjianbiao">/门机技术员电气日常点检表.xml</string>
@@ -93,6 +96,8 @@
     <string name="assets_menjizhouyidingbaozhuanxiangdianjiankapian">/门机周一定保专项点检卡片.xml</string>
     <string name="assets_renyuanpeizhi">/人员配置.xml</string>
     
-    
+    <!-- 文件默认保存位置 -->
+    <string name="default_configsavepath">/inspect/config</string>
+    <string name="default_datasavepath">inspect/data</string>
     
 </resources>

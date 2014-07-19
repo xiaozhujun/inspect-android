@@ -15,7 +15,7 @@ public class TaskCell {
 	private String finishflag;//完成标志
 	private String uploadflag;//上传否
 	private String tableflag;//"点检项目""待做项目""两者"
-	
+	private String filesavepath;//文件保存位置
 	
 
 	public TaskCell(int user_id, String username, String password) {

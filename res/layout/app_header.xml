@@ -32,17 +32,17 @@
             android:layout_gravity="right" >
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/useroperation_igv_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/main_title_logged2" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/useroperation_igv_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:src="@drawable/main_title_ico_down" />
+                android:src="@drawable/icon_arrow_down" />
 
         </LinearLayout>
 

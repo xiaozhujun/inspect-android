@@ -31,7 +31,7 @@ public class TaskCellServiceDao implements TaskCellService{
 	@Override
 	public void addUser(TaskCell user) {
 		db.beginTransaction();
-		db.execSQL("insert into user(user_id,username,tablename,taskname,devicename,date,timeslot,finishtime,finishflag,uploadflag,tableflag) values(?,?,?,?,?,?,?,?,?,?,?)",new Object[]{null,
+		db.execSQL("insert into user(user_id,username,tablename,taskname,devicename,date,timeslot,finishtime,finishflag,uploadflag,tableflag,filesavepath) values(?,?,?,?,?,?,?,?,?,?,?,?)",new Object[]{null,
 				user.getUsername(),
 				user.getTablename(),
 				user.getTaskname(),
@@ -41,7 +41,7 @@ public class TaskCellServiceDao implements TaskCellService{
 				user.getFinishtime(),
 				user.getFinishflag(),
 				user.getUploadflag(),
-				user.getTableflag()});
+				user.getTableflag(),null});
 		Log.i("msg", "已完成用户添加.");
 		db.setTransactionSuccessful();
 		db.endTransaction();
@@ -80,8 +80,8 @@ public class TaskCellServiceDao implements TaskCellService{
 
 
 	@Override
-	public Cursor QueryHistory1(String username,String date) throws Exception {
-		return db.rawQuery("select user_id AS _id,tablename,devicename,finishtime,uploadflag from user where username=? and date=? and finishflag=?", new String[]{username,date,"已完成"});
+	public Cursor QueryHistory1(String username,String date) {
+		return db.rawQuery("select user_id AS _id,tablename,devicename,finishtime,uploadflag,filesavepath from user where username=? and date=? and finishflag=?", new String[]{username,date,"已完成"});
 	}
 
 
@@ -112,7 +112,7 @@ public class TaskCellServiceDao implements TaskCellService{
 
 
 	@Override
-	public Cursor GetCurrentProject(String date,String username,String finishflag) {
+	public Cursor GetCurrentProject(String username,String date,String finishflag) {
 		if (null==finishflag) {
 			return db.rawQuery("select user_id AS _id,* from user where username=? and date=? and tableflag in('点检项目','两者')", new String[]{username,date});
 		}
@@ -148,10 +148,10 @@ public class TaskCellServiceDao implements TaskCellService{
 
 	@Override
 	public void UpdateUserUploadflag(String username, String tablename,
-			String date, String finishtime,String finishflag,String uploadflag) {
+			String date, String finishtime,String finishflag,String uploadflag,String filesavepath) {
 		db.beginTransaction();
-		db.execSQL("update user set finishtime=?,finishflag=?,uploadflag=? where username=? and date=? and tablename=?",new Object[]{
-				finishtime,finishflag,uploadflag,username,date,tablename
+		db.execSQL("update user set finishtime=?,finishflag=?,uploadflag=?,filesavepath=?  where username=? and date=? and tablename=?",new Object[]{
+				finishtime,finishflag,uploadflag,filesavepath,username,date,tablename
 		});
 		Log.i("msg", "已完成更新操作.");
 		db.setTransactionSuccessful();
@@ -165,6 +165,16 @@ public class TaskCellServiceDao implements TaskCellService{
 			return db.rawQuery("select user_id AS _id,* from user where username=? and date=? and tableflag in('待做任务','两者')", new String[]{username,date});
 		}
 		return db.rawQuery("select user_id AS _id,* from user where username=? and date=? and finishflag=? and tableflag in(?,?)", new String[]{username,date,finishflag,"待做任务","两者"});
+	}
+
+
+	@Override
+	public void DeleteRecord(String id) {
+		db.beginTransaction();
+		db.execSQL("delete from user where user_id=? ", new String[]{id});
+		Log.i("msg","删除用户"+id);
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 }
 	

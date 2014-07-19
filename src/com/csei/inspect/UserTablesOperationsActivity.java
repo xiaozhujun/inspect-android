@@ -12,6 +12,7 @@ import com.cesi.analysexml.DbModel;
 import com.cesi.analysexml.ParseXml;
 import com.csei.entity.Employer;
 import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
+import com.csei.inspect.UserOperationsActivity.HandleTaskThread;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
 import com.readystatesoftware.viewbadger.BadgeView;
@@ -21,6 +22,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +52,7 @@ public class UserTablesOperationsActivity extends Activity {
 	private Cursor cursor;
 	private int unuploadnum;
 	private TaskCellServiceDao serviceDao;
+	public SharedPreferences preferences;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,6 +62,7 @@ public class UserTablesOperationsActivity extends Activity {
 		badge1 = new BadgeView(this, imageView);
         badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
         serviceDao=new TaskCellServiceDao(UserTablesOperationsActivity.this);
+        preferences=getSharedPreferences("count", Context.MODE_PRIVATE);
 		// 加载文件对话框初始化
 		ProgressInit();
 		// 处理数据
@@ -78,6 +82,7 @@ public class UserTablesOperationsActivity extends Activity {
 				bundle.putParcelable("employer", employer);
 				intent.putExtras(bundle);
 				startActivity(intent);
+				finish();
 			}
 		});
 
@@ -112,9 +117,9 @@ public class UserTablesOperationsActivity extends Activity {
 
 	private void datachange(){
 		//查询未完成的表格
-		cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
+		cursor=serviceDao.GetCurrentProject( employer.getName(),Tools.GetCurrentDate(), null);
 		//查询已完成但未上传的
-		unuploadnum=((Cursor)serviceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
+		unuploadnum=((Cursor)serviceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();;
 		badge1.setText(""+unuploadnum);
 		badge1.show();
 		listItemAdapter = new MySimpleCursorAdapter(
@@ -171,7 +176,8 @@ public class UserTablesOperationsActivity extends Activity {
 	{
 		@Override
 		public void run() {
-		//根据当天时间和用户名字段 查询数据 如何是零则说明还没有创建行数据
+			if (!preferences.getString("currentProjectflag", "00-00-00").equals(Tools.GetCurrentDate())) {
+				//根据当天时间和用户名字段 查询数据 如何是零则说明还没有创建行数据
 				//有创建行数据，但未完成
 				ParseXml p = new ParseXml();
 				String filename = fileDir + "/RolesTable.xml";
@@ -207,10 +213,13 @@ public class UserTablesOperationsActivity extends Activity {
 //						}
 					}
 				}
+			}
+			
+		
 				//查询未完成的表格
-				cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
+				cursor=serviceDao.GetCurrentProject( employer.getName(),Tools.GetCurrentDate(), null);
 				//查询已完成但未上传的
-				unuploadnum=((Cursor)serviceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
+				unuploadnum=((Cursor)serviceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
 				runOnUiThread(new Runnable() {
 					@SuppressWarnings("deprecation")
 					@Override

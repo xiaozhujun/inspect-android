@@ -6,14 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.app.Application;
 import android.os.Environment;
 
 public class FileUtil {
 	
-	//µã¼ìÏîÄ¿±£´æµÄÄ¿Â¼
-	private static final String inspectDir = "inspect";
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼
+	private static String inspectDir;
 	
-	//ÅÐ¶ÏsdcardÊÇ·ñ²åÈë
+	public static void setInspectDir(String inspectDir) {
+		FileUtil.inspectDir = inspectDir;
+	}
+
+	//ï¿½Ð¶ï¿½sdcardï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 	public static boolean isMounted(){
 		String status = Environment.getExternalStorageState();
 		if(status.equals(Environment.MEDIA_MOUNTED)){
@@ -22,7 +27,7 @@ public class FileUtil {
 		return false;
 	}
 	
-	//´´½¨ÎÄ¼þ¼Ð
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	public static boolean makeDir(String dir){
 		if(isMounted()){
 			String rootDir = Environment.getExternalStorageDirectory().toString();
@@ -42,7 +47,7 @@ public class FileUtil {
 		return false;
 	}
 	
-	//»ñµÃµã¼ìÄ¿Â¼Â·¾¶£¬Èç¹û²»´æÔÚÒ²²»¹¹½¨
+	//ï¿½ï¿½Ãµï¿½ï¿½Ä¿Â¼Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public static String getInspectDir(){
 		String rootDir = Environment.getExternalStorageDirectory().toString();
 		String inspectPath = null;
@@ -54,7 +59,7 @@ public class FileUtil {
 		return inspectPath;
 	}
 	
-	//¹¹½¨²¢·µ»Øµã¼ìÏîÄ¿Ä¿Â¼
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½Ä¿Ä¿Â¼
 	public static String buildInspectDir(){
 		String inspectPath = null;
 		if(makeDir(inspectDir)){
@@ -63,7 +68,7 @@ public class FileUtil {
 		return inspectPath;
 	}
 	
-	//¸ù¾ÝÍêÕûÂ·¾¶»ñµÃÎÄ¼þÃû
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
 	private static String getFileName(String file){
 		if(file.lastIndexOf("/")>0){
 			return file.substring(file.lastIndexOf("/"));
@@ -71,7 +76,7 @@ public class FileUtil {
 		return file;
 	}
 	
-	//×¼±¸µã¼ì½á¹ûÎÄ¼þ
+	//×¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 	public static boolean prepareInspectFile(String file,String newFileName){
 		String inspectPath = buildInspectDir();
 		InputStream inStream = null;
@@ -79,8 +84,8 @@ public class FileUtil {
 		try {   
 	           int byteread = 0;   
 	           File oldfile = new File(file);   
-	           if (oldfile.exists()) { //ÎÄ¼þ´æÔÚÊ±   
-	               inStream = new FileInputStream(oldfile); //¶ÁÈëÔ­ÎÄ¼þ   
+	           if (oldfile.exists()) { //ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±   
+	               inStream = new FileInputStream(oldfile); //ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ä¼ï¿½   
 	               File newFile =  new File(inspectPath+"/"+newFileName);
 	               if(!newFile.exists()){
 	            	   newFile.createNewFile();

@@ -189,32 +189,6 @@ public class LoginActivity extends Activity {
 		});
 		
 	}
-	//
-	private void func2()
-	{
-		dialog.dismiss();
-		Intent intent=new Intent(LoginActivity.this,UserTablesOperationsActivity.class);
-		Bundle bundle=new Bundle();
-		bundle.putParcelable("employer", employer);
-		intent.putExtras(bundle);
-		startActivity(intent);
-		finish();
-		
-	}
-	//���Դ���
-	private void func1()
-	{
-		dialog.dismiss();
-		Intent intent=new Intent(LoginActivity.this,TagValidateActivity.class);
-		Bundle bundle=new Bundle();
-		bundle.putString("tbname", "������Ա����");
-		bundle.putInt("count", 1);
-		bundle.putString("username", employer.getName());
-		bundle.putInt("uid", Integer.parseInt(employer.getNumber()));
-		intent.putExtras(bundle);
-		startActivity(intent);
-		finish();
-	}
 	
 	class CreateDirThread implements Runnable{
 		@Override

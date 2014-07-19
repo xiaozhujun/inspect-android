@@ -72,7 +72,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/btn_uploadfile" />
+        android:background="@drawable/btn_uploadfile"
+        android:textColor="@color/white" />
 
     <CheckBox
         android:id="@+id/history_item_cb"

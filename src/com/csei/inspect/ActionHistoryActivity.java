@@ -1,13 +1,12 @@
 package com.csei.inspect;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.csei.database.entity.TaskCell;
 import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
 import com.cesi.client.CasClient;
-import com.csei.adapter.MultipleChoiceCursorAdapter;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
@@ -16,24 +15,19 @@ import com.example.viewpager.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,26 +35,29 @@ import android.widget.Toast;
 
 public class ActionHistoryActivity extends Activity {
 	private ListView listView;
-	private String SaveHistoryFilePath="/sdcard/inspect/History.dat";
-	private SimpleCursorAdapter cursorAdapter;
 	private Cursor cursor;
 	private ProgressDialog pdDialog;
 	private Employer employer;
 	private TextView textView;
 	private FrameLayout fav_bottom_bar1;
-	private SimpleCursorAdapter mCursorAdapter;
-	private int cb_visible;
+	private MultipleChoiceAdapter mCursorAdapter;
+	private Button btnCancelAll;
+	private Button btnSelAll;
+	private Button btnDelAll;
+	private TaskCellServiceDao userServiceDao;
 	
-	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle bundle)
 	{
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_history);
 		listView=(ListView) findViewById(R.id.actionhistory_lv);
+		
+		btnCancelAll = (Button) findViewById(R.id.btnCancelAll);
+		btnSelAll = (Button) findViewById(R.id.btnSelAll);
+		btnDelAll = (Button) findViewById(R.id.btnDelAll);
+		
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
-		cb_visible=View.GONE;
 		ProgressInit();
 		
 		LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -77,78 +74,93 @@ public class ActionHistoryActivity extends Activity {
 				if(textView.getText().toString().equals("编辑")){
 					fav_bottom_bar1.setVisibility(View.VISIBLE);
 					textView.setText("完成");
-					cb_visible=View.VISIBLE;
-//					mCursorAdapter.setVisibility(View.VISIBLE);
-//					ButtonsOn = true;
+					mCursorAdapter.setCb_visibleflag(View.VISIBLE);
 					dataChanged();
 				}else{
 					fav_bottom_bar1.setVisibility(View.GONE);
 					textView.setText("编辑");
-					cb_visible=View.GONE;
-//					mCursorAdapter.setVisibility(View.INVISIBLE);
-//					ButtonsOn = false;
+					mCursorAdapter.setCb_visibleflag(View.GONE);
 					dataChanged();
 			}
 			}
 			});
 		
 		try {
-			TaskCellServiceDao userServiceDao=new TaskCellServiceDao(getApplicationContext());
+			userServiceDao=new TaskCellServiceDao(getApplicationContext());
 			cursor=userServiceDao.QueryHistory1(employer.getName(),Tools.GetCurrentDate());
 			} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mCursorAdapter = new SimpleCursorAdapter(
+		mCursorAdapter = new MultipleChoiceAdapter(
 				ActionHistoryActivity.this , R.layout.history_item, cursor 
 				, new String[]{"tablename" , "devicename","finishtime","uploadflag"}
-				, new int[]{R.id.history_item_tv_tablename , R.id.history_item_tv_devicename,R.id.history_item_tv_finishtime,R.id.history_item_btn_finishflag}){
-			//itemlayout点击事件
-			@Override
-			public View getView(final int position, View convertView,
-					final ViewGroup parent) {
-				convertView =  super.getView(position, convertView, parent);
-				
-				final Button btn_finishflag = (Button) convertView.findViewById(R.id.history_item_btn_finishflag);
-				CheckBox checkBox=(CheckBox) convertView.findViewById(R.id.history_item_cb);
-				if (cb_visible==View.GONE) {
-					checkBox.setVisibility(cb_visible);
-					btn_finishflag.setVisibility(View.VISIBLE);
-				}
-				else {
-					checkBox.setVisibility(cb_visible);
-					btn_finishflag.setVisibility(View.GONE);
-				}
-				if (btn_finishflag.getText().equals("未完成")) {
-					btn_finishflag.setBackgroundResource(R.color.myred);
-				}
-				else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
-				btn_finishflag.setOnTouchListener(new View.OnTouchListener() {
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-						if (event.getAction()==MotionEvent.ACTION_DOWN) {
-							v.setBackgroundResource(R.drawable.btn_uploadfile_down);
-							pdDialog.show();
-							new Thread(new UploadFileThread()).start();
-						}
-						if (event.getAction()==MotionEvent.ACTION_UP) {
-							v.setBackgroundResource(R.drawable.btn_uploadfile);
-						}
-						return false;
-					}
-		});
-		return convertView;
-		};
-	};
+				, new int[]{R.id.history_item_tv_tablename , R.id.history_item_tv_devicename,R.id.history_item_tv_finishtime,R.id.history_item_btn_finishflag});
 			//显示数据
 		listView.setAdapter(mCursorAdapter);
+		
+		//设置底部操作
+		btnSelAll.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				for(int i=0;i<mCursorAdapter.getCount();i++){
+					mCursorAdapter.getIsSelected().put(i, true);
+				}
+				dataChanged();			
+			}
+		});
+		
+		btnCancelAll.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				for(int i=0;i<mCursorAdapter.getCount();i++){
+					mCursorAdapter.getIsSelected().put(i, false);
+				}
+				dataChanged();
+			}
+		});
+		
+		btnDelAll.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				List<Integer> selectedItem = new ArrayList<Integer>();
+				for(int i=0;i<cursor.getCount();i++){
+					if(mCursorAdapter.getIsSelected().get(i)){
+						selectedItem.add(i);
+					}
+				}
+				for(int j=0;j<selectedItem.size();j++){
+					cursor.moveToPosition(selectedItem.get(j));
+					userServiceDao.DeleteRecord(cursor.getString(cursor.getColumnIndex("_id")));
+				}
+				cursor=userServiceDao.QueryHistory1(employer.getName(),Tools.GetCurrentDate());
+				mCursorAdapter = new MultipleChoiceAdapter(
+						ActionHistoryActivity.this , R.layout.history_item, cursor 
+						, new String[]{"tablename" , "devicename","finishtime","uploadflag"}
+						, new int[]{R.id.history_item_tv_tablename , R.id.history_item_tv_devicename,R.id.history_item_tv_finishtime,R.id.history_item_btn_finishflag});
+				listView.setAdapter(mCursorAdapter);
+				fav_bottom_bar1.setVisibility(View.GONE);
+				textView.setText("编辑");
+				mCursorAdapter.setCb_visibleflag(View.GONE);
+				Toast.makeText(getApplicationContext(), "删除成功！", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	class UploadFileThread implements Runnable
 	{
+		int position;
+		public UploadFileThread(int position)
+		{
+			this.position=position;
+		}
 		@Override
 		public void run() {
 			try {
-				final String msg = CasClient.getInstance().doSendFile2(getResources().getString(R.string.UPLOAD_FILE), getResources().getString(R.string.UPLOAD_FILLE_TEST));
+				cursor.moveToPosition(position);
+				final String msg = CasClient.getInstance().doSendFile2(getResources().getString(R.string.UPLOAD_FILE),cursor.getString(cursor.getColumnIndex("filesavepath")) );
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -185,8 +197,83 @@ public class ActionHistoryActivity extends Activity {
 	
 	
 	private void dataChanged() {  
+		
 		mCursorAdapter.notifyDataSetChanged();  
 	}
 	
-	
+	class MultipleChoiceAdapter extends SimpleCursorAdapter{
+
+		private int cb_visibleflag=View.GONE;
+		private HashMap<Integer,Boolean> isSelected;
+		private int listSize;
+		
+		
+		public void setCb_visibleflag(int cb_visibleflag) {
+			this.cb_visibleflag = cb_visibleflag;
+		}
+
+		public MultipleChoiceAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to) {
+			super(context, layout, c, from, to);
+			isSelected = new HashMap<Integer, Boolean>();
+			listSize=c.getCount();
+			initData();
+		}
+		
+		private void initData(){
+			for(int i=0;i<listSize;i++){
+				getIsSelected().put(i,false);
+			}
+		}
+		
+		public HashMap<Integer, Boolean> getIsSelected() {  
+			return isSelected;  
+		}
+		
+		public void getIsSelected(HashMap<Integer,Boolean> isSelected){
+			this.isSelected = isSelected;
+		}
+		
+			//itemlayout点击事件
+			@Override
+			public View getView(final int position, View convertView,
+					final ViewGroup parent) {
+				convertView =  super.getView(position, convertView, parent);
+				
+				final Button btn_finishflag = (Button) convertView.findViewById(R.id.history_item_btn_finishflag);
+				CheckBox checkBox=(CheckBox) convertView.findViewById(R.id.history_item_cb);
+				if (cb_visibleflag==View.GONE) {
+					checkBox.setVisibility(cb_visibleflag);
+					btn_finishflag.setVisibility(View.VISIBLE);
+				}
+				else {
+					checkBox.setVisibility(cb_visibleflag);
+					btn_finishflag.setVisibility(View.GONE);
+				}
+				if (btn_finishflag.getText().equals("未上传")) {
+					btn_finishflag.setBackgroundResource(R.color.myred);
+				}
+				else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+				btn_finishflag.setOnTouchListener(new View.OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						if (event.getAction()==MotionEvent.ACTION_DOWN) {
+							pdDialog.show();
+							new Thread(new UploadFileThread(position)).start();
+						}
+						if (event.getAction()==MotionEvent.ACTION_UP) {
+						}
+						return false;
+					}
+		});
+		checkBox.setChecked(isSelected.get(position));
+		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				getIsSelected().put(position, isChecked);
+			}
+		});
+		return convertView;
+		}
+	}
 }

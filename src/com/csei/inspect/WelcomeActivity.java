@@ -16,10 +16,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 public class WelcomeActivity extends Activity {
-	//·­Ò³¿Ø¼þ
+	//ï¿½ï¿½Ò³ï¿½Ø¼ï¿½
 		private ViewPager mViewPager;
 		
-		//Õâ5¸öÊÇµ×²¿ÏÔÊ¾µ±Ç°×´Ì¬µãimageView
+		//ï¿½ï¿½5ï¿½ï¿½ï¿½Çµ×²ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Ç°×´Ì¬ï¿½ï¿½imageView
 		private ImageView mPage0;
 		private ImageView mPage1;
 		private ImageView mPage2;
@@ -31,7 +31,7 @@ public class WelcomeActivity extends Activity {
 		
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	    	//È¥µô±êÌâÀ¸È«ÆÁÏÔÊ¾
+	    	//È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ê¾
 	    	requestWindowFeature(Window.FEATURE_NO_TITLE);
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.welcome);        
@@ -48,8 +48,8 @@ public class WelcomeActivity extends Activity {
 	        mPage6 = (ImageView)findViewById(R.id.page6);
 	          
 	      /*
-	       * ÕâÀïÊÇÃ¿Ò»Ò³ÒªÏÔÊ¾µÄ²¼¾Ö£¬¸ù¾ÝÓ¦ÓÃÐèÒªºÍÌØµã×ÔÓÉÉè¼ÆÏÔÊ¾µÄÄÚÈÝ
-	       * ÒÔ¼°ÐèÒªÏÔÊ¾¶àÉÙÒ³µÈ
+	       * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿Ò»Ò³Òªï¿½ï¿½Ê¾ï¿½Ä²ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	       * ï¿½Ô¼ï¿½ï¿½ï¿½Òªï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
 	       */
 	        LayoutInflater mLi = LayoutInflater.from(this);
 	        View view1 = mLi.inflate(R.layout.whats_news_gallery_one, null);
@@ -60,8 +60,8 @@ public class WelcomeActivity extends Activity {
 	        View view6 = mLi.inflate(R.layout.whats_news_gallery_six, null);
 	        View view7 = mLi.inflate(R.layout.whats_news_gallery_seven, null);
 	      	/*
-	      	 * ÕâÀï½«Ã¿Ò»Ò³ÏÔÊ¾µÄview´æ·Åµ½ArrayList¼¯ºÏÖÐ
-	      	 * ¿ÉÒÔÔÚViewPagerÊÊÅäÆ÷ÖÐË³Ðòµ÷ÓÃÕ¹Ê¾
+	      	 * ï¿½ï¿½ï¿½ï½«Ã¿Ò»Ò³ï¿½ï¿½Ê¾ï¿½ï¿½viewï¿½ï¿½Åµï¿½ArrayListï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	      	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ViewPagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹Ê¾
 	      	 */
 	        final ArrayList<View> views = new ArrayList<View>();
 	        views.add(view1);
@@ -74,8 +74,8 @@ public class WelcomeActivity extends Activity {
 	        
 	        
 	        /*
-	      	 * Ã¿¸öÒ³ÃæµÄTitleÊý¾Ý´æ·Åµ½ArrayList¼¯ºÏÖÐ
-	      	 * ¿ÉÒÔÔÚViewPagerÊÊÅäÆ÷ÖÐµ÷ÓÃÕ¹Ê¾
+	      	 * Ã¿ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Titleï¿½ï¿½Ý´ï¿½Åµï¿½ArrayListï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	      	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ViewPagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Õ¹Ê¾
 	      	 */
 	        final ArrayList<String> titles = new ArrayList<String>();
 	        titles.add("tab1");
@@ -86,7 +86,7 @@ public class WelcomeActivity extends Activity {
 	        titles.add("tab6");
 	        titles.add("tab7");
 	        
-	        //Ìî³äViewPagerµÄÊý¾ÝÊÊÅäÆ÷
+	        //ï¿½ï¿½ï¿½ViewPagerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	        MyPagerAdapter mPagerAdapter = new MyPagerAdapter(views,titles);
 			mViewPager.setAdapter(mPagerAdapter);
 			view7.setOnClickListener(new OnClickListener() {
@@ -94,6 +94,7 @@ public class WelcomeActivity extends Activity {
 				public void onClick(View v) {
 					Intent intent=new Intent(WelcomeActivity.this,StartInspectActivity.class);
 					startActivity(intent);
+					finish();
 				}
 			});
 	    }    
@@ -104,7 +105,7 @@ public class WelcomeActivity extends Activity {
 	    	
 			public void onPageSelected(int page) {
 				
-				//·­Ò³Ê±µ±Ç°page,¸Ä±äµ±Ç°×´Ì¬Ô°µãÍ¼Æ¬
+				//ï¿½ï¿½Ò³Ê±ï¿½ï¿½Ç°page,ï¿½Ä±äµ±Ç°×´Ì¬Ô°ï¿½ï¿½Í¼Æ¬
 				switch (page) {
 				case 0:				
 					mPage0.setImageDrawable(getResources().getDrawable(R.drawable.page_now));
