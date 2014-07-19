@@ -160,7 +160,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		Bundle bundle = getIntent().getExtras();
 		
 		//模拟器上的
-		fileDir=Environment.getExternalStorageDirectory().toString();
+		fileDir=Environment.getExternalStorageDirectory().toString()+"/inspect/config";
 		int count = bundle.getInt("count");                   //接收ScanCardActivity传来的count值
 		if (count != 0) {                                  //若不是第一次跳转到这个页面，则进行下一逻辑，否则提示先进行身份验证
 		tname = bundle.getString("tbname");        
