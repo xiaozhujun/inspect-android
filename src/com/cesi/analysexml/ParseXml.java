@@ -18,7 +18,7 @@ import org.dom4j.io.XMLWriter;
 public class ParseXml {
 	@SuppressWarnings("unchecked")
 	public List<DbModel> parseRolesTable(String filename,int rid){    
-		//´Ë·½·¨Ö÷ÒªÔÚÓÚ½«Ñ¡ÖĞµÄRolesTablexmlÎÄ¼ş½øĞĞ½âÎö
+		//æ­¤æ–¹æ³•ä¸»è¦åœ¨äºå°†é€‰ä¸­çš„RolesTablexmlæ–‡ä»¶è¿›è¡Œè§£æ
 		Log.e("ridx",rid+"");
 		SAXReader saxReader = new SAXReader();
 		List<DbModel> list=new ArrayList<DbModel>();
@@ -36,10 +36,10 @@ public class ParseXml {
                if(roleid==rid){ 
                List<Element> group = e.elements();  
                Iterator<Element> git = group.iterator();  
-               //ËùÓĞµÄ¹ı³ÌÆäÊµ¾ÍÊÇ²ã²ã½âÎöµÄ¹ı³Ì  
+               //æ‰€æœ‰çš„è¿‡ç¨‹å…¶å®å°±æ˜¯å±‚å±‚è§£æçš„è¿‡ç¨‹  
                while(git.hasNext()) {  
                    Element ge = git.next();  
-                   //Í¨¹ıÊ¹ÓÃe.attribute(" ").getValue()»ñµÃÊôĞÔµÄÖµ  
+                   //é€šè¿‡ä½¿ç”¨e.attribute(" ").getValue()è·å¾—å±æ€§çš„å€¼  
                    System.out.println(ge.getName() + " : " + ge.attribute("name").getValue());
                    String tableitem=ge.attribute("name").getValue();
                    DbModel d=new DbModel();
@@ -55,13 +55,13 @@ public class ParseXml {
    } 
 	@SuppressWarnings("unchecked")
 	public List<String> parseInspect(String filename){    
-		//´Ë·½·¨Ö÷ÒªÔÚÓÚ½«Ñ¡ÖĞµÄRolesTablexmlÎÄ¼ş½øĞĞ½âÎö
+		//æ­¤æ–¹æ³•ä¸»è¦åœ¨äºå°†é€‰ä¸­çš„RolesTablexmlæ–‡ä»¶è¿›è¡Œè§£æ
 	        List<String> list=new ArrayList<String>();			
 			String tag = null;
 			String item = null;
 			SAXReader saxReader = new SAXReader();
 			try {	
-				System.out.println(filename+"ÎÄ¼şÂ·¾¶.....");
+				System.out.println(filename+"æ–‡ä»¶è·¯å¾„.....");
 				Document document = saxReader.read(new File(filename));
 				Element root = document.getRootElement();	           
 				Element e1 = root.element("devicetype");	    
@@ -88,7 +88,7 @@ public class ParseXml {
    } 	
 	@SuppressWarnings("unchecked")
 	public List<DbModel> parseEmployers(String filename){          
-		//½âÎöÈËÔ±ÅäÖÃ
+		//è§£æäººå‘˜é…ç½®
 		SAXReader saxReader = new SAXReader();
 		List<DbModel> list=new ArrayList<DbModel>();
         try {  
@@ -132,7 +132,7 @@ public class ParseXml {
 	
     @SuppressWarnings("unchecked")
 	public void updateInspectXml(String filename,String itrel,String val,String tag){    
-    	//Ã¿´Îµ±Ñ¡ÔñÖµÊ±½«µã¼ìÏîÒÔ¼°Ñ¡ÔñµÄÖµĞ´Èëinspect.xmlÖĞ   
+    	//æ¯æ¬¡å½“é€‰æ‹©å€¼æ—¶å°†ç‚¹æ£€é¡¹ä»¥åŠé€‰æ‹©çš„å€¼å†™å…¥inspect.xmlä¸­   
 			String item = null;
 			String loc=null;
 			SAXReader saxReader = new SAXReader();
@@ -229,11 +229,11 @@ public class ParseXml {
 		}  
     }
     public void writeToInspectXml(String pathname){      
-    	//½«½á¹ûĞ´ÈëxmlÎÄ¼ş
+    	//å°†ç»“æœå†™å…¥xmlæ–‡ä»¶
     		/*SAXReader reader=new SAXReader();*/
     		Document document=DocumentHelper.createDocument();
     		Element root=document.addElement("check").addAttribute("inspecttype", "");
-    		Element devicetype=root.addElement("devicetype").addAttribute("name", "ÃÅ»ú");
+    		Element devicetype=root.addElement("devicetype").addAttribute("name", "é—¨æœº");
     		Element location=devicetype.addElement("location").addAttribute("name", "");
     		Element field=location.addElement("field");
     		field.addAttribute("name", "");
@@ -257,7 +257,7 @@ public class ParseXml {
     }
     @SuppressWarnings("unchecked")
 	public void writeToFormatXml(String filename) {       
-    	//½«¹Ì¶¨¸ñÊ½µÄxmlÎÄ¼şĞ´Èë
+    	//å°†å›ºå®šæ ¼å¼çš„xmlæ–‡ä»¶å†™å…¥
     	SAXReader saxReader = new SAXReader();
 		try {
 			Document document = saxReader.read(new File(filename));
@@ -278,7 +278,7 @@ public class ParseXml {
 							e.remove(ge);														
 			        }
 						Element value=e.addElement("value");
-						value.addAttribute("name", "Õı³£");
+						value.addAttribute("name", "æ­£å¸¸");
 						value.addAttribute("comment", "");
 				}
 			}
@@ -302,7 +302,7 @@ public class ParseXml {
     
     @SuppressWarnings("unchecked")
 	public  String getValueFromXmlByItem(String filename,String itrvalue,String loc){
-    	//Í¨¹ıµã¼ìÏîÀ´»ñÈ¡Öµ
+    	//é€šè¿‡ç‚¹æ£€é¡¹æ¥è·å–å€¼
 		String item = null;
 		String value = null;
 		String tag=null;
@@ -338,7 +338,7 @@ public class ParseXml {
     }
     @SuppressWarnings("unchecked")
 	public String scanTag(String filename) {
-		//É¨Ãè±êÇ©,´Ótag.xmlÈ¡µÃ
+		//æ‰«ææ ‡ç­¾,ä»tag.xmlå–å¾—
 		String devnum = null;
 		SAXReader saxReader = new SAXReader();
 		try {	
@@ -362,7 +362,7 @@ public class ParseXml {
 	}
 	@SuppressWarnings("unchecked")
 	public String scanDevnum(String filename) {
-		//É¨Ãè±êÇ©£¬´Ótag.xmlÖĞÈ¡µÃÉè±¸±àºÅ
+		//æ‰«ææ ‡ç­¾ï¼Œä»tag.xmlä¸­å–å¾—è®¾å¤‡ç¼–å·
 		String devnum = null;
 		SAXReader saxReader = new SAXReader();
 		try {	
@@ -386,7 +386,7 @@ public class ParseXml {
 	}
     @SuppressWarnings("unchecked")
 	public List<String> queryItemFromXmlByTag(String filename,String loc){  
-    	//¸ù¾İÇøÓò²éÑ¯µã¼ìÏî
+    	//æ ¹æ®åŒºåŸŸæŸ¥è¯¢ç‚¹æ£€é¡¹
         List<String> list=new ArrayList<String>();
 		String tag = null;
 		String item = null;
@@ -417,7 +417,7 @@ public class ParseXml {
     }
 	@SuppressWarnings("rawtypes")
 	public boolean judgeItemIsBelong(String filename,String tag, String item,String groupItem) {
-		// ÅĞ¶Ïµã¼ìÏîÊÇ·ñÊôÓÚÄ³¸öÇøÓò£¬±êÇ©
+		// åˆ¤æ–­ç‚¹æ£€é¡¹æ˜¯å¦å±äºæŸä¸ªåŒºåŸŸï¼Œæ ‡ç­¾
 		     boolean flag=false;
 		     List<String> itemlist=queryItemFromXmlByTag(filename, tag);
 		     Iterator it=itemlist.iterator();
