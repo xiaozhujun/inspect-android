@@ -104,10 +104,10 @@ public class TaskCellServiceDao implements TaskCellService{
 
 
 	@Override
-	public int GetCurrentProjectUnuploadNum(String finishflag,String uploadflag)
+	public Cursor GetCurrentUnuploadNum(String username,String date,String finishflag,String uploadflag)
 	{
-		Cursor cursor = db.rawQuery("select * from user where finishflag=? and uploadflag=?", new String[]{finishflag,uploadflag});
-		return cursor.getCount();
+		Cursor cursor = db.rawQuery("select  user_id AS _id,* from user where username=? and date=? and finishflag=? and uploadflag=?", new String[]{username,date,finishflag,uploadflag});
+		return cursor;
 	}
 
 

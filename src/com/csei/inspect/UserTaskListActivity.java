@@ -14,6 +14,7 @@ import org.json.JSONException;
 import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
+import com.csei.inspect.UserTablesOperationsActivity.MySimpleCursorAdapter;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
@@ -53,6 +54,7 @@ public class UserTaskListActivity extends Activity {
 	private SimpleCursorAdapter cursorAdapter;
 	private ImageView imageView;
 	private BadgeView badge1;
+	private int unuploadnum;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -62,6 +64,7 @@ public class UserTaskListActivity extends Activity {
 		setContentView(R.layout.activity_usertasklist);
 		listView=(ListView)findViewById(R.id.usertasklist_lv);
 		imageView=(ImageView) findViewById(R.id.usertasklist_igv_upload);
+		userServiceDao=new TaskCellServiceDao(UserTaskListActivity.this);
 		badge1 = new BadgeView(this, imageView);
         badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -80,61 +83,35 @@ public class UserTaskListActivity extends Activity {
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
 		preference=getSharedPreferences("count", Context.MODE_PRIVATE);
 		String string=preference.getString("taskflag", "00-00-00");
-		userServiceDao=new TaskCellServiceDao(UserTaskListActivity.this);
 		//对话框初始化
 		dialog_init();
 		if (Tools.GetCurrentDate().equals(string)) {//直接从数据库中获得
 			//查询未完成的任务，进行UI显示
 			//查询已完成但未上传的
-			int unuploadnum=userServiceDao.GetCurrentProjectUnuploadNum("已完成", "未上传");
+			int unuploadnum=((Cursor)userServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
 			badge1.setText(""+unuploadnum);badge1.show();
 			cursor=userServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(),null);
-			cursorAdapter = new SimpleCursorAdapter(
+			cursorAdapter = new MySimpleCursorAdapter(
 					UserTaskListActivity.this , R.layout.usertasklist_lv_item, cursor 
 					, new String[]{"taskname" , "devicename","timeslot","finishflag"}
 					, new int[]{R.id.usertasklist_item_tv_task, R.id.usertasklist_item_tv_device,R.id.usertasklist_item_tv_deadline,R.id.usertasklist_item_btn_finishflag}){
-				//itemlayout点击事件
-				@Override
-				public View getView(final int position, View convertView,
-						final ViewGroup parent) {
-					convertView =  super.getView(position, convertView, parent);
-					final TextView textView=(TextView)convertView.findViewById(R.id.ItemText);
-					final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertasklist_item_btn_finishflag);
-					if (btn_finishflag.getText().equals("未完成")) {
-						btn_finishflag.setBackgroundResource(R.color.myred);
-					}
-					else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
-					convertView.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Intent intent = new Intent(UserTaskListActivity.this,
-									TagValidateActivity.class);
-							cursor.moveToPosition(position);
-							Bundle bundle = new Bundle();
-							bundle.putString("tbname", cursor.getString(cursor.getColumnIndex("tablename")));
-							bundle.putInt("count", 1);
-							bundle.putString("username",employer.getName());
-							bundle.putInt("uid",Integer.parseInt(employer.getNumber()));
-							intent.putExtras(bundle);
-							startActivity(intent);
-						}
-					});
-					return convertView;
-				}
-				
-				
 			};
 			listView.setAdapter(cursorAdapter);
 			dialog.dismiss();
 		}else {
 			//获得任务列表
 			new Thread(new getTaskThread()).start();
-			Editor editor=preference.edit();
-	        editor.putString("taskflag", Tools.GetCurrentDate());
-	        editor.commit();
+			
 		}
-		//设置listview点击事件
-		listview_setclick();
+//		//设置listview点击事件
+//		listview_setclick();
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		datachange();
 	}
 	
 	
@@ -177,6 +154,10 @@ public class UserTaskListActivity extends Activity {
 			Log.i("msg", msg);
 			try {
 				list=JsonParser.getTaskList(msg);
+				//当天已同步任务数据标志
+				Editor editor=preference.edit();
+		        editor.putString("taskflag", Tools.GetCurrentDate());
+		        editor.commit();
 			} catch (JSONException e) {
 				e.printStackTrace();
 		}
@@ -195,6 +176,7 @@ public class UserTaskListActivity extends Activity {
 							null,
 							"未完成",
 							"未上传","待做任务"));
+					Log.i("usertask", "插入行数据");
 				}
 			}
 			else {//部分有数据或全部
@@ -210,22 +192,24 @@ public class UserTaskListActivity extends Activity {
 									null,
 									"未完成",
 									"未上传","待做任务"));
+							Log.i("usertask", "插入行数据");
 						}
 						else {//更新数据库
 							userServiceDao.UpdateUserTask(employer.getName(), (String)item.get("tableName"), Tools.GetCurrentDate(), (String)item.get("deviceName"), (String)item.get("deadline"),"两者");
+							Log.i("usertask", "更新行数据");
 						}
 					}
 //				}
 			}
 			
 			//查询未完成的任务，进行UI显示
-			cursor=userServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(),"未完成");
+			cursor=userServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(),null);
 			//UI操作
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					dialog.dismiss();
-					cursorAdapter = new SimpleCursorAdapter(
+					cursorAdapter = new MySimpleCursorAdapter(
 							UserTaskListActivity.this , R.layout.usertasklist_lv_item, cursor 
 							, new String[]{"taskname" , "devicename","timeslot","finishflag"}
 							, new int[]{R.id.usertasklist_item_tv_task, R.id.usertasklist_item_tv_device,R.id.usertasklist_item_tv_deadline,R.id.usertasklist_item_btn_finishflag});
@@ -235,4 +219,53 @@ public class UserTaskListActivity extends Activity {
 		}
 	}
 	
+	class MySimpleCursorAdapter extends SimpleCursorAdapter
+	{
+		public MySimpleCursorAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to) {
+			super(context, layout, c, from, to);
+		}
+		//itemlayout点击事件
+		@Override
+		public View getView(final int position, View convertView,
+				final ViewGroup parent) {
+			convertView =  super.getView(position, convertView, parent);
+			final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertasklist_item_btn_finishflag);
+			if (btn_finishflag.getText().equals("未完成")) {
+				btn_finishflag.setBackgroundResource(R.color.myred);
+			}
+			else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+			convertView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(UserTaskListActivity.this,
+							TagValidateActivity.class);
+					cursor.moveToPosition(position);
+					Bundle bundle = new Bundle();
+					bundle.putString("tbname", cursor.getString(cursor.getColumnIndex("tablename")));
+					bundle.putInt("count", 1);
+					bundle.putString("username",employer.getName());
+					bundle.putInt("uid",Integer.parseInt(employer.getNumber()));
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			});
+			return convertView;
+		}
+		
+	}
+	
+	private void datachange(){
+		//查询并获得表格
+		cursor=userServiceDao.GetCurrentTask( employer.getName(),Tools.GetCurrentDate(), null);
+		Log.i("msg", ""+cursor.getCount());
+		//查询已完成但未上传的
+		unuploadnum=((Cursor)userServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
+		badge1.setText(""+unuploadnum);badge1.show();
+		cursorAdapter = new MySimpleCursorAdapter(
+				UserTaskListActivity.this , R.layout.usertasklist_lv_item, cursor 
+				, new String[]{"taskname" , "devicename","timeslot","finishflag"}
+				, new int[]{R.id.usertasklist_item_tv_task, R.id.usertasklist_item_tv_device,R.id.usertasklist_item_tv_deadline,R.id.usertasklist_item_btn_finishflag});
+		listView.setAdapter(cursorAdapter);
+	}
 }

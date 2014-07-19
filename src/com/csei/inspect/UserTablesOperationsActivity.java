@@ -19,6 +19,7 @@ import com.readystatesoftware.viewbadger.BadgeView;
 import android.R.integer;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -45,7 +46,10 @@ public class UserTablesOperationsActivity extends Activity {
 	private int count;
 	private ImageView imageView;
 	private BadgeView badge1;
-	
+	private MySimpleCursorAdapter listItemAdapter;
+	private Cursor cursor;
+	private int unuploadnum;
+	private TaskCellServiceDao serviceDao;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +58,7 @@ public class UserTablesOperationsActivity extends Activity {
 		imageView=(ImageView) findViewById(R.id.usertableoperation_igv_upload);
 		badge1 = new BadgeView(this, imageView);
         badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
-		
+        serviceDao=new TaskCellServiceDao(UserTablesOperationsActivity.this);
 		// 加载文件对话框初始化
 		ProgressInit();
 		// 处理数据
@@ -79,6 +83,16 @@ public class UserTablesOperationsActivity extends Activity {
 
 	}
 
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		datachange();
+		
+		
+	}
+	
+	
 	private void ProgressInit() {
 		pdDialog = new ProgressDialog(this);
 		pdDialog.setMax(100);
@@ -96,6 +110,63 @@ public class UserTablesOperationsActivity extends Activity {
 		new Thread(new HandleDataThread()).start();
 	}
 
+	private void datachange(){
+		//查询未完成的表格
+		cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
+		//查询已完成但未上传的
+		unuploadnum=((Cursor)serviceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
+		badge1.setText(""+unuploadnum);
+		badge1.show();
+		listItemAdapter = new MySimpleCursorAdapter(
+				UserTablesOperationsActivity.this, R.layout.rolestable,
+				cursor, new String[] {"tablename","finishflag" },
+				new int[] { R.id.ItemText,R.id.usertableoperation_item_btn_finishflag });
+//		listItemAdapter.notifyDataSetChanged();
+		rolestablelist.setAdapter(listItemAdapter);
+	}
+	
+	class MySimpleCursorAdapter extends SimpleCursorAdapter{
+
+		public MySimpleCursorAdapter(Context context, int layout, Cursor c,
+				String[] from, int[] to) {
+			super(context, layout, c, from, to);
+		}
+		
+		//itemlayout点击事件
+		@Override
+		public View getView(final int position, View convertView,
+				final ViewGroup parent) {
+			convertView =  super.getView(position, convertView, parent);
+			final TextView textView=(TextView)convertView.findViewById(R.id.ItemText);
+			convertView.setOnClickListener(new View.OnClickListener() {
+				//item点检事件
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(UserTablesOperationsActivity.this,
+							TagValidateActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("tbname", (String)textView.getText());
+					bundle.putInt("count", 1);
+					bundle.putString("username", employer.getName());
+					bundle.putInt("uid", Integer.parseInt(employer.getNumber()));
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			});
+			final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertableoperation_item_btn_finishflag);
+			if (btn_finishflag.getText().equals("未完成")) {
+				btn_finishflag.setBackgroundResource(R.color.myred);
+				convertView.setEnabled(true);
+			}
+			else {
+				btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+				convertView.setEnabled(false);
+			}
+			return convertView;
+		}
+	}
+	
+	
 	class HandleDataThread implements Runnable 
 	{
 		@Override
@@ -111,7 +182,6 @@ public class UserTablesOperationsActivity extends Activity {
 				}
 				
 				final ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
-				final TaskCellServiceDao serviceDao=new TaskCellServiceDao(UserTablesOperationsActivity.this);
 				ArrayList<String> projectnum=serviceDao.GetCurrentProjectNum(Tools.GetCurrentDate(), employer.getName());
 				int num;
 				if (null==projectnum) {
@@ -138,51 +208,19 @@ public class UserTablesOperationsActivity extends Activity {
 					}
 				}
 				//查询未完成的表格
-				final Cursor cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
+				cursor=serviceDao.GetCurrentProject(Tools.GetCurrentDate(), employer.getName(), null);
 				//查询已完成但未上传的
-				final int unuploadnum=serviceDao.GetCurrentProjectUnuploadNum("已完成", "未上传");
+				unuploadnum=((Cursor)serviceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
 				runOnUiThread(new Runnable() {
 					@SuppressWarnings("deprecation")
 					@Override
 					public void run() {
 						pdDialog.dismiss();
 						badge1.setText(""+unuploadnum);badge1.show();
-						SimpleCursorAdapter listItemAdapter = new SimpleCursorAdapter(
+						listItemAdapter = new MySimpleCursorAdapter(
 								UserTablesOperationsActivity.this, R.layout.rolestable,
 								cursor, new String[] {"tablename","finishflag" },
-								new int[] { R.id.ItemText,R.id.usertableoperation_item_btn_finishflag }){
-							//itemlayout点击事件
-							@Override
-							public View getView(final int position, View convertView,
-									final ViewGroup parent) {
-								convertView =  super.getView(position, convertView, parent);
-								final TextView textView=(TextView)convertView.findViewById(R.id.ItemText);
-								convertView.setOnClickListener(new View.OnClickListener() {
-									//item点检事件
-									@Override
-									public void onClick(View v) {
-										Intent intent = new Intent(UserTablesOperationsActivity.this,
-												TagValidateActivity.class);
-										Bundle bundle = new Bundle();
-										bundle.putString("tbname", (String)textView.getText());
-										bundle.putInt("count", 1);
-										bundle.putString("username", employer.getName());
-										bundle.putInt("uid", Integer.parseInt(employer.getNumber()));
-										intent.putExtras(bundle);
-										startActivity(intent);
-									}
-								});
-								final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertableoperation_item_btn_finishflag);
-								if (btn_finishflag.getText().equals("未完成")) {
-									btn_finishflag.setBackgroundResource(R.color.myred);
-								}
-								else btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
-								return convertView;
-							}
-							
-							
-							
-						};
+								new int[] { R.id.ItemText,R.id.usertableoperation_item_btn_finishflag });
 						rolestablelist.setAdapter(listItemAdapter);
 						rolestablelist.setOnItemClickListener(new OnItemClickListener() {
 							@SuppressWarnings({ "unchecked" })

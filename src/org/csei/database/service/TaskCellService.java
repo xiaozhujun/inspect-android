@@ -24,8 +24,8 @@ public interface TaskCellService {
 	//得到当天已存在的项目
 	public ArrayList<String> GetCurrentProjectNum(String date,String username) ;
 	//得到未上传的数目
-	public int GetCurrentProjectUnuploadNum(String finishflag,String uploadflag) ;
-	//得到当天未完成点检项目的表格名
+	public Cursor GetCurrentUnuploadNum(String username,String date,String finishflag,String uploadflag) ;
+	//得到当天点检项目的表格名 finishflag="未完成"||"已完成"||null
 	public Cursor GetCurrentProject(String date,String username,String finishflag);
 	//更新任务行数据操作
 	public void UpdateUserTask(String username,String tablename,String date,String devicename,String timeslot,String tableflag);
