@@ -29,7 +29,7 @@ public class MyPagerAdapter extends PagerAdapter{
 		((ViewPager)container).removeView(views.get(position));
 	}
 	
-	//“≥√Êview
+	//È°µÈù¢view
 	public Object instantiateItem(View container, int position) {
 		((ViewPager)container).addView(views.get(position));
 		return views.get(position);

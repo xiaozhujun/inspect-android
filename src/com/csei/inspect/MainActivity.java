@@ -12,7 +12,7 @@ import android.view.Window;
 public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	//È¥µô±êÌâÀ¸È«ÆÁÏÔÊ¾
+    	//å»æ‰æ ‡é¢˜æ å…¨å±æ˜¾ç¤º
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -33,40 +33,6 @@ public class MainActivity extends Activity {
          Editor editor=preferences.edit();
          editor.putInt("count", ++count);
          editor.commit();
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
          
     }   
     

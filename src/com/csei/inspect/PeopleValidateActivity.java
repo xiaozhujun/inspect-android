@@ -41,23 +41,23 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 	
 	String Tag = "PeopleValidateActivity";
 	Button backbutton;
-	String str = "", result = "";       //resultÊÇÒ»¸öÈ«¾Ö±äÁ¿£¬ÓÃÓÚ´æ·Å´ÓRolesTable.xmlÖĞ¶ÁÈ¡³öÀ´µÄÖµ
-	ListView rolestablelist;              //ÏÔÊ¾RolesTable.xmlÖĞ¶ÁÈ¡ÖµµÄListView
-	int index = 0;                        // ×Ö·ûË÷Òı                                     
-	int count = 0;                        // °´Å¥¼ÆÊıÆ÷
+	String str = "", result = "";       //resultæ˜¯ä¸€ä¸ªå…¨å±€å˜é‡ï¼Œç”¨äºå­˜æ”¾ä»RolesTable.xmlä¸­è¯»å–å‡ºæ¥çš„å€¼
+	ListView rolestablelist;              //æ˜¾ç¤ºRolesTable.xmlä¸­è¯»å–å€¼çš„ListView
+	int index = 0;                        // å­—ç¬¦ç´¢å¼•                                     
+	int count = 0;                        // æŒ‰é’®è®¡æ•°å™¨
 	MyRunnable myRunnable;
 	Handler handler;
 	Thread thread;
-	int tag = 0;// ±êÇ©
+	int tag = 0;// æ ‡ç­¾
 	ProgressBar pb;
-	TextView showprocess;                         //ÏÔÊ¾½ø¶È
-	String fileDir;                               //ÎÄ¼ş¼Ğ»ùÂ·¾¶,ÕâÀïÄ¬ÈÏÎªSdCard
-	String filename;                              //ÎÄ¼şÃû
-	int cur_pos=0;                                  //ÓÃÓÚ¸ßÁÁÏÔÊ¾
-	Button startScan;                               //¿ªÊ¼É¨Ãè
-	private MyBroadcast myBroadcast;				//¹ã²¥½ÓÊÕÕß
-	public static int cmd_flag = 0;				//²Ù×÷×´Ì¬  0Îª²»×öÆäËû²Ù×÷£¬1ÎªÑ°¿¨£¬2ÎªÈÏÖ¤£¬3Îª¶ÁÊı¾İ£¬4ÎªĞ´Êı¾İ
-	public static int authentication_flag = 0;		//ÈÏÖ¤×´Ì¬  0ÎªÈÏÖ¤Ê§°ÜºÍÎ´ÈÏÖ¤  1ÎªÈÏÖ¤³É¹¦
+	TextView showprocess;                         //æ˜¾ç¤ºè¿›åº¦
+	String fileDir;                               //æ–‡ä»¶å¤¹åŸºè·¯å¾„,è¿™é‡Œé»˜è®¤ä¸ºSdCard
+	String filename;                              //æ–‡ä»¶å
+	int cur_pos=0;                                  //ç”¨äºé«˜äº®æ˜¾ç¤º
+	Button startScan;                               //å¼€å§‹æ‰«æ
+	private MyBroadcast myBroadcast;				//å¹¿æ’­æ¥æ”¶è€…
+	public static int cmd_flag = 0;				//æ“ä½œçŠ¶æ€  0ä¸ºä¸åšå…¶ä»–æ“ä½œï¼Œ1ä¸ºå¯»å¡ï¼Œ2ä¸ºè®¤è¯ï¼Œ3ä¸ºè¯»æ•°æ®ï¼Œ4ä¸ºå†™æ•°æ®
+	public static int authentication_flag = 0;		//è®¤è¯çŠ¶æ€  0ä¸ºè®¤è¯å¤±è´¥å’Œæœªè®¤è¯  1ä¸ºè®¤è¯æˆåŠŸ
 	private String activity = "com.csei.inspect.PeopleValidateActivity";
 	//Debug
 	public static String TAG= "M1card";
@@ -65,11 +65,11 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 	String username=null;
 	int uid;
 	String cardType="x1";
-	private ProgressDialog shibieDialog; //Ê¶±ğËÑË÷¿ò
-	private Timer timerDialog;  //ËÑË÷¿ò¼ÆÊ±Æ÷
+	private ProgressDialog shibieDialog; //è¯†åˆ«æœç´¢æ¡†
+	private Timer timerDialog;  //æœç´¢æ¡†è®¡æ—¶å™¨
 	private Timer timeThread;
 	private int MSG_FLAG = 1;
-	//Dialog½áÊø±êÊ¶
+	//Dialogç»“æŸæ ‡è¯†
 	private int MSG_OVER = 2;
 	private Handler mHandler = new Handler(){
 		@Override
@@ -77,7 +77,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 			super.handleMessage(msg);
 			if(msg.what == MSG_FLAG){	
 			}else if(msg.what == MSG_OVER){
-				Toast.makeText(getApplicationContext(), "Î´Ê¶±ğµ½±êÇ©¿¨£¬ÇëÖØÊÔ", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "æœªè¯†åˆ«åˆ°æ ‡ç­¾å¡ï¼Œè¯·é‡è¯•", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -87,7 +87,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 	  setContentView(R.layout.peoplevalidate);
 	  init();
 	}
-	//³õÊ¼»¯
+	//åˆå§‹åŒ–
 	private void init() {
 		  fileDir=Environment.getExternalStorageDirectory().toString();
 		  rolestablelist = (ListView) findViewById(R.id.rolestablelist);
@@ -96,7 +96,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 		  backbutton=(Button) this.findViewById(R.id.backbutton);
 		  startScan=(Button) this.findViewById(R.id.startScan);
 		  startScan.setOnClickListener(this);
-		  //·µ»Ø°´Å¥
+		  //è¿”å›æŒ‰é’®
 		  backbutton.setOnClickListener(new OnClickListener() {
 		  public void onClick(View v) {
 					backbutton.setBackgroundResource(R.drawable.btn_back_active);
@@ -104,15 +104,15 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 				}
 			});
 	}
-	//µã»÷¿ªÆô·şÎñ
+	//ç‚¹å‡»å¼€å¯æœåŠ¡
 	public void onClick(View v) {
 		shibieDialog = new ProgressDialog(PeopleValidateActivity.this, R.style.mProgressDialog);
 		shibieDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		shibieDialog.setMessage("Ê¶±ğ±êÇ©ÖĞ...");
+		shibieDialog.setMessage("è¯†åˆ«æ ‡ç­¾ä¸­...");
 		shibieDialog.setCancelable(false);
 		shibieDialog.show();
 		timerDialog = new Timer();
-		//7ÃëºóÈ¡ÏûËÑË÷
+		//7ç§’åå–æ¶ˆæœç´¢
 		timerDialog.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -120,7 +120,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 				Intent stopSearch = new Intent();
 				stopSearch.setAction("com.csei.service.RFIDService");
 				stopSearch.putExtra("stopSearch", true);
-				sendBroadcast(stopSearch);  //¸ø·şÎñ·¢ËÍ¹ã²¥,Áî·şÎñÍ£Ö¹
+				sendBroadcast(stopSearch);  //ç»™æœåŠ¡å‘é€å¹¿æ’­,ä»¤æœåŠ¡åœæ­¢
 				Message msg = new Message();
 				msg.what = MSG_OVER;
 				mHandler.sendMessage(msg);
@@ -147,15 +147,15 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 		myBroadcast = new MyBroadcast();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.csei.inspect.PeopleValidateActivity");
-		registerReceiver(myBroadcast, filter); 		//×¢²á¹ã²¥½ÓÊÕÕß
+		registerReceiver(myBroadcast, filter); 		//æ³¨å†Œå¹¿æ’­æ¥æ”¶è€…
 		super.onResume();
 	}
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		cmd_flag = 0;  				  //Ğ´×´Ì¬»Ö¸´³õÊ¼×´Ì¬
+		cmd_flag = 0;  				  //å†™çŠ¶æ€æ¢å¤åˆå§‹çŠ¶æ€
 		authentication_flag = 0;
-		unregisterReceiver(myBroadcast);  //Ğ¶ÔØ¹ã²¥½ÓÊÕÕß
+		unregisterReceiver(myBroadcast);  //å¸è½½å¹¿æ’­æ¥æ”¶è€…
 		super.onPause();
 		timeThread.cancel();
 		Log.e("M1CARDPAUSE", "PAUSE");  	
@@ -165,12 +165,12 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 		Intent stopService = new Intent();
 		stopService.setAction("com.csei.service.RFIDService");
 		stopService.putExtra("stopflag", true);
-		sendBroadcast(stopService);  //¸ø·şÎñ·¢ËÍ¹ã²¥,Áî·şÎñÍ£Ö¹
+		sendBroadcast(stopService);  //ç»™æœåŠ¡å‘é€å¹¿æ’­,ä»¤æœåŠ¡åœæ­¢
 		Log.e(TAG, "send stop");
 		super.onDestroy();
 	}
 	/**
-	 *  ¹ã²¥½ÓÊÕÕß,½ÓÊÕ·şÎñ·¢ËÍ¹ıÀ´µÄÊı¾İ£¬²¢¸üĞÂUI
+	 *  å¹¿æ’­æ¥æ”¶è€…,æ¥æ”¶æœåŠ¡å‘é€è¿‡æ¥çš„æ•°æ®ï¼Œå¹¶æ›´æ–°UI
 	 * @author Administrator
 	 *
 	 */
@@ -180,23 +180,23 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 			shibieDialog.cancel();
 			timerDialog.cancel();
 			uid= Integer.parseInt(employer.getNumber());
-			//»ñÈ¡UserName
+			//è·å–UserName
 			username=employer.getName();
-			//¶ÁÈ¡RolesTable.xml
+			//è¯»å–RolesTable.xml
 			getFile(Integer.parseInt(employer.getRoleNum()));
-		    pb.setMax(result.length());// ½ø¶ÈÌõ×î´óÖµÉèÎªÎÄÕÂµÄ³¤¶È
+		    pb.setMax(result.length());// è¿›åº¦æ¡æœ€å¤§å€¼è®¾ä¸ºæ–‡ç« çš„é•¿åº¦
 			count++;
 			    if (count % 2 == 1) {
 			     myRunnable = new MyRunnable();
 			     thread = new Thread(myRunnable);
 			     thread.start();
-			     // Æô¶¯Ïß³Ì
+			     // å¯åŠ¨çº¿ç¨‹
 			     tag = 0;
-			     startScan.setText("ÔİÍ£É¨Ãè");
+			     startScan.setText("æš‚åœæ‰«æ");
 			    }
 			    if (count % 2 == 0) {
 			     tag = 1;
-			     startScan.setText("¿ªÊ¼É¨Ãè");
+			     startScan.setText("å¼€å§‹æ‰«æ");
 			    }   
 		}
 		
@@ -205,10 +205,10 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			Listable listable = intent.getParcelableExtra("listable");
 			if(listable == null){
-				Toast.makeText(PeopleValidateActivity.this, "¶Á¿¨Ê§°Ü!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PeopleValidateActivity.this, "è¯»å¡å¤±è´¥!", Toast.LENGTH_SHORT).show();
 				return;
 			}else if(!(listable instanceof Employer)){
-				Toast.makeText(PeopleValidateActivity.this, "¿¨ÀàĞÍ´íÎó£¬Çë¶ÁÈËÔ±¿¨!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(PeopleValidateActivity.this, "å¡ç±»å‹é”™è¯¯ï¼Œè¯·è¯»äººå‘˜å¡!", Toast.LENGTH_SHORT).show();
 				return;
 			}
 			setEmployer((Employer)listable);
@@ -222,7 +222,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 				       break; 
 				    }
 				   }
-				 //äÖÈ¾ListView,½«¸ù¾İÔÚ¿¨ÖĞ¶ÁÈ¡µÄrid´ÓRolesTable.xmlÎÄ¼şÖĞ²éÕÒ³öµÄÄÚÈİ¼ÓÔØµ½ListViewÖĞ
+				 //æ¸²æŸ“ListView,å°†æ ¹æ®åœ¨å¡ä¸­è¯»å–çš„ridä»RolesTable.xmlæ–‡ä»¶ä¸­æŸ¥æ‰¾å‡ºçš„å†…å®¹åŠ è½½åˆ°ListViewä¸­
 				private void drawRolesTableListView() {
 					String[] s=result.split(",");
 				      final ArrayList<HashMap<String, Object>> listItem=new ArrayList<HashMap<String,Object>>();
@@ -235,12 +235,12 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 					     SimpleAdapter listItemAdapter=new SimpleAdapter(PeopleValidateActivity.this,listItem,R.layout.rolestable,new String[]{"ItemImage","ItemText"},new int[]{R.id.ItemImage,R.id.ItemText});		          
 					 index++;
 				     pb.setProgress(index);
-				     showprocess.setText("µ±Ç°½ø¶È:" + index + "/" + result.length());
+				     showprocess.setText("å½“å‰è¿›åº¦:" + index + "/" + result.length());
 				     showprocess.setTextSize(15);
-				     // Èç¹û¶ÁÈ¡½áÊø£¬ÔòÖØĞÂ¶ÁÈ¡
+				     // å¦‚æœè¯»å–ç»“æŸï¼Œåˆ™é‡æ–°è¯»å–
 				    if (index == result.length()) {
 				       index = 0;	
-						Toast.makeText(PeopleValidateActivity.this, "ÎÄ¼şÉ¨ÃèÍê±Ï!", Toast.LENGTH_SHORT).show();   
+						Toast.makeText(PeopleValidateActivity.this, "æ–‡ä»¶æ‰«æå®Œæ¯•!", Toast.LENGTH_SHORT).show();   
 				       rolestablelist.setAdapter(listItemAdapter);	       
 				       rolestablelist.setOnItemClickListener(new OnItemClickListener() {
 							@SuppressWarnings({ "unchecked" })
@@ -266,7 +266,7 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 				  };
 		}
 	}
-	//¶ÁÈ¡ÎÄ¼şÏß³Ì
+	//è¯»å–æ–‡ä»¶çº¿ç¨‹
 	private class MyRunnable implements Runnable {
 		  public void run() {
 		   while(tag==0) {
@@ -280,19 +280,19 @@ public class PeopleValidateActivity extends Activity implements OnClickListener{
 		  }
 }	      
 	/**
-	 * Ğ´Êı¾İÑéÖ¤,ÓÃÓÚÑéÖ¤Ğ´ÈëÊı¾İ
+	 * å†™æ•°æ®éªŒè¯,ç”¨äºéªŒè¯å†™å…¥æ•°æ®
 	 * @param src
 	 * @return boolean
 	 */
 	public static boolean checkData(String src){
 		boolean flag = false;
 		String regString = "[a-f0-9A-F]{32}";
-		flag = Pattern.matches(regString, src); //Æ¥ÅäÊı¾İ£¬ÊÇ·ñÎª32Î»µÄÊ®Áù½øÖÆ
+		flag = Pattern.matches(regString, src); //åŒ¹é…æ•°æ®ï¼Œæ˜¯å¦ä¸º32ä½çš„åå…­è¿›åˆ¶
 		return flag;
 	}
-	// µÃµ½ÎÄ¼şÄÚÈİµÄ·½·¨£¬·µ»ØÒ»¸ö×Ö·û´®
+	// å¾—åˆ°æ–‡ä»¶å†…å®¹çš„æ–¹æ³•ï¼Œè¿”å›ä¸€ä¸ªå­—ç¬¦ä¸²
 		@SuppressWarnings("rawtypes")
-		public String getFile(int rid) {          //»ñÈ¡ÈËÔ±µã¼ìĞÅÏ¢
+		public String getFile(int rid) {          //è·å–äººå‘˜ç‚¹æ£€ä¿¡æ¯
 			Log.e("rid",rid+"");
 			result="";
 			ParseXml p=new ParseXml();
