@@ -27,13 +27,14 @@ public class JsonParser {
 	
 	public static List<Map<String,Object>> getTaskList(String msg) throws  JSONException
 	{
-		Map<String, Object> map=new HashMap<String, Object>();
+		Map<String, Object> map;
 		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
 		JSONObject datajsonObject = new JSONObject(msg);
 		JSONArray jsonArray = datajsonObject.getJSONArray("data");
 		for(int i=0;i<jsonArray.length();i++)
 		{
-			//ÉèÖÃÍ¼Æ¬ Õ¹Ê¾Ïà¹ØÏî
+			//ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½
+			map=new HashMap<String, Object>();
 			map.put("image", R.drawable.img_task_clock);
 			map.put("planName", jsonArray.getJSONObject(i).getString("planName"));
 			map.put("deviceName", jsonArray.getJSONObject(i).getString("deviceName"));
@@ -42,7 +43,7 @@ public class JsonParser {
 			stringBuilder.append("-");
 			stringBuilder.append(jsonArray.getJSONObject(i).getString("timeEnd"));
 			map.put("deadline", stringBuilder.toString());
-			//·ÇÕ¹Ê¾Ïà¹ØÏî
+			//ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½
 			map.put("userId", jsonArray.getJSONObject(i).getInt("userId"));
 			map.put("userName", jsonArray.getJSONObject(i).getString("userName"));
 			map.put("tableName", jsonArray.getJSONObject(i).getString("tableName"));
@@ -59,5 +60,22 @@ public class JsonParser {
 		}
 		return false;
 	}
+	//è·å–é…ç½®æ–‡ä»¶åˆ—è¡¨
+	public static List<Map<String,Object>> GetConfigFileList(String msg) throws  JSONException
+	{
+		Map<String, Object> map;
+		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
+		JSONObject datajsonObject = new JSONObject(msg);
+		JSONArray jsonArray = datajsonObject.getJSONArray("data");
+		for(int i=0;i<jsonArray.length();i++)
+		{
+			map=new HashMap<String, Object>();
+			map.put("id", jsonArray.getJSONObject(i).getString("id"));
+			map.put("filename", jsonArray.getJSONObject(i).getString("name"));
+			list.add(map);
+		}
+		return list;
+	}
+	
 	
 }

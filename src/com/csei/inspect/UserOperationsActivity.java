@@ -1,5 +1,6 @@
 package com.csei.inspect;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,7 @@ public class UserOperationsActivity extends Activity {
 	private SharedPreferences preferences;
 	private ProgressDialog dialog;
 	
+	
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -83,6 +85,7 @@ public class UserOperationsActivity extends Activity {
 		// gridview初始化
 		dialog_init();
 		new Thread(new HandleProjectDataThread()).start();
+		new Thread(new GetConfigFileThread()).start();
 		//设置gridview点击事件
 //		gv_setclick();
 		
@@ -404,6 +407,7 @@ public class UserOperationsActivity extends Activity {
 				//查询未上传
 				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
 				new Thread(new HandleTaskThread()).start();
+				
 				//标记当天已创建行数据
 				Editor editor=preferences.edit();
 		        editor.putString("currentProjectflag", Tools.GetCurrentDate());
@@ -411,6 +415,37 @@ public class UserOperationsActivity extends Activity {
 			}
 		}
 	
+	}
+	
+	
+	class GetConfigFileThread implements Runnable
+	{
+		private List<Map<String,Object>> confilelist;
+		@Override
+		public void run() {
+			//首先获得文件列表数据，根据列表数据去获得文件地址
+			if (!preferences.getString("currentConfigFileflag", "00-00-00").equals(Tools.GetCurrentDate())) {
+				String msg=CasClient.getInstance().doPostNoParams(getResources().getString(R.string.GetConfigFileListAddress));
+				//Log.i("doget", msg);
+				confilelist=new ArrayList<Map<String,Object>>();
+				try {
+					confilelist=JsonParser.GetConfigFileList(msg);
+				} catch (JSONException e) {
+					Toast.makeText(getApplicationContext(), "数据解析错误", Toast.LENGTH_SHORT).show();
+				}
+				for (Map<String,Object> item : confilelist) {//下载文件操作
+					InputStream inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetConfigFileBaseAddress)+(String)item.get("id"));
+					if(!Tools.SaveConfigFile(inputStream, item.get("filename")+".xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
+					{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
+				}
+				Editor editor=preferences.edit();
+		        editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
+		        editor.commit();
+			}
+			
+		}
+		
+		
 	}
 	
 class HandleTaskThread implements Runnable{
