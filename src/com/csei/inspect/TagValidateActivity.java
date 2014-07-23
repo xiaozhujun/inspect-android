@@ -551,7 +551,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 
 			dnum=tagRFID.getDeviceNum();
 			areaid = Integer.parseInt(tagRFID.getTagAreaNum());
-			devnum.setText(dnum);
+			//devnum.setText(dnum);
 		    //根据这个DNUM和AreAid在tags.xml中查出点检区域
 			String t=tagRFID.getTagArea();
 			if(t.equals("司机室区")){
