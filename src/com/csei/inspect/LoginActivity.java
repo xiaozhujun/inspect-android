@@ -19,6 +19,7 @@ import com.cesi.analysexml.ParseXml;
 import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
+import com.csei.util.JsonUtils;
 import com.csei.util.Tools;
 import com.example.viewpager.R;
 
@@ -59,6 +60,7 @@ public class LoginActivity extends Activity {
 	protected SharedPreferences preferences;
 	protected Editor editor;
 	private Employer employer = null;
+	private String userId;
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -86,6 +88,8 @@ public class LoginActivity extends Activity {
 
 		//创建/inspect/config目录和/inspect/data目录 放置配置文件
 		new Thread(new CreateDirThread()).start();
+		
+		
 		
 		cb_show_pwd.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
 			@Override
@@ -151,9 +155,10 @@ public class LoginActivity extends Activity {
 							final boolean loginResult1 = CasClient.getInstance().login(username, password, getResources().getString(R.string.LOGIN_SECURITY_CHECK));
 							if (loginResult1) {//��¼�ɹ��������}
 								String msg=CasClient.getInstance().doGet(getResources().getString(R.string.USER_GETIMF));
+								
 								try {
 									employer=JsonParser.GetUserData(msg);
-									
+									userId = JsonUtils.GetUserId(msg);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								} catch (Exception e) {
@@ -169,6 +174,7 @@ public class LoginActivity extends Activity {
 										Intent intent=new Intent(LoginActivity.this,UserOperationsActivity.class);
 										Bundle bundle=new Bundle();
 										bundle.putParcelable("employer", employer);
+										bundle.putString("userId", userId);
 										intent.putExtras(bundle);
 										startActivity(intent);
 										finish();

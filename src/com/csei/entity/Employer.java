@@ -43,7 +43,7 @@ public class Employer implements Listable
 	public Employer(String... args)
 	{
 		if (args.length!=4) {
-			Log.i("employer", "employer¹¹Ôì²ÎÊý²»¶Ô£¡");
+			Log.i("employer", "employerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½");
 		}
 		else 
 		{
@@ -64,7 +64,7 @@ public class Employer implements Listable
 			roleNum = d[4];
 				
 		}else{
-			throw new ArgumentException("²ÎÊý²»ÕýÈ·");
+			throw new ArgumentException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·");
 		}
 	}
 
@@ -82,7 +82,7 @@ public class Employer implements Listable
 			this.name = params.get(3);
 			this.number = params.get(4);
 		}else{
-			throw new ArgumentException("¹¹Ôì²ÎÊýÕýÈ·");
+			throw new ArgumentException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·");
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class Employer implements Listable
 	public String getCardType() {
 		return cardType;
 	}
-
+	
 	public String getRole() {
 		return role;
 	}

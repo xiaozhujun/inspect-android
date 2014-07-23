@@ -97,7 +97,7 @@ public class CasClient
         return true;
     }
 
-    //»ñÈ¡HttpResponse
+    //ï¿½ï¿½È¡HttpResponse
     private String getResponseBody(HttpResponse response){
         StringBuilder sb = new StringBuilder();
         try {
@@ -120,7 +120,7 @@ public class CasClient
     }
 
     /**
-     *»ñÈ¡ticket granting ticket
+     *ï¿½ï¿½È¡ticket granting ticket
      */
     public String getTGT(String username, String password)
     {
@@ -221,7 +221,7 @@ public class CasClient
         return sessionId;
     }
 
-    //°æ±¾Ò»
+    //ï¿½æ±¾Ò»
     public String doSendFile1(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
     	HttpPost httppost = new HttpPost(ServicePath);
     	   ContentBody cbFile = new FileBody(new File(FilePath));
@@ -233,7 +233,7 @@ public class CasClient
     	   return ""+response.getStatusLine();
 	}
     
-  //°æ±¾¶þ
+  //ï¿½æ±¾ï¿½ï¿½
     @SuppressWarnings("deprecation")
 	public String doSendFile2(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
     	httpClient.getParams().setParameter(  
@@ -251,7 +251,7 @@ public class CasClient
 //        }  
     	return EntityUtils.toString(resEntity);
 	}
-    //·¢ËÍGETÇëÇó
+    //ï¿½ï¿½ï¿½ï¿½GETï¿½ï¿½ï¿½ï¿½
     public String doGet(String service){
         Log.i("cas client doGet url:", service);
         HttpGet httpGet = new HttpGet (service);
@@ -279,15 +279,15 @@ public class CasClient
         return null;
     }
 
-    //·¢ËÍPOSTÇëÇó
-    synchronized public String doPost(String service,HashMap<String,String> params){
+    //ï¿½ï¿½ï¿½ï¿½POSTï¿½ï¿½ï¿½ï¿½
+    synchronized public String doPost(String service,HashMap<String,Object> params){
         Log.i("cas client doPost url:", service);
         HttpPost httpPost = new HttpPost (service);
         try
         {
             List <NameValuePair> nvps = new ArrayList <NameValuePair> ();
             for(String key:params.keySet()){
-                nvps.add(new BasicNameValuePair (key, params.get(key)));
+                nvps.add(new BasicNameValuePair (key, (String) params.get(key)));
             }
             httpPost.setEntity(new UrlEncodedFormEntity(nvps,HTTP.UTF_8));
             
@@ -314,7 +314,7 @@ public class CasClient
         return null;
     }
     
-  //·¢ËÍPOSTÃ»ÓÐ´ø²ÎÊýµÄÇëÇó
+  //ï¿½ï¿½ï¿½ï¿½POSTÃ»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
    synchronized public String doPostNoParams(String service){
         Log.i("cas client doPost url:", service);
         HttpPost httpPost = new HttpPost (service);

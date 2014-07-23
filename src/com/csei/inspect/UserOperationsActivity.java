@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.prefs.Preferences;
 
 import org.csei.database.entity.TaskCell;
 import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
 
+import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.MKGeneralListener;
 import com.cesi.analysexml.DbModel;
 import com.cesi.analysexml.ParseXml;
 import com.cesi.client.CasClient;
@@ -21,7 +22,7 @@ import com.csei.util.Tools;
 import com.example.viewpager.R;
 import com.readystatesoftware.viewbadger.BadgeView;
 
-import android.R.bool;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,8 +31,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -68,10 +69,73 @@ public class UserOperationsActivity extends Activity {
 	private SharedPreferences preferences;
 	private ProgressDialog dialog;
 	
+	
+	public static BMapManager mapManager;
+	public static Handler handler;
+	private static String latitude;
+	private static String longtitude;
+	private static String city;
+	private static String address;
+	private static String user_Id;
+	
+	private TextView city_location;
+	
+	
+	@SuppressLint("HandlerLeak")
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
+		
+		
+		mapManager = new BMapManager(getApplication());
+		mapManager.init(new MKGeneralListener() {
+
+			@Override
+			public void onGetPermissionState(int arg0) {
+
+				Toast.makeText(getApplicationContext(),
+						"密钥错误", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onGetNetworkState(int arg0) {
+
+				Toast.makeText(getApplicationContext(),
+
+						"网络错误", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
 		setContentView(R.layout.activity_useroperations);
+		//取得用户ID
+		user_Id = getIntent().getExtras().getString("userId");
+		Log.i("msg", user_Id);
+		
+		handler = new Handler(){
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				super.handleMessage(msg);
+				if(msg.what==0){
+					Toast.makeText(getApplicationContext(), "暂时无法获取地理位置信息！", Toast.LENGTH_SHORT).show();
+				}else if(msg.what==1){
+					latitude = ((String)(msg.obj)).split(";")[0];
+					longtitude = ((String)(msg.obj)).split(";")[1];
+				}else if(msg.what==2){
+					address = msg.obj.toString().split(";")[0];
+					city = msg.obj.toString().split(";")[1];
+					city_location.setText("当前城市："+city);
+				}else if(msg.what==3){
+					Toast.makeText(getApplicationContext(), "已向服务器端发送地理位置信息！\n"+msg.obj.toString(), Toast.LENGTH_SHORT).show();
+				}
+				
+			}
+		};
+		
+		startServer();
+		
+		city_location = (TextView) findViewById(R.id.textView2);
+		
 		//获得传递过来的数据
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
 		cellServiceDao=new TaskCellServiceDao(getApplicationContext());
@@ -350,6 +414,16 @@ public class UserOperationsActivity extends Activity {
 		new Thread(new GetUnfinishNum()).start();
 	}
 	
+	public void startServer(){
+		Intent intent = new Intent(this,com.csei.service.LocationService.class);
+		startService(intent);
+	}
+
+	public void stopServer(){
+		Intent intent = new Intent(this,com.csei.service.LocationService.class);
+		stopService(intent);
+	}
+	
 	
 	
 	
@@ -416,7 +490,7 @@ public class UserOperationsActivity extends Activity {
 class HandleTaskThread implements Runnable{
 	private List<Map<String, Object>> list;
 
-		@SuppressWarnings("deprecation")
+		
 		@Override
 		public void run() {
 			if (preferences.getString("currentTaskflag", "00-00-00").equals(Tools.GetCurrentDate())) {
@@ -492,6 +566,29 @@ class HandleTaskThread implements Runnable{
 			});
 		}
 		}
+}
+
+public static class SendLocationThread implements Runnable{
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		HashMap<String,Object> params = new HashMap<String,Object>();
+		params.put("lng", longtitude);
+		params.put("address", address);
+		params.put("userId", user_Id);
+		params.put("lat", latitude);
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("jsonString",com.csei.util.JsonUtils.HashToJson(params));
+		Log.i("msg", com.csei.util.JsonUtils.HashToJson(params));
+		String message = CasClient.getInstance().doPost("http://www.cseicms.com/inspectManagement/" +
+				"rs/inspectLocate/receiveInspectLocateInfo",
+				map);
+		Message msg = Message.obtain();
+		msg.obj = message;
+		msg.what=3;
+		handler.sendMessage(msg);
+	}
 }
 	
 }
