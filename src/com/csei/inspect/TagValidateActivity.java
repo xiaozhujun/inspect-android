@@ -183,15 +183,15 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		normal=(RadioButton) this.findViewById(R.id.normal);
 		abnormal=(RadioButton) this.findViewById(R.id.abnormal);
 		nothing=(RadioButton) this.findViewById(R.id.nothing);
-		backbutton=(Button) this.findViewById(R.id.backbutton);
-		devnum=(TextView) this.findViewById(R.id.devnum);
+		//backbutton=(Button) this.findViewById(R.id.backbutton);
+		//devnum=(TextView) this.findViewById(R.id.devnum);
 		beizhu = (Button) this.findViewById(R.id.beizhu);
 		startScan=(Button) this.findViewById(R.id.startScan);
 		title=(TextView) this.findViewById(R.id.title);
 		startScan.setOnClickListener(this);
 		beizhu.setOnClickListener(new ClickEvent());
-		user=(TextView) this.findViewById(R.id.username);
-		user.setText(username);
+		//user=(TextView) this.findViewById(R.id.username);
+		//user.setText(username);
 		mContext=this;
 		arrow = (ImageView) findViewById(R.id.arrow); 
 		title.setOnClickListener(new OnClickListener() {
@@ -201,12 +201,12 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 
 			}
 		});
-		    backbutton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					backbutton.setBackgroundResource(R.drawable.btn_back_active);
-					finish();
-				}
-			});
+//		    backbutton.setOnClickListener(new OnClickListener() {
+//				public void onClick(View v) {
+//					backbutton.setBackgroundResource(R.drawable.btn_back_active);
+//					finish();
+//				}
+//			});
 		InitData();
 		adapter = new MyexpandableListAdapter(TagValidateActivity.this,groupList,childList);
 		inspectItem.setAdapter(adapter);
@@ -373,11 +373,14 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	public ArrayList<Map<String, Object>> CreateData() {		
 		Map<String, Object> map;
 		map = new HashMap<String, Object>();
+		map.put(KEY, username);
+		items.add(map);		
+		map = new HashMap<String, Object>();
 		map.put(KEY, savefile);
 		items.add(map);
 		map = new HashMap<String, Object>();
 		map.put(KEY, exit);
-		items.add(map);		
+		items.add(map);
 		return items;
 	}
     @SuppressWarnings("rawtypes")

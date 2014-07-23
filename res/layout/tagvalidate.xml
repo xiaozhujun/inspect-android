@@ -2,102 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" > 
+
     <RelativeLayout
-        android:id="@+id/title_layout"
         android:layout_width="match_parent"
-        android:layout_height="50dp" 
-        android:background="@color/weightGray"
-        android:orientation="horizontal">
-		  <Button
-		  android:id="@+id/backbutton"
-		  android:background="@drawable/btn_back"
-		  android:layout_width="60dp"
-		  android:layout_height="fill_parent"
-		  android:layout_margin="8dp"
-		  ></Button>		  
+        android:layout_height="wrap_content"
+        android:background="@color/myred"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp" >
+
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+            android:id="@+id/tbname"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="8dp"
             android:layout_centerInParent="true"
-            android:textSize="20sp"
-            android:text="@string/scanTagTitle"
-            android:textColor="@color/white" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="22sp" />
+
         <TextView
             android:id="@+id/title"
-            android:text="@string/str_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp" 
-            android:layout_marginTop="11dp"
-            android:textSize="20sp" 
-            android:textColor="@android:color/white"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="菜单"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dip"
             android:layout_alignParentRight="true"
-             android:layout_marginTop="18dp"
-              android:layout_marginRight="3dp" 
-            android:background="@drawable/icon_arrow_down"
-       />   
-    </RelativeLayout> 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp" 
-        android:background="@color/weightGray"
-        android:orientation="horizontal"
-        android:layout_marginTop="1dp"
-        >
-        <ImageView 
-           android:id="@+id/userlogo"
-            android:layout_width="20dp"
-            android:layout_height="20dp" 
-            android:src="@drawable/user"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            />
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="" 
-            android:layout_marginLeft="22dp"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            />
-        <TextView
-            android:id="@+id/tbname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="" 
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:layout_gravity="center"
-            android:layout_centerInParent="true"/>
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/icon_arrow_down" />
 
-        <TextView
-            android:id="@+id/devnum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" "
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp" 
-            android:layout_alignParentRight="true"/>
-        
-</RelativeLayout>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

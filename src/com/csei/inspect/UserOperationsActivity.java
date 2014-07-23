@@ -84,7 +84,6 @@ public class UserOperationsActivity extends Activity {
 		//小图标初始化
 		// gridview初始化
 		dialog_init();
-		new Thread(new HandleProjectDataThread()).start();
 		new Thread(new GetConfigFileThread()).start();
 		//设置gridview点击事件
 //		gv_setclick();
@@ -421,6 +420,7 @@ public class UserOperationsActivity extends Activity {
 	class GetConfigFileThread implements Runnable
 	{
 		private List<Map<String,Object>> confilelist;
+		private InputStream inputStream;
 		@Override
 		public void run() {
 			//首先获得文件列表数据，根据列表数据去获得文件地址
@@ -433,8 +433,11 @@ public class UserOperationsActivity extends Activity {
 				} catch (JSONException e) {
 					Toast.makeText(getApplicationContext(), "数据解析错误", Toast.LENGTH_SHORT).show();
 				}
+				inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetRoleTableFileAddress));
+				if(!Tools.SaveConfigFile(inputStream, "RolesTable.xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
+				{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
 				for (Map<String,Object> item : confilelist) {//下载文件操作
-					InputStream inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetConfigFileBaseAddress)+(String)item.get("id"));
+					inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetConfigFileBaseAddress)+(String)item.get("id"));
 					if(!Tools.SaveConfigFile(inputStream, item.get("filename")+".xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
 					{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
 				}
@@ -442,7 +445,7 @@ public class UserOperationsActivity extends Activity {
 		        editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
 		        editor.commit();
 			}
-			
+			new Thread(new HandleProjectDataThread()).start();
 		}
 		
 		

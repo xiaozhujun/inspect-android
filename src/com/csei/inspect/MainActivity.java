@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         	 Intent intent=new Intent(MainActivity.this,WelcomeActivity.class);
         	 MainActivity.this.startActivity(intent);
         	 MainActivity.this.finish();
-        	 new Thread(new CreateDirThread()).start();
+//        	 new Thread(new CreateDirThread()).start();
          }
          editor.putInt("count", ++count);
          editor.commit();
