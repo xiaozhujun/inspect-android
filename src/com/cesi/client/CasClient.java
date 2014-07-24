@@ -97,7 +97,7 @@ public class CasClient
         return true;
     }
 
-    //��ȡHttpResponse
+
     private String getResponseBody(HttpResponse response){
         StringBuilder sb = new StringBuilder();
         try {

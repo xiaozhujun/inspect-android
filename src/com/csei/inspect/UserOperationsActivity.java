@@ -33,6 +33,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
@@ -69,8 +70,8 @@ public class UserOperationsActivity extends Activity {
 	private PopupWindow window;
 	private SharedPreferences preferences;
 	private ProgressDialog dialog;
-	
-	
+
+
 	public static BMapManager mapManager;
 	public static Handler handler;
 	private static String latitude;
@@ -78,17 +79,17 @@ public class UserOperationsActivity extends Activity {
 	private static String city;
 	private static String address;
 	private static String user_Id;
-	
+
 	private TextView city_location;
-	
-	
+
+
 	@SuppressLint("HandlerLeak")
-	
+
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
-		
-		
+
+
 		mapManager = new BMapManager(getApplication());
 		mapManager.init(new MKGeneralListener() {
 
@@ -107,12 +108,12 @@ public class UserOperationsActivity extends Activity {
 						"网络错误", Toast.LENGTH_SHORT).show();
 			}
 		});
-		
+
 		setContentView(R.layout.activity_useroperations);
 		//取得用户ID
 		user_Id = getIntent().getExtras().getString("userId");
 		Log.i("msg", user_Id);
-		
+
 		handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
@@ -130,14 +131,14 @@ public class UserOperationsActivity extends Activity {
 				}else if(msg.what==3){
 					Toast.makeText(getApplicationContext(), "已向服务器端发送地理位置信息！\n"+msg.obj.toString(), Toast.LENGTH_SHORT).show();
 				}
-				
+
 			}
 		};
-		
+
 		startServer();
-		
+
 		city_location = (TextView) findViewById(R.id.textView2);
-		
+
 		//获得传递过来的数据
 		employer = (Employer) getIntent().getExtras().getParcelable("employer");
 		cellServiceDao=new TaskCellServiceDao(getApplicationContext());
@@ -151,10 +152,10 @@ public class UserOperationsActivity extends Activity {
 		dialog_init();
 		new Thread(new GetConfigFileThread()).start();
 		//设置gridview点击事件
-//		gv_setclick();
-		
+		//		gv_setclick();
+
 		igv_user.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				changPopState(v);
@@ -171,7 +172,7 @@ public class UserOperationsActivity extends Activity {
 		dialog.setCancelable(true);
 		dialog.show();
 	}
-	
+
 	private boolean isOpenPop = false;
 	private ListView list;
 	private ArrayList<Map<String, Object>> items;
@@ -187,7 +188,7 @@ public class UserOperationsActivity extends Activity {
 			}
 		}
 	}
-	
+
 	public ArrayList<Map<String, Object>> CreateData() {		
 		Map<String, Object> map;
 		map = new HashMap<String, Object>();
@@ -204,7 +205,7 @@ public class UserOperationsActivity extends Activity {
 		items.add(map);	
 		return items;
 	}
-	
+
 	OnItemClickListener popwindowlistClickListener=new OnItemClickListener() {
 		@SuppressWarnings("unchecked")
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -221,7 +222,7 @@ public class UserOperationsActivity extends Activity {
 			}
 		}
 	};
-	
+
 	private void popAwindow(View parent) {
 		if (window == null) {
 			LayoutInflater lay = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -289,7 +290,7 @@ public class UserOperationsActivity extends Activity {
 		HashMap<String, Object> project_map = new HashMap<String, Object>();
 		project_map.put("image", R.drawable.img_project);
 		project_map
-				.put("item", getResources().getString(R.string.text_project));
+		.put("item", getResources().getString(R.string.text_project));
 		listItems.add(project_map);
 		// 添加待做任务
 		HashMap<String, Object> task_map = new HashMap<String, Object>();
@@ -300,7 +301,7 @@ public class UserOperationsActivity extends Activity {
 		HashMap<String, Object> history_map = new HashMap<String, Object>();
 		history_map.put("image", R.drawable.img_history);
 		history_map
-				.put("item", getResources().getString(R.string.text_history));
+		.put("item", getResources().getString(R.string.text_history));
 		listItems.add(history_map);
 		//设置适配器
 		String[] from = { "image", "item" };
@@ -316,8 +317,8 @@ public class UserOperationsActivity extends Activity {
 				String cas = (String)textView.getText();
 				if(cas.equals("点检历史")){
 					bv_unupload = new BadgeView(UserOperationsActivity.this, (ImageView) view.findViewById(R.id.useroperations_gv_item_igv));
-			        bv_unupload.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
-			        unuploadNum=((Cursor)cellServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
+					bv_unupload.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+					unuploadNum=((Cursor)cellServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
 					bv_unupload.setText(""+unuploadNum);
 					bv_unupload.show();
 				}
@@ -333,9 +334,9 @@ public class UserOperationsActivity extends Activity {
 					bv_task.setText(""+taskNum);
 					bv_task.show();
 				}
-				
+
 				view.setOnClickListener(new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						switch (position) {
@@ -359,7 +360,7 @@ public class UserOperationsActivity extends Activity {
 		gridView.setAdapter(adapterSimple);
 		dialog.dismiss();
 	}
-	
+
 	@Override  
 	public boolean onKeyDown(int keyCode, KeyEvent event) {  
 		if(keyCode == KeyEvent.KEYCODE_BACK)  
@@ -368,7 +369,7 @@ public class UserOperationsActivity extends Activity {
 		}  
 		return false;  
 	}  
-	
+
 	private static Boolean isExit = false;
 	private void exitBy2Click() {  
 		Timer tExit = null;  
@@ -387,8 +388,8 @@ public class UserOperationsActivity extends Activity {
 			this.finish();
 		}  
 	}
-	
-	
+
+
 	class GetUnfinishNum implements Runnable{
 
 		@Override
@@ -396,9 +397,9 @@ public class UserOperationsActivity extends Activity {
 			//projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 			taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 			unuploadNum=((Cursor)cellServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
-			
+
 			runOnUiThread(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					//bv_project.setText(""+projectNum);bv_project.show();
@@ -421,7 +422,7 @@ public class UserOperationsActivity extends Activity {
 	private void datachange() {
 		new Thread(new GetUnfinishNum()).start();
 	}
-	
+
 	public void startServer(){
 		Intent intent = new Intent(this,com.csei.service.LocationService.class);
 		startService(intent);
@@ -431,15 +432,15 @@ public class UserOperationsActivity extends Activity {
 		Intent intent = new Intent(this,com.csei.service.LocationService.class);
 		stopService(intent);
 	}
-	
-	
-	
-	
+
+
+
+
 	class HandleProjectDataThread implements Runnable 
 	{
 		private String fileDir=preferences.getString("configsavepath", "/sdcard/inspect/config");
 		private String[] result;
-		
+
 		@Override
 		public void run() {//判断是否已创建行数据
 			if (((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), null)).getCount()>0) {
@@ -456,7 +457,7 @@ public class UserOperationsActivity extends Activity {
 				for (DbModel dbModel : list) {
 					result[count++] = dbModel.getTableitem();
 				}
-				
+
 				final ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 				ArrayList<String> projectnum=cellServiceDao.GetCurrentProjectNum(Tools.GetCurrentDate(), employer.getName());
 				int num;
@@ -471,32 +472,32 @@ public class UserOperationsActivity extends Activity {
 					}
 				}
 				else {//在判断是否有未完成的点检表
-//					if (num!=result.length) {//说明表格未完全创建 
-						for (String tablename : result) {
-							if (!projectnum.contains(tablename)) {//插入操作
-								cellServiceDao.addUser(new TaskCell(employer.getName(),
-										tablename,null,null,Tools.GetCurrentDate(),null,null,"未完成","未上传","点检项目"));
-							}
-							else {//更新操作
-								
-							}
-//						}
+					//					if (num!=result.length) {//说明表格未完全创建 
+					for (String tablename : result) {
+						if (!projectnum.contains(tablename)) {//插入操作
+							cellServiceDao.addUser(new TaskCell(employer.getName(),
+									tablename,null,null,Tools.GetCurrentDate(),null,null,"未完成","未上传","点检项目"));
+						}
+						else {//更新操作
+
+						}
+						//						}
 					}
 				}
 				//查询未上传
 				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), null)).getCount();;
 				new Thread(new HandleTaskThread()).start();
-				
+
 				//标记当天已创建行数据
 				Editor editor=preferences.edit();
-		        editor.putString("currentProjectflag", Tools.GetCurrentDate());
-		        editor.commit();
+				editor.putString("currentProjectflag", Tools.GetCurrentDate());
+				editor.commit();
 			}
 		}
-	
+
 	}
-	
-	
+
+
 	class GetConfigFileThread implements Runnable
 	{
 		private List<Map<String,Object>> confilelist;
@@ -511,35 +512,39 @@ public class UserOperationsActivity extends Activity {
 				try {
 					confilelist=JsonParser.GetConfigFileList(msg);
 				} catch (JSONException e) {
-					Toast.makeText(getApplicationContext(), "数据解析错误", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getApplicationContext(), "数据解析错误", Toast.LENGTH_SHORT).show();
 				}
 				inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetRoleTableFileAddress));
 				if(!Tools.SaveConfigFile(inputStream, "RolesTable.xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
-				{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
+				{
+					//Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();
+				}
 				for (Map<String,Object> item : confilelist) {//下载文件操作
 					inputStream=CasClient.getInstance().DoGetFile(getResources().getString(R.string.GetConfigFileBaseAddress)+(String)item.get("id"));
 					if(!Tools.SaveConfigFile(inputStream, item.get("filename")+".xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
-					{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
+					{
+						//Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();
+					}
 				}
 				Editor editor=preferences.edit();
-		        editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
-		        editor.commit();
+				editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
+				editor.commit();
 			}
 			new Thread(new HandleProjectDataThread()).start();
 		}
 	}
-	
-class HandleTaskThread implements Runnable{
-	private List<Map<String, Object>> list;
 
-		
+	class HandleTaskThread implements Runnable{
+		private List<Map<String, Object>> list;
+
+
 		@Override
 		public void run() {
 			if (((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), null)).getCount()>0) {
 				//查询未完成的任务，进行UI显示
 				taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						gv_init();
@@ -547,37 +552,37 @@ class HandleTaskThread implements Runnable{
 				});
 			}
 			else {
-			String msg=CasClient.getInstance().doGet(getResources().getString(R.string.usertasklist_GETTASKDATA));
-			Log.i("msg", msg);
-			try {
-				list=JsonParser.getTaskList(msg);
-				//当天已同步任务数据标志
-				Editor editor=preferences.edit();
-		        editor.putString("currentTaskflag", Tools.GetCurrentDate());
-		        editor.commit();
-			} catch (JSONException e) {
-				e.printStackTrace();
-		}
-			//因为用户可以跨越自己的点检任务，所以不能再根据行数据存在与否
-			//判断任务是否已在数据库创建行数据，通过点检项目创建的，若有则只需添加任务名、设备名、时间段
-			
-			ArrayList<String> arrayList=cellServiceDao.GetCurrentProjectNum(Tools.GetCurrentDate(), employer.getName());
-			if (null==arrayList) {//没有行数据
-				for (Map<String, Object> item : list) {
-					cellServiceDao.addUser(new TaskCell(employer.getName(),
-							(String)item.get("tableName"),
-							(String)item.get("planName"),
-							(String)item.get("deviceName"),
-							Tools.GetCurrentDate(),
-							(String)item.get("deadline"),
-							null,
-							"未完成",
-							"未上传","待做任务"));
-					Log.i("usertask", "插入行数据");
+				String msg=CasClient.getInstance().doGet(getResources().getString(R.string.usertasklist_GETTASKDATA));
+				Log.i("msg", msg);
+				try {
+					list=JsonParser.getTaskList(msg);
+					//当天已同步任务数据标志
+					Editor editor=preferences.edit();
+					editor.putString("currentTaskflag", Tools.GetCurrentDate());
+					editor.commit();
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			}
-			else {//部分有数据或全部
-//				if (list.size()!=arrayList.size()) {//部分有数据
+				//因为用户可以跨越自己的点检任务，所以不能再根据行数据存在与否
+				//判断任务是否已在数据库创建行数据，通过点检项目创建的，若有则只需添加任务名、设备名、时间段
+
+				ArrayList<String> arrayList=cellServiceDao.GetCurrentProjectNum(Tools.GetCurrentDate(), employer.getName());
+				if (null==arrayList) {//没有行数据
+					for (Map<String, Object> item : list) {
+						cellServiceDao.addUser(new TaskCell(employer.getName(),
+								(String)item.get("tableName"),
+								(String)item.get("planName"),
+								(String)item.get("deviceName"),
+								Tools.GetCurrentDate(),
+								(String)item.get("deadline"),
+								null,
+								"未完成",
+								"未上传","待做任务"));
+						Log.i("usertask", "插入行数据");
+					}
+				}
+				else {//部分有数据或全部
+					//				if (list.size()!=arrayList.size()) {//部分有数据
 					for (Map<String, Object> item : list) {
 						if (!arrayList.contains(item.get("tableName"))) {//插入操作
 							cellServiceDao.addUser(new TaskCell(employer.getName(),
@@ -596,41 +601,41 @@ class HandleTaskThread implements Runnable{
 							Log.i("usertask", "更新行数据");
 						}
 					}
-//				}
-			}
-			//查询未完成的任务，进行UI显示
-			taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					gv_init();
+					//				}
 				}
-			});
+				//查询未完成的任务，进行UI显示
+				taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						gv_init();
+					}
+				});
+			}
 		}
-		}
-}
-
-public static class SendLocationThread implements Runnable{
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		HashMap<String,Object> params = new HashMap<String,Object>();
-		params.put("lng", longtitude);
-		params.put("address", address);
-		params.put("userId", user_Id);
-		params.put("lat", latitude);
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("jsonString",com.csei.util.JsonUtils.HashToJson(params));
-		Log.i("msg", com.csei.util.JsonUtils.HashToJson(params));
-		String message = CasClient.getInstance().doPost("http://www.cseicms.com/inspectManagement/" +
-				"rs/inspectLocate/receiveInspectLocateInfo",
-				map);
-		Message msg = Message.obtain();
-		msg.obj = message;
-		msg.what=3;
-		handler.sendMessage(msg);
 	}
-}
-	
+
+	public static class SendLocationThread implements Runnable{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			HashMap<String,Object> params = new HashMap<String,Object>();
+			params.put("lng", longtitude);
+			params.put("address", address);
+			params.put("userId", user_Id);
+			params.put("lat", latitude);
+			HashMap<String,Object> map = new HashMap<String,Object>();
+			map.put("jsonString",com.csei.util.JsonUtils.HashToJson(params));
+			Log.i("msg", com.csei.util.JsonUtils.HashToJson(params));
+			String message = CasClient.getInstance().doPost("http://www.cseicms.com/inspectManagement/" +
+					"rs/inspectLocate/receiveInspectLocateInfo",
+					map);
+			Message msg = Message.obtain();
+			msg.obj = message;
+			msg.what=3;
+			handler.sendMessage(msg);
+		}
+	}
+
 }
