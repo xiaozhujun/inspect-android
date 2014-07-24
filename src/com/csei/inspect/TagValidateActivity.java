@@ -146,6 +146,8 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		//2014-07-19 郭知祥添加 设置数据文件目录
 		preferences=getSharedPreferences("count", Context.MODE_PRIVATE);
 		FileUtil.setInspectDir(preferences.getString("datasavepath", getResources().getString(R.string.default_datasavepath)));

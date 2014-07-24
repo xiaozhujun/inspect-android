@@ -21,7 +21,7 @@ public class JsonParser {
 		JSONObject datajsonObject = jsonObject.getJSONObject("data");
 		return new Employer(datajsonObject.getString("role"),
 				datajsonObject.getString("roleNum"),
-				datajsonObject.getString("name"),
+				datajsonObject.getString("userName"),
 				datajsonObject.getString("number"));
 	}
 	

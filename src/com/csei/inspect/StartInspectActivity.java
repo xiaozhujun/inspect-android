@@ -11,6 +11,7 @@ public class StartInspectActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.loadingview);
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		main_imageview= (LoadingView) findViewById(R.id.main_imageview);
 		initLoadingImages();
 		new Thread()

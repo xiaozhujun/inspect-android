@@ -16,10 +16,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 public class WelcomeActivity extends Activity {
-	//��ҳ�ؼ�
+
 		private ViewPager mViewPager;
 		
-		//��5���ǵײ���ʾ��ǰ״̬��imageView
+		
 		private ImageView mPage0;
 		private ImageView mPage1;
 		private ImageView mPage2;
@@ -31,10 +31,11 @@ public class WelcomeActivity extends Activity {
 		
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	    	//ȥ��������ȫ����ʾ
+	  
 	    	requestWindowFeature(Window.FEATURE_NO_TITLE);
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.welcome);        
+	        com.csei.application.MyApplication.getInstance().addActivity(this);
 	        mViewPager = (ViewPager)findViewById(R.id.whatsnew_viewpager);
 	        
 	        
@@ -47,10 +48,7 @@ public class WelcomeActivity extends Activity {
 	        mPage5 = (ImageView)findViewById(R.id.page5);
 	        mPage6 = (ImageView)findViewById(R.id.page6);
 	          
-	      /*
-	       * ������ÿһҳҪ��ʾ�Ĳ��֣����Ӧ����Ҫ���ص����������ʾ������
-	       * �Լ���Ҫ��ʾ����ҳ��
-	       */
+	 
 	        LayoutInflater mLi = LayoutInflater.from(this);
 	        View view1 = mLi.inflate(R.layout.whats_news_gallery_one, null);
 	        View view2 = mLi.inflate(R.layout.whats_news_gallery_two, null);
@@ -59,10 +57,7 @@ public class WelcomeActivity extends Activity {
 	        View view5 = mLi.inflate(R.layout.whats_news_gallery_five, null);
 	        View view6 = mLi.inflate(R.layout.whats_news_gallery_six, null);
 	        View view7 = mLi.inflate(R.layout.whats_news_gallery_seven, null);
-	      	/*
-	      	 * ���ｫÿһҳ��ʾ��view��ŵ�ArrayList������
-	      	 * ������ViewPager��������˳�����չʾ
-	      	 */
+
 	        final ArrayList<View> views = new ArrayList<View>();
 	        views.add(view1);
 	        views.add(view2);
@@ -73,10 +68,7 @@ public class WelcomeActivity extends Activity {
 	        views.add(view7); 
 	        
 	        
-	        /*
-	      	 * ÿ��ҳ���Title��ݴ�ŵ�ArrayList������
-	      	 * ������ViewPager�������е���չʾ
-	      	 */
+	  
 	        final ArrayList<String> titles = new ArrayList<String>();
 	        titles.add("tab1");
 	        titles.add("tab2");
@@ -86,7 +78,7 @@ public class WelcomeActivity extends Activity {
 	        titles.add("tab6");
 	        titles.add("tab7");
 	        
-	        //���ViewPager�����������
+	 
 	        MyPagerAdapter mPagerAdapter = new MyPagerAdapter(views,titles);
 			mViewPager.setAdapter(mPagerAdapter);
 			view7.setOnClickListener(new OnClickListener() {
@@ -105,7 +97,7 @@ public class WelcomeActivity extends Activity {
 	    	
 			public void onPageSelected(int page) {
 				
-				//��ҳʱ��ǰpage,�ı䵱ǰ״̬԰��ͼƬ
+				
 				switch (page) {
 				case 0:				
 					mPage0.setImageDrawable(getResources().getDrawable(R.drawable.page_now));

@@ -1,5 +1,6 @@
 package com.csei.inspect;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import com.baidu.mapapi.MKGeneralListener;
 import com.cesi.analysexml.DbModel;
 import com.cesi.analysexml.ParseXml;
 import com.cesi.client.CasClient;
+import com.csei.application.MyApplication;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
@@ -108,7 +110,7 @@ public class UserOperationsActivity extends Activity {
 						"网络错误", Toast.LENGTH_SHORT).show();
 			}
 		});
-
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		setContentView(R.layout.activity_useroperations);
 		//取得用户ID
 		user_Id = getIntent().getExtras().getString("userId");
@@ -213,9 +215,11 @@ public class UserOperationsActivity extends Activity {
 			Map<String, Object> map=(Map<String, Object>) parent.getItemAtPosition(position);
 			String cas = (String)map.get(KEY);
 			if(cas.equals("切换账号")){
-				CasClient.getInstance().logout();
-				finish();
-				startActivity(new Intent(UserOperationsActivity.this,LoginActivity.class));
+				CasClient.getInstance().reset();
+				final Intent it = getPackageManager().getLaunchIntentForPackage(getPackageName());
+				it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				stopServer();
+				startActivity(it);
 			}
 			else if(cas.equals("退出")){
 				finish();
@@ -385,7 +389,9 @@ public class UserOperationsActivity extends Activity {
 			}, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务  
 
 		} else {  
-			this.finish();
+			stopServer();
+			stopService(new Intent("com.csei.service.RFIDService"));
+			MyApplication.getInstance().exit2();
 		}  
 	}
 
@@ -505,7 +511,7 @@ public class UserOperationsActivity extends Activity {
 		@Override
 		public void run() {
 			//首先获得文件列表数据，根据列表数据去获得文件地址
-			if (!preferences.getString("currentConfigFileflag", "00-00-00").equals(Tools.GetCurrentDate())) {
+			//if (!preferences.getString("currentConfigFileflag", "00-00-00").equals(Tools.GetCurrentDate())) {
 				String msg=CasClient.getInstance().doPostNoParams(getResources().getString(R.string.GetConfigFileListAddress));
 				//Log.i("doget", msg);
 				confilelist=new ArrayList<Map<String,Object>>();
@@ -529,7 +535,13 @@ public class UserOperationsActivity extends Activity {
 				Editor editor=preferences.edit();
 				editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
 				editor.commit();
-			}
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			//}
 			new Thread(new HandleProjectDataThread()).start();
 		}
 	}
@@ -543,6 +555,7 @@ public class UserOperationsActivity extends Activity {
 			if (((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), null)).getCount()>0) {
 				//查询未完成的任务，进行UI显示
 				taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
+				
 				runOnUiThread(new Runnable() {
 
 					@Override
@@ -605,6 +618,7 @@ public class UserOperationsActivity extends Activity {
 				}
 				//查询未完成的任务，进行UI显示
 				taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
+				startServer();
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {

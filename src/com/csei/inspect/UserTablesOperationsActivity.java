@@ -57,6 +57,7 @@ public class UserTablesOperationsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_usertablesoperation);
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		rolestablelist = (ListView) findViewById(R.id.activity_usertables_lv);
 		imageView=(ImageView) findViewById(R.id.usertableoperation_igv_upload);
 		badge1 = new BadgeView(this, imageView);

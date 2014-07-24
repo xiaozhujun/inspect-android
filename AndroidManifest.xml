@@ -87,7 +87,8 @@
         </service>
         <service android:name="com.example.service.RFIDService" >
         </service>
-        <service android:name="com.csei.service.LocationService"></service>
+        <service android:name="com.csei.service.LocationService"
+            android:exported="false"></service>
 
         <activity
             android:name="com.csei.inspect.LoginActivity"

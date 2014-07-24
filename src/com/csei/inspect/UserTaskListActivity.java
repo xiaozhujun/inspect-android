@@ -69,6 +69,7 @@ public class UserTaskListActivity extends Activity {
 	{
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_usertasklist);
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		listView=(ListView)findViewById(R.id.usertasklist_lv);
 		imageView=(ImageView) findViewById(R.id.usertasklist_igv_upload);
 		userServiceDao=new TaskCellServiceDao(UserTaskListActivity.this);

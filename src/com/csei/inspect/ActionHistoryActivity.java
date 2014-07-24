@@ -10,6 +10,7 @@ import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
+
 import org.whut.inspect.R;
 
 import android.app.Activity;
@@ -52,7 +53,7 @@ public class ActionHistoryActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_history);
 		listView=(ListView) findViewById(R.id.actionhistory_lv);
-		
+		com.csei.application.MyApplication.getInstance().addActivity(this);
 		btnCancelAll = (Button) findViewById(R.id.btnCancelAll);
 		btnSelAll = (Button) findViewById(R.id.btnSelAll);
 		btnDelAll = (Button) findViewById(R.id.btnDelAll);

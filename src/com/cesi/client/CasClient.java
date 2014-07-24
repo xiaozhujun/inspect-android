@@ -30,8 +30,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.ContentBody;
+
 import org.apache.http.entity.mime.content.FileBody;
 
 import android.util.Log;
@@ -221,7 +220,7 @@ public class CasClient
         return sessionId;
     }
 
-  //�汾��
+
     @SuppressWarnings("deprecation")
 	public String doSendFile2(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
     	httpClient.getParams().setParameter(  
@@ -239,7 +238,7 @@ public class CasClient
 //        }  
     	return EntityUtils.toString(resEntity);
 	}
-    //����GET����
+
     public String doGet(String service){
         Log.i("cas client doGet url:", service);
         HttpGet httpGet = new HttpGet (service);
@@ -267,7 +266,7 @@ public class CasClient
         return null;
     }
 
-    public InputStream DoGetFile(String service)
+    synchronized public InputStream DoGetFile(String service)
     {
     	HttpGet httpGet = new HttpGet (service);
         try
@@ -293,7 +292,6 @@ public class CasClient
     	
     }
     
-    //����POST����
     synchronized public String doPost(String service,HashMap<String,Object> params){
         Log.i("cas client doPost url:", service);
         HttpPost httpPost = new HttpPost (service);
