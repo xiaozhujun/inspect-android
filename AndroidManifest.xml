@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.viewpager"
+    package="org.whut.inspect"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -38,6 +38,11 @@
         <activity
             android:name="com.csei.inspect.WelcomeActivity">  
         </activity>
+        
+         <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3pN6ZGzoaYObhjGe4APbP4Xf" />
+        
        <service android:name="com.example.service.RFIDService" ></service>
        
        <service android:name="com.csei.service.RFIDService"></service>

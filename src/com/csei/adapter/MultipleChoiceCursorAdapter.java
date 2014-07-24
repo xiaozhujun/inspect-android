@@ -1,7 +1,7 @@
 package com.csei.adapter;
 
 import com.csei.inspect.ActionHistoryActivity;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.content.Context;
 import android.database.Cursor;

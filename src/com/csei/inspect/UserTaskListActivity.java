@@ -17,7 +17,7 @@ import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
 import com.csei.inspect.UserTablesOperationsActivity.MySimpleCursorAdapter;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.integer;

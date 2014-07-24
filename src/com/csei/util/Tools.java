@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

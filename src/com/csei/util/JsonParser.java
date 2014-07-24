@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import com.csei.entity.Employer;
 import com.example.nfcdemo.R.string;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 public class JsonParser {
 

@@ -1,5 +1,5 @@
 package com.csei.inspect;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import com.csei.inspect.LoadingView;
 import android.app.Activity;
 import android.content.Intent;

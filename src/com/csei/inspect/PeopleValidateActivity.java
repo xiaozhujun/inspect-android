@@ -13,7 +13,7 @@ import com.csei.entity.Employer;
 import com.csei.entity.Listable;
 import com.csei.service.RFIDService;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;

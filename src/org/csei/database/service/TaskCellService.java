@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.csei.database.entity.TaskCell;
 
-import com.example.viewpager.R.string;
+import org.whut.inspect.R.string;
 
 import android.database.Cursor;
 

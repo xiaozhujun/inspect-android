@@ -14,7 +14,7 @@ import com.csei.entity.Employer;
 import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
 import com.csei.inspect.UserOperationsActivity.HandleTaskThread;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.integer;

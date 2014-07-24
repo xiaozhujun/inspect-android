@@ -2,7 +2,7 @@ package com.csei.inspect;
 
 import java.util.ArrayList;
 
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.app.Activity;
 import android.content.Intent;

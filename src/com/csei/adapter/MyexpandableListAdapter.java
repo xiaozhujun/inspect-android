@@ -1,7 +1,7 @@
 package com.csei.adapter;
 import java.util.ArrayList;
 import java.util.List;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -22,11 +22,11 @@ public class MyexpandableListAdapter extends BaseExpandableListAdapter {
 		this.childList=childList;
 		inflater = LayoutInflater.from(context);
 	}
-	// ·µ»Ø¸¸ÁÐ±í¸öÊý
+	// ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½
 	public int getGroupCount() {
 		return groupList.size();
 	}
-	// ·µ»Ø×ÓÁÐ±í¸öÊý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½
 	public int getChildrenCount(int groupPosition) {
 		return childList.get(groupPosition).size();
 	}

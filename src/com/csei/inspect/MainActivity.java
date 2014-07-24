@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.csei.service.RFIDService;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
