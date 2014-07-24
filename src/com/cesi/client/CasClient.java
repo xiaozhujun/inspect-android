@@ -301,7 +301,7 @@ public class CasClient
         {
             List <NameValuePair> nvps = new ArrayList <NameValuePair> ();
             for(String key:params.keySet()){
-                nvps.add(new BasicNameValuePair (key, params.get(key)));
+                nvps.add(new BasicNameValuePair (key, (String) params.get(key)));
             }
             httpPost.setEntity(new UrlEncodedFormEntity(nvps,HTTP.UTF_8));
             
