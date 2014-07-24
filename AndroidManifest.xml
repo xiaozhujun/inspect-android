@@ -85,10 +85,9 @@
             android:enabled="true"
             android:process=":remote" >
         </service>
-        <service android:name="com.example.service.RFIDService" >
+        <service android:name="com.csei.service.RFIDService" >
         </service>
-        <service android:name="com.csei.service.LocationService"
-            android:exported="false"></service>
+        <service android:name="com.csei.service.LocationService"></service>
 
         <activity
             android:name="com.csei.inspect.LoginActivity"
