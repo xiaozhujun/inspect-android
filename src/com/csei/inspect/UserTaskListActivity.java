@@ -17,13 +17,19 @@ import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
 import com.csei.inspect.UserTablesOperationsActivity.MySimpleCursorAdapter;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
+
 import org.whut.inspect.R;
+
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -55,6 +61,7 @@ public class UserTaskListActivity extends Activity {
 	private ImageView imageView;
 	private BadgeView badge1;
 	private int unuploadnum;
+	private Builder builder;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -65,6 +72,11 @@ public class UserTaskListActivity extends Activity {
 		listView=(ListView)findViewById(R.id.usertasklist_lv);
 		imageView=(ImageView) findViewById(R.id.usertasklist_igv_upload);
 		userServiceDao=new TaskCellServiceDao(UserTaskListActivity.this);
+		//任务对话框
+		builder = new AlertDialog.Builder(this);
+		builder.setTitle("提示");
+		// 设置对话框显示的内容
+		builder.setMessage("是否再次编辑任务？");
 		badge1 = new BadgeView(this, imageView);
         badge1.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +251,29 @@ public class UserTaskListActivity extends Activity {
 			convertView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					if(btn_finishflag.getText().equals("已完成")){
+						builder.setPositiveButton("确定"
+							, new OnClickListener()
+							{
+								@Override
+								public void onClick(DialogInterface dialog, int which)
+								{
+									Intent intent = new Intent(UserTaskListActivity.this,
+											TagValidateActivity.class);
+									cursor.moveToPosition(position);
+									Bundle bundle = new Bundle();
+									bundle.putString("tbname", cursor.getString(cursor.getColumnIndex("tablename")));
+									bundle.putInt("count", 1);
+									bundle.putString("username",employer.getName());
+									bundle.putInt("uid",Integer.parseInt(employer.getNumber()));
+									intent.putExtras(bundle);
+									startActivity(intent);
+								}
+							});
+						builder.setNegativeButton("取消",null);
+						builder.create().show();
+					}
+					else {
 					Intent intent = new Intent(UserTaskListActivity.this,
 							TagValidateActivity.class);
 					cursor.moveToPosition(position);
@@ -249,6 +284,7 @@ public class UserTaskListActivity extends Activity {
 					bundle.putInt("uid",Integer.parseInt(employer.getNumber()));
 					intent.putExtras(bundle);
 					startActivity(intent);
+					}
 				}
 			});
 			return convertView;

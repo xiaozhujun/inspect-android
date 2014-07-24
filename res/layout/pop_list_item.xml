@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
         android:textSize="@dimen/size_title" />
 
 </LinearLayout>

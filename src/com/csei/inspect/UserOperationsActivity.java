@@ -12,6 +12,7 @@ import java.util.prefs.Preferences;
 import org.csei.database.entity.TaskCell;
 import org.csei.database.service.imp.TaskCellServiceDao;
 import org.json.JSONException;
+import org.whut.inspect.R;
 
 import com.cesi.analysexml.DbModel;
 import com.cesi.analysexml.ParseXml;
@@ -19,7 +20,6 @@ import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
-import org.whut.inspect.R;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.bool;
@@ -79,6 +79,7 @@ public class UserOperationsActivity extends Activity {
 		cellServiceDao=new TaskCellServiceDao(getApplicationContext());
 		igv_user=(ImageView) findViewById(R.id.useroperation_igv_user);
 		igv_arrow=(ImageView) findViewById(R.id.useroperation_igv_arrow);
+		igv_arrow.setBackgroundResource(R.drawable.icon_arrow_down);
 		items=new ArrayList<Map<String, Object>>();
 		preferences=getSharedPreferences("count", Context.MODE_PRIVATE);
 		//小图标初始化
@@ -134,6 +135,9 @@ public class UserOperationsActivity extends Activity {
 		map = new HashMap<String, Object>();
 		map.put(KEY, "切换账号");
 		items.add(map);	
+		map = new HashMap<String, Object>();
+		map.put(KEY, "退出");
+		items.add(map);	
 		return items;
 	}
 	
@@ -147,6 +151,9 @@ public class UserOperationsActivity extends Activity {
 				CasClient.getInstance().logout();
 				finish();
 				startActivity(new Intent(UserOperationsActivity.this,LoginActivity.class));
+			}
+			else if(cas.equals("退出")){
+				finish();
 			}
 		}
 	};
@@ -163,7 +170,6 @@ public class UserOperationsActivity extends Activity {
 			list.setItemsCanFocus(false);
 			list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 			list.setOnItemClickListener(popwindowlistClickListener);
-			// window = new PopupWindow(v, 260, 300);
 			int x = (int) getResources().getDimension(R.dimen.pop_x);
 			int y = (int) getResources().getDimension(R.dimen.pop_y);
 			window = new PopupWindow(v, x, y);
@@ -323,7 +329,7 @@ public class UserOperationsActivity extends Activity {
 
 		@Override
 		public void run() {
-			projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
+			//projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 			taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 			unuploadNum=((Cursor)cellServiceDao.GetCurrentUnuploadNum(employer.getName(), Tools.GetCurrentDate(), "已完成","未上传")).getCount();
 			
@@ -331,7 +337,7 @@ public class UserOperationsActivity extends Activity {
 				
 				@Override
 				public void run() {
-					bv_project.setText(""+projectNum);bv_project.show();
+					//bv_project.setText(""+projectNum);bv_project.show();
 					bv_task.setText(""+taskNum);bv_task.show();
 					bv_unupload.setText(""+unuploadNum);bv_unupload.show();
 				}
@@ -362,8 +368,8 @@ public class UserOperationsActivity extends Activity {
 		
 		@Override
 		public void run() {//判断是否已创建行数据
-			if (preferences.getString("currentProjectflag", "00-00-00").equals(Tools.GetCurrentDate())) {
-				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
+			if (((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), null)).getCount()>0) {
+				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), null)).getCount();
 				new Thread(new HandleTaskThread()).start();
 			}
 			else {
@@ -404,7 +410,7 @@ public class UserOperationsActivity extends Activity {
 					}
 				}
 				//查询未上传
-				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();;
+				projectNum=((Cursor)cellServiceDao.GetCurrentProject(employer.getName(), Tools.GetCurrentDate(), null)).getCount();;
 				new Thread(new HandleTaskThread()).start();
 				
 				//标记当天已创建行数据
@@ -447,8 +453,6 @@ public class UserOperationsActivity extends Activity {
 			}
 			new Thread(new HandleProjectDataThread()).start();
 		}
-		
-		
 	}
 	
 class HandleTaskThread implements Runnable{
@@ -457,7 +461,7 @@ class HandleTaskThread implements Runnable{
 		@SuppressWarnings("deprecation")
 		@Override
 		public void run() {
-			if (preferences.getString("currentTaskflag", "00-00-00").equals(Tools.GetCurrentDate())) {
+			if (((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), null)).getCount()>0) {
 				//查询未完成的任务，进行UI显示
 				taskNum=((Cursor)cellServiceDao.GetCurrentTask(employer.getName(), Tools.GetCurrentDate(), "未完成")).getCount();
 				runOnUiThread(new Runnable() {

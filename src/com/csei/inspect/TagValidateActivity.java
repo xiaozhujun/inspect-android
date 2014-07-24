@@ -303,7 +303,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			window = new PopupWindow(v, x, y);
 		}
 		window.setBackgroundDrawable(getResources().getDrawable(
-				R.drawable.pop_bg));
+				R.drawable.main_popupwindow_user_bg));
 		window.setFocusable(true);
 		window.setOutsideTouchable(false);
 		window.setOnDismissListener(new OnDismissListener() {
