@@ -1,6 +1,5 @@
 package com.csei.adapter;
 
-import com.csei.inspect.ActionHistoryActivity;
 import org.whut.inspect.R;
 
 import android.content.Context;
