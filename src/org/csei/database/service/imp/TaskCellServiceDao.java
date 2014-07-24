@@ -9,7 +9,7 @@ import org.csei.database.DBHelper;
 import org.csei.database.entity.TaskCell;
 import org.csei.database.service.TaskCellService;
 
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.content.Context;
 import android.database.Cursor;

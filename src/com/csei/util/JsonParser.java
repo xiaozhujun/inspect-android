@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import com.csei.entity.Employer;
 import com.example.nfcdemo.R.string;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 public class JsonParser {
 
@@ -19,8 +19,7 @@ public class JsonParser {
 	{
 		JSONObject jsonObject = new JSONObject(msg);
 		JSONObject datajsonObject = jsonObject.getJSONObject("data");
-		return new Employer(
-				datajsonObject.getString("role"),
+		return new Employer(datajsonObject.getString("role"),
 				datajsonObject.getString("roleNum"),
 				datajsonObject.getString("name"),
 				datajsonObject.getString("number"));
@@ -28,13 +27,14 @@ public class JsonParser {
 	
 	public static List<Map<String,Object>> getTaskList(String msg) throws  JSONException
 	{
-		Map<String, Object> map=new HashMap<String, Object>();
+		Map<String, Object> map;
 		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
 		JSONObject datajsonObject = new JSONObject(msg);
 		JSONArray jsonArray = datajsonObject.getJSONArray("data");
 		for(int i=0;i<jsonArray.length();i++)
 		{
 			//����ͼƬ չʾ�����
+			map=new HashMap<String, Object>();
 			map.put("image", R.drawable.img_task_clock);
 			map.put("planName", jsonArray.getJSONObject(i).getString("planName"));
 			map.put("deviceName", jsonArray.getJSONObject(i).getString("deviceName"));
@@ -60,5 +60,22 @@ public class JsonParser {
 		}
 		return false;
 	}
+	//获取配置文件列表
+	public static List<Map<String,Object>> GetConfigFileList(String msg) throws  JSONException
+	{
+		Map<String, Object> map;
+		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
+		JSONObject datajsonObject = new JSONObject(msg);
+		JSONArray jsonArray = datajsonObject.getJSONArray("data");
+		for(int i=0;i<jsonArray.length();i++)
+		{
+			map=new HashMap<String, Object>();
+			map.put("id", jsonArray.getJSONObject(i).getString("id"));
+			map.put("filename", jsonArray.getJSONObject(i).getString("name"));
+			list.add(map);
+		}
+		return list;
+	}
+	
 	
 }

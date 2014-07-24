@@ -41,8 +41,7 @@
                 android:id="@+id/useroperation_igv_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/icon_arrow_down" />
+                android:layout_gravity="right|center" />
 
         </LinearLayout>
 

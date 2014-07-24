@@ -10,7 +10,7 @@ import com.cesi.client.CasClient;
 import com.csei.entity.Employer;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

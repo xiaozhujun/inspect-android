@@ -25,15 +25,15 @@ import android.os.Message;
 import android.util.Log;
 
 public class RFIDService extends Service {
-	//ÇøÓò¿¨ÃÜÂë
+	//åŒºåŸŸå¡å¯†ç 
 	private static final String AREA_PASSWORD = "FFFFFFFFFFFF";
 	
 	private NFCcmdManager cmdManager = null;
-	//¹ã²¥½ÓÊÜÕß
+	//å¹¿æ’­æ¥å—è€…
 	private MyReceiver myReceiver; 	
-	//¿¨ÀàĞÍ
+	//å¡ç±»å‹
 	private String cardType = null;
-	//·¢ËÍÇëÇóµÄactivity
+	//å‘é€è¯·æ±‚çš„activity
 	private String activity = null;
 	
 	private String Tag = "RFIDService";  //Debug
@@ -62,7 +62,7 @@ public class RFIDService extends Service {
 	
 	
 	
-	//¶ÁÈ¡Êı¾İ²¢·µ»Ø¸øÇëÇó¶Ë
+	//è¯»å–æ•°æ®å¹¶è¿”å›ç»™è¯·æ±‚ç«¯
 	private Handler handler = new Handler(){
 		
 		public void handleMessage(android.os.Message msg) {
@@ -114,7 +114,7 @@ public class RFIDService extends Service {
 		}
 		
 		
-		//ÈÏÖ¤
+		//è®¤è¯
 		private boolean authCard(int sector, String password, String cardID){
 			boolean flag = false;
 			byte[] cardIDBytes = Tools.HexString2Bytes(cardID);
@@ -125,7 +125,7 @@ public class RFIDService extends Service {
 			return flag;
 		}
 		
-		//¶ÁÊı¾İ
+		//è¯»æ•°æ®
 		private String readCard(String block){
 			String data = null;
 			byte[] dataBytes = null;
@@ -141,7 +141,7 @@ public class RFIDService extends Service {
 			return data;
 		}
 		
-		//Ğ´Êı¾İ
+		//å†™æ•°æ®
 		private boolean writeCard(String block, String data){
 			boolean flag = false;
 			byte[] dataBytes = Tools.HexString2Bytes(data);
@@ -158,17 +158,17 @@ public class RFIDService extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		Log.i(Tag, "service onCreate");
-		cmdManager = NFCcmdManager.getNFCcmdManager(13, 115200, 0);  //´ò¿ª´®¿Ú£¬´®¿Ú13£¬²¨ÌØÂÊ115200
+		cmdManager = NFCcmdManager.getNFCcmdManager(13, 115200, 0);  //æ‰“å¼€ä¸²å£ï¼Œä¸²å£13ï¼Œæ³¢ç‰¹ç‡115200
 		if(cmdManager != null){
 			
-			cmdManager.readerPowerOn();//´ò¿ªµçÔ´
-			/*²âÊÔÄ£¿éÊÇ·ñÁ¬½ÓÉÏ*/
+			cmdManager.readerPowerOn();//æ‰“å¼€ç”µæº
+			/*æµ‹è¯•æ¨¡å—æ˜¯å¦è¿æ¥ä¸Š*/
 			String version = cmdManager.getVersion();
 			if(version != null){
 				Log.i(Tag, "cmdManager version "+version);
 			}
 		}
-		// ×¢²áBroadcast Receiver£¬ÓÃÓÚ¹Ø±ÕService
+		// æ³¨å†ŒBroadcast Receiverï¼Œç”¨äºå…³é—­Service
 		myReceiver = new MyReceiver();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.csei.service.RFIDService");
@@ -189,7 +189,7 @@ public class RFIDService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 	
-	//Ñ°¿¨,¶ÁÈ¡cardID
+	//å¯»å¡,è¯»å–cardID
 	private void startSearchCard(){
 		searchCard = new Timer();
 		searchCard.schedule(new TimerTask() {
@@ -199,17 +199,17 @@ public class RFIDService extends Service {
 //			byte[] b
 			@Override
 			public void run() {
-				//Ñ°¿¨Á÷³Ì£º14443A³õÊ¼»¯-->14443AÑ°¿¨-->14443AÈ¡Ïû³õÊ¼»¯
+				//å¯»å¡æµç¨‹ï¼š14443Aåˆå§‹åŒ–-->14443Aå¯»å¡-->14443Aå–æ¶ˆåˆå§‹åŒ–
 				init14443AFlag = cmdManager.init_14443A();
 				if(init14443AFlag){
 					Log.i(Tag, "init14443A flag    " + init14443AFlag );
-					// Ñ°¿¨
+					// å¯»å¡
 					cardID14443A = cmdManager.inventory_14443A();
 					if(cardID14443A != null ){
 						
-						//È¡Ïû14443A³õÊ¼»¯
+						//å–æ¶ˆ14443Aåˆå§‹åŒ–
 						if(cmdManager.deInit_14443A()){
-							//Mifare³õÊ¼»¯
+							//Mifareåˆå§‹åŒ–
 							if(cmdManager.initMifare14443A()){
 								cardID = Tools.Bytes2HexString(cardID14443A, cardID14443A.length);
 								Log.i(Tag, "rfid car cardID " + cardID );
@@ -239,11 +239,11 @@ public class RFIDService extends Service {
 			startSearchCard();
 		} else {
 			Log.e("cardType", cardType + " is not right!0x01|0x02");
-			// ·µ»Ø¶Áµ½µÄÊı¾İ¸øÇëÇóÕß
+			// è¿”å›è¯»åˆ°çš„æ•°æ®ç»™è¯·æ±‚è€…
 			Intent serviceIntent = new Intent();
 			serviceIntent.setAction(activity);
 			serviceIntent.putExtra("code", "1");
-			serviceIntent.putExtra("result", "¿¨ÀàĞÍ´íÎó");
+			serviceIntent.putExtra("result", "å¡ç±»å‹é”™è¯¯");
 			sendBroadcast(serviceIntent);
 		}
 	}
@@ -252,11 +252,11 @@ public class RFIDService extends Service {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		Log.i(Tag, "onDestroy");
-		//Ğ¶ÔØ¹ã²¥×¢²á
+		//å¸è½½å¹¿æ’­æ³¨å†Œ
 		if(myReceiver != null){
 			unregisterReceiver(myReceiver);
 		}
-		//¹Ø±Õ´®¿Ú
+		//å…³é—­ä¸²å£
 		if(cmdManager != null){
 			cmdManager.close(13);
 			Log.i(Tag, "onDestroy close");
@@ -266,7 +266,7 @@ public class RFIDService extends Service {
 	}
 	
 	/**
-	 * ¹ã²¥½ÓÊÜÕß
+	 * å¹¿æ’­æ¥å—è€…
 	 * @author Jimmy Pang
 	 */
 	private class MyReceiver extends BroadcastReceiver {
@@ -276,13 +276,13 @@ public class RFIDService extends Service {
 			String ac = intent.getStringExtra("activity");
 			if (ac != null)
 				Log.e("receive activity", ac);
-			activity = ac; // »ñÈ¡activity
-			//¹Ø±Õ·şÎñ
+			activity = ac; // è·å–activity
+			//å…³é—­æœåŠ¡
 			if (intent.getBooleanExtra("stopflag", false)) {
-				stopSelf(); // ÊÕµ½Í£Ö¹·şÎñĞÅºÅ
+				stopSelf(); // æ”¶åˆ°åœæ­¢æœåŠ¡ä¿¡å·
 				Log.e("stop service", intent.getBooleanExtra("stopflag", false) + "");
 			}
-			//¹Ø±ÕÑ°¿¨
+			//å…³é—­å¯»å¡
 			if (intent.getBooleanExtra("stopSearch", false)) {
 				if(searchCard != null){
 					searchCard.cancel();

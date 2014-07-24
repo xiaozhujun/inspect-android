@@ -56,6 +56,9 @@
     <string name="USER_GETIMF">http://www.cseicms.com/inspectManagement/rs/inspectUser/currentUser</string>
     <string name="UPLOAD_FILE">http://www.cseicms.com/inspectManagement/rs/inspectResult/upload</string>
     <string name="usertasklist_GETTASKDATA">http://www.cseicms.com/inspectManagement/rs/inspectTask/userLastTask</string>
+    <string name="GetConfigFileListAddress">http://www.cseicms.com/inspectManagement/rs/inspectTable/getList</string>
+    <string name="GetConfigFileBaseAddress">http://www.cseicms.com/inspectManagement/rs/configuration/downloadInspectTable/</string>
+    <string name="GetRoleTableFileAddress">http://www.cseicms.com/inspectManagement/rs/roleTablesConfiguration/downloadRoleTable</string>
     <!-- 连接服务器操作部分 -->
     <!-- 上传文件部分 -->
     <string name="UPLOAD_FILLE_TEST">/sdcard/机修人员点检表-赵伟-20140714071147.xml</string>

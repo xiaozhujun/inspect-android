@@ -221,18 +221,6 @@ public class CasClient
         return sessionId;
     }
 
-    //�汾һ
-    public String doSendFile1(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
-    	HttpPost httppost = new HttpPost(ServicePath);
-    	   ContentBody cbFile = new FileBody(new File(FilePath));
-    	   HttpEntity reqEntity = MultipartEntityBuilder.create()
-                   .addPart("file", cbFile)
-                   .build();
-    	   httppost.setEntity(reqEntity);
-    	   HttpResponse response = httpClient.execute(httppost);
-    	   return ""+response.getStatusLine();
-	}
-    
   //�汾��
     @SuppressWarnings("deprecation")
 	public String doSendFile2(String ServicePath,String FilePath) throws ClientProtocolException, IOException {
@@ -279,6 +267,32 @@ public class CasClient
         return null;
     }
 
+    public InputStream DoGetFile(String service)
+    {
+    	HttpGet httpGet = new HttpGet (service);
+        try
+        {
+            HttpResponse response = httpClient.execute(httpGet);
+            switch (response.getStatusLine().getStatusCode())
+            {
+                case 200:
+                {
+                    Log.i("cas client doGetfile", "success");
+                    return  response.getEntity().getContent();
+                }
+                default:
+                    break;
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    	
+    }
+    
     //����POST����
     synchronized public String doPost(String service,HashMap<String,Object> params){
         Log.i("cas client doPost url:", service);
@@ -287,7 +301,7 @@ public class CasClient
         {
             List <NameValuePair> nvps = new ArrayList <NameValuePair> ();
             for(String key:params.keySet()){
-                nvps.add(new BasicNameValuePair (key, (String) params.get(key)));
+                nvps.add(new BasicNameValuePair (key, params.get(key)));
             }
             httpPost.setEntity(new UrlEncodedFormEntity(nvps,HTTP.UTF_8));
             

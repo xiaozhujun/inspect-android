@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.viewpager"
+    package="org.whut.inspect"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -53,6 +53,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
+        
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -65,47 +66,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.csei.inspect.ScanCardActivity" >
-        </activity>
-        <activity android:name="com.csei.inspect.PeopleValidateActivity" >
-        </activity>
-        <activity android:name="com.csei.inspect.TagValidateActivity" >
-        </activity>
-        <activity android:name="com.csei.inspect.StartInspectActivity" >
-        </activity>
-        <activity android:name="com.csei.inspect.WelcomeActivity" >
-        </activity>
-
-        <service android:name="com.example.service.RFIDService" >
-        </service>
-        <service android:name="com.csei.service.RFIDService" >
-        </service>       
-        
-        <service android:name="com.csei.service.LocationService" >
-        </service>
-
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="3SMWYE9fmKgZ48QfFGXNUG9f" />
-
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" >
-        </service>
-
         <activity
-            android:name="com.csei.inspect.LoginActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:name="com.csei.inspect.ScanCardActivity">  
         </activity>
-        <activity android:name="com.csei.inspect.UserTablesOperationsActivity" >
+        <activity
+            android:name="com.csei.inspect.PeopleValidateActivity">  
         </activity>
-        <activity android:name="com.csei.inspect.UserOperationsActivity" >
+        <activity
+            android:name="com.csei.inspect.TagValidateActivity">  
         </activity>
-        <activity android:name="com.csei.inspect.UserTaskListActivity" >
+        <activity
+            android:name="com.csei.inspect.StartInspectActivity">  
         </activity>
-        <activity android:name="com.csei.inspect.ActionHistoryActivity" >
+        <activity
+            android:name="com.csei.inspect.WelcomeActivity">  
         </activity>
-    </application>
-
+        
+         <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3pN6ZGzoaYObhjGe4APbP4Xf" />
+        
+       <service android:name="com.example.service.RFIDService" ></service>
+       
+       <service android:name="com.csei.service.RFIDService"></service>
+       <activity android:name="com.csei.inspect.LoginActivity" android:theme="@android:style/Theme.NoTitleBar" ></activity>
+       <activity android:name="com.csei.inspect.UserTablesOperationsActivity"></activity>
+       <activity android:name="com.csei.inspect.UserOperationsActivity"></activity>
+       <activity android:name="com.csei.inspect.UserTaskListActivity"></activity>
+       <activity android:name="com.csei.inspect.ActionHistoryActivity"></activity>
+       </application>
+       
 </manifest>

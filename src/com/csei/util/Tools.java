@@ -1,17 +1,22 @@
 package com.csei.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 /*import com.zhouzhi.es.content.OperatorInfo;
 import com.zhouzhi.es.content.XunjianInfoCache;*/
@@ -164,5 +169,38 @@ public class Tools {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			return format.format(new Date());
 		}
-		
+		/**
+		 * @param inputStream 文件输入流
+		 * @param filename 文件名
+		 * @param filepath 文件保存路径
+		 * @return true保存成功
+		 */
+		public static boolean SaveConfigFile(InputStream inputStream,String filename,String filepath)
+		{
+			OutputStream os;
+			File file=new File(filepath);
+			if (!file.exists()) {
+				file.mkdirs();
+			}
+			file=new File(filepath+"/"+filename);
+			if (file.exists()) {
+				file.delete();
+			}
+			byte[] bs = new byte[1024];
+	           int len;
+	           try {
+	           os = new FileOutputStream(file);
+	           while ((len = inputStream.read(bs)) != -1) {
+	               os.write(bs, 0, len);
+	           }
+				os.close();
+				inputStream.close();
+				Log.i("保存配置文件", filename+"保存在"+filepath);
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.i("保存配置文件", filename+"保存失败");
+				return false;
+			}
+		}
 }

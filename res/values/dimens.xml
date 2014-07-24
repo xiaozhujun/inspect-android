@@ -9,7 +9,7 @@
     <!-- sp -->
 	<dimen name="size_title">15dip</dimen>
     <dimen name="pop_x">100dip</dimen>
-	<dimen name="pop_y">110dip</dimen>
+	<dimen name="pop_y">130dip</dimen>
 	<dimen name="pop_layout_x">250dip</dimen>
 	<dimen name="pop_layout_y">80dip</dimen>
 	<dimen name="common_listitem_singleline_high">50.0dip</dimen>

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.csei.service.RFIDService;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
         	 Intent intent=new Intent(MainActivity.this,WelcomeActivity.class);
         	 MainActivity.this.startActivity(intent);
         	 MainActivity.this.finish();
-        	 new Thread(new CreateDirThread()).start();
+//        	 new Thread(new CreateDirThread()).start();
          }
          editor.putInt("count", ++count);
          editor.commit();

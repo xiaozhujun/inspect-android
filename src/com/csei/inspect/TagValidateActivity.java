@@ -26,7 +26,7 @@ import com.csei.service.RFIDService;
 import com.csei.util.FileUtil;
 import com.csei.util.JsonParser;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -183,15 +183,15 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 		normal=(RadioButton) this.findViewById(R.id.normal);
 		abnormal=(RadioButton) this.findViewById(R.id.abnormal);
 		nothing=(RadioButton) this.findViewById(R.id.nothing);
-		backbutton=(Button) this.findViewById(R.id.backbutton);
-		devnum=(TextView) this.findViewById(R.id.devnum);
+		//backbutton=(Button) this.findViewById(R.id.backbutton);
+		//devnum=(TextView) this.findViewById(R.id.devnum);
 		beizhu = (Button) this.findViewById(R.id.beizhu);
 		startScan=(Button) this.findViewById(R.id.startScan);
 		title=(TextView) this.findViewById(R.id.title);
 		startScan.setOnClickListener(this);
 		beizhu.setOnClickListener(new ClickEvent());
-		user=(TextView) this.findViewById(R.id.username);
-		user.setText(username);
+		//user=(TextView) this.findViewById(R.id.username);
+		//user.setText(username);
 		mContext=this;
 		arrow = (ImageView) findViewById(R.id.arrow); 
 		title.setOnClickListener(new OnClickListener() {
@@ -201,12 +201,12 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 
 			}
 		});
-		    backbutton.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					backbutton.setBackgroundResource(R.drawable.btn_back_active);
-					finish();
-				}
-			});
+//		    backbutton.setOnClickListener(new OnClickListener() {
+//				public void onClick(View v) {
+//					backbutton.setBackgroundResource(R.drawable.btn_back_active);
+//					finish();
+//				}
+//			});
 		InitData();
 		adapter = new MyexpandableListAdapter(TagValidateActivity.this,groupList,childList);
 		inspectItem.setAdapter(adapter);
@@ -303,7 +303,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 			window = new PopupWindow(v, x, y);
 		}
 		window.setBackgroundDrawable(getResources().getDrawable(
-				R.drawable.pop_bg));
+				R.drawable.main_popupwindow_user_bg));
 		window.setFocusable(true);
 		window.setOutsideTouchable(false);
 		window.setOnDismissListener(new OnDismissListener() {
@@ -373,11 +373,14 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 	public ArrayList<Map<String, Object>> CreateData() {		
 		Map<String, Object> map;
 		map = new HashMap<String, Object>();
+		map.put(KEY, username);
+		items.add(map);		
+		map = new HashMap<String, Object>();
 		map.put(KEY, savefile);
 		items.add(map);
 		map = new HashMap<String, Object>();
 		map.put(KEY, exit);
-		items.add(map);		
+		items.add(map);
 		return items;
 	}
     @SuppressWarnings("rawtypes")
@@ -548,7 +551,7 @@ public class TagValidateActivity extends Activity implements ExpandableListView.
 
 			dnum=tagRFID.getDeviceNum();
 			areaid = Integer.parseInt(tagRFID.getTagAreaNum());
-			devnum.setText(dnum);
+			//devnum.setText(dnum);
 		    //根据这个DNUM和AreAid在tags.xml中查出点检区域
 			String t=tagRFID.getTagArea();
 			if(t.equals("司机室区")){

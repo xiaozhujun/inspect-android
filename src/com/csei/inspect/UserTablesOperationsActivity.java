@@ -14,7 +14,7 @@ import com.csei.entity.Employer;
 import com.csei.inspect.ActionHistoryActivity.UploadFileThread;
 import com.csei.inspect.UserOperationsActivity.HandleTaskThread;
 import com.csei.util.Tools;
-import com.example.viewpager.R;
+import org.whut.inspect.R;
 import com.readystatesoftware.viewbadger.BadgeView;
 
 import android.R.integer;
@@ -126,7 +126,6 @@ public class UserTablesOperationsActivity extends Activity {
 				UserTablesOperationsActivity.this, R.layout.rolestable,
 				cursor, new String[] {"tablename","finishflag" },
 				new int[] { R.id.ItemText,R.id.usertableoperation_item_btn_finishflag });
-//		listItemAdapter.notifyDataSetChanged();
 		rolestablelist.setAdapter(listItemAdapter);
 	}
 	
@@ -158,15 +157,15 @@ public class UserTablesOperationsActivity extends Activity {
 					startActivity(intent);
 				}
 			});
-			final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertableoperation_item_btn_finishflag);
-			if (btn_finishflag.getText().equals("未完成")) {
-				btn_finishflag.setBackgroundResource(R.color.myred);
-				convertView.setEnabled(true);
-			}
-			else {
-				btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
-				convertView.setEnabled(false);
-			}
+//			final Button btn_finishflag = (Button) convertView.findViewById(R.id.usertableoperation_item_btn_finishflag);
+//			if (btn_finishflag.getText().equals("未完成")) {
+//				btn_finishflag.setBackgroundResource(R.color.myred);
+//				convertView.setEnabled(true);
+//			}
+//			else {
+//				btn_finishflag.setBackgroundResource(R.drawable.btn_uploadfile);
+//				convertView.setEnabled(false);
+//			}
 			return convertView;
 		}
 	}
