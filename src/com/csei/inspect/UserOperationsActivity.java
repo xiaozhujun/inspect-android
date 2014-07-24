@@ -430,7 +430,7 @@ public class UserOperationsActivity extends Activity {
 		@Override
 		public void run() {
 			//首先获得文件列表数据，根据列表数据去获得文件地址
-			if (!preferences.getString("currentConfigFileflag", "00-00-00").equals(Tools.GetCurrentDate())) {
+			//if (!preferences.getString("currentConfigFileflag", "00-00-00").equals(Tools.GetCurrentDate())) {
 				String msg=CasClient.getInstance().doPostNoParams(getResources().getString(R.string.GetConfigFileListAddress));
 				//Log.i("doget", msg);
 				confilelist=new ArrayList<Map<String,Object>>();
@@ -447,10 +447,10 @@ public class UserOperationsActivity extends Activity {
 					if(!Tools.SaveConfigFile(inputStream, item.get("filename")+".xml", preferences.getString("configsavepath", "/sdcard/inspect/config")))
 					{Toast.makeText(getApplicationContext(), "下载配置文件错误", Toast.LENGTH_SHORT).show();}
 				}
-				Editor editor=preferences.edit();
-		        editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
-		        editor.commit();
-			}
+//				Editor editor=preferences.edit();
+//		        editor.putString("currentConfigFileflag", Tools.GetCurrentDate());
+//		        editor.commit();
+			//}
 			new Thread(new HandleProjectDataThread()).start();
 		}
 	}
